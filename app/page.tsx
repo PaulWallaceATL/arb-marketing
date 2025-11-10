@@ -236,6 +236,111 @@ export default function Home() {
         </a>
       </div>
 
+      {/* Pricing Section */}
+      <div className="section aximo-section-padding3 position-relative">
+        <div className="container">
+          <div className="aximo-section-title center clash-grotesk">
+            <h2 style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '100%', margin: '0 auto 40px' }}>Strategic Growth for Personal&nbsp;Injury Firms</h2>
+            <p style={{ maxWidth: '900px', margin: '0 auto' }}>Choose the package that matches your ambition. Every solution is designed to deliver measurable ROI and sustainable&nbsp;growth.</p>
+          </div>
+          <div className="row">
+            <div className="col-lg-4 col-md-6">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.1s">
+                <div className="aximo-pricing-header">
+                  <img src="/assets/img/icons/th-4-service-icon-1.svg" alt="" style={{ width: '80px', height: '80px' }} />
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Starter Package</h3>
+                </div>
+                <div className="aximo-pricing-price">
+                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>$2,500<span style={{ fontSize: '18px', fontWeight: 400, fontFamily: "'Roxborough CF', serif" }}>/month</span></h2>
+                </div>
+                <div className="aximo-pricing-body">
+                  <ul>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Monthly content calendars
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />5 reel/content deliverables
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Strategic content planning
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Social media optimization
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Performance tracking
+                    </li>
+                  </ul>
+                </div>
+                <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Get Started</Link>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.2s">
+                <div className="aximo-pricing-header">
+                  <img src="/assets/img/icons/th-4-service-icon-2.svg" alt="" style={{ width: '80px', height: '80px' }} />
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Growth Package</h3>
+                </div>
+                <div className="aximo-pricing-price">
+                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>$5,000<span style={{ fontSize: '18px', fontWeight: 400, fontFamily: "'Roxborough CF', serif" }}>/month</span></h2>
+                </div>
+                <div className="aximo-pricing-body">
+                  <ul>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Full social media management
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />7-10 reels/content delivered
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Professional editing & planning
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Strategic marketing consulting
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />ROI optimization strategies
+                    </li>
+                  </ul>
+                </div>
+                <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Get Started</Link>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.3s">
+                <div className="aximo-pricing-header">
+                  <img src="/assets/img/icons/th-1-service-icon-3.svg" alt="" style={{ width: '80px', height: '80px' }} />
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Custom Campaign</h3>
+                </div>
+                <div className="aximo-pricing-price">
+                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>By Consultation</h2>
+                </div>
+                <div className="aximo-pricing-body">
+                  <ul>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Free initial consultation
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Content series production
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Photo/video shoots
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />TV & streaming commercials
+                    </li>
+                    <li>
+                      <img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Radio & multi-channel ads
+                    </li>
+                  </ul>
+                </div>
+                <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Schedule Consultation</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* About Section */}
       <div className="aximo-about-section bg-dark extra-side-margin" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
         <div id="aximo-counter"></div>
