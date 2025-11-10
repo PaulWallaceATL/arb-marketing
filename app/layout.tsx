@@ -24,17 +24,26 @@ const roxboroughCF = localFont({
 export const metadata: Metadata = {
   title: 'ARB Marketing || Legal Marketing & Referral Solutions',
   description: 'ARB Marketing delivers qualified personal injury leads and strategic marketing for law firms. Helping attorneys win bigger cases and scale sustainably.',
+  metadataBase: new URL('https://arb-marketing.vercel.app'),
   openGraph: {
     title: 'ARB Marketing || Legal Marketing & Referral Solutions',
     description: 'ARB Marketing delivers qualified personal injury leads and strategic marketing for law firms. Helping attorneys win bigger cases and scale sustainably.',
-    images: ['/assets/img/logo-arb.svg'],
+    images: [{
+      url: '/assets/img/logo-arb.svg',
+      width: 1200,
+      height: 630,
+      alt: 'ARB Marketing Logo',
+    }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ARB Marketing || Legal Marketing & Referral Solutions',
     description: 'ARB Marketing delivers qualified personal injury leads and strategic marketing for law firms. Helping attorneys win bigger cases and scale sustainably.',
-    images: ['/assets/img/logo-arb.svg'],
+    images: [{
+      url: '/assets/img/logo-arb.svg',
+      alt: 'ARB Marketing Logo',
+    }],
   },
   icons: {
     icon: '/assets/img/logo-arb.svg',
