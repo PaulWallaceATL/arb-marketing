@@ -703,7 +703,7 @@ body {
 
 /* Referrals CTA section with rounded bottom corners */
 .aximo-cta-referrals {
-    border-radius: 0 0 20px 20px !important;
+    border-radius: 20px !important;
 }
 
 .aximo-cta-section h2 {
