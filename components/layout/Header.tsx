@@ -1,30 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const pathname = usePathname();
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isMobileMenuOpen]);
-
   return (
     <header className="site-header site-header--menu-center aximo-header-section aximo-header2" id="sticky-menu">
       <div className="container">
@@ -42,26 +20,7 @@ export default function Header() {
           </div>
           
           <div className="menu-block-wrapper">
-            <div 
-              className={`menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            ></div>
-            
-            <nav className={`menu-block ${isMobileMenuOpen ? 'active' : ''}`} id="append-menu-header">
-              <div className="mobile-menu-head" style={{ fontFamily: "'Roxborough CF', serif" }}>
-                <div className="go-back">
-                  <i className="fa fa-angle-left"></i>
-                </div>
-                <div className="current-menu-title"></div>
-                <div 
-                  className="mobile-menu-close" 
-                  style={{ fontFamily: "'Roxborough CF', serif" }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  &times;
-                </div>
-              </div>
-              
+            <nav className="menu-block" id="append-menu-header">
               <ul className="site-menu-main" style={{ fontFamily: "'Roxborough CF', serif" }}>
                 <li className="nav-item">
                   <Link href="/" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
@@ -96,14 +55,6 @@ export default function Header() {
               <span className="aximo-label-up" style={{ color: '#000 !important' }}>Hire Us!</span>
               <span className="aximo-label-up" style={{ color: '#000 !important' }}>Hire Us!</span>
             </Link>
-          </div>
-          
-          {/* Mobile menu trigger */}
-          <div 
-            className="mobile-menu-trigger"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <span></span>
           </div>
         </nav>
       </div>
