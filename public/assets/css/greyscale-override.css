@@ -1,0 +1,940 @@
+/* Greyscale with Light Indigo Accent */
+/* ARB Marketing - Professional Color Scheme */
+
+/* Color Palette */
+:root {
+    --arb-lavender: #C8B6E2;
+    --arb-dark: #1a1a1a;
+    --arb-grey: #2a2a2a;
+    --accent-bg: #C8B6E2;
+    --yellow-bg: #C8B6E2;
+}
+
+/* Primary buttons - Black with white text */
+.aximo-default-btn {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #000 !important;
+    transition: all 0.3s ease !important;
+}
+
+.aximo-default-btn:hover {
+    background: #2a2a2a !important;
+    border-color: #2a2a2a !important;
+}
+
+/* Outline buttons - Lavender with white text */
+.aximo-default-btn.outline-btn,
+.aximo-default-btn-outline {
+    background: #C8B6E2 !important;
+    color: #fff !important;
+    border: 2px solid #C8B6E2 !important;
+}
+
+.aximo-default-btn.outline-btn:hover,
+.aximo-default-btn-outline:hover {
+    background: #B39FD5 !important;
+    color: #fff !important;
+    border-color: #B39FD5 !important;
+}
+
+/* Ensure label text inside buttons is white */
+.aximo-default-btn.outline-btn .aximo-label-up,
+.aximo-default-btn-outline .aximo-label-up,
+.aximo-cta-referrals .aximo-default-btn .aximo-label-up {
+    color: #fff !important;
+}
+
+/* Header buttons */
+.aximo-header-btn {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+.aximo-header-btn.outline-btn {
+    background: transparent !important;
+    border: 2px solid #000 !important;
+    color: #000 !important;
+}
+
+.aximo-header-btn.outline-btn:hover {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+/* Special case for header "Hire Us" button on light background */
+.bg-light2 .aximo-header-btn.outline-btn {
+    background: transparent !important;
+    border: 2px solid #000 !important;
+    color: #000 !important;
+}
+
+/* On dark backgrounds - white outline buttons */
+.bg-dark .aximo-default-btn.outline-btn,
+.dark-bg .aximo-default-btn.outline-btn,
+.bg-dark .aximo-header-btn.outline-btn {
+    border-color: #fff !important;
+    color: #fff !important;
+}
+
+.bg-dark .aximo-default-btn.outline-btn:hover,
+.dark-bg .aximo-default-btn.outline-btn:hover,
+.bg-dark .aximo-header-btn.outline-btn:hover {
+    background: #fff !important;
+    color: #000 !important;
+}
+
+.bg-dark .aximo-default-btn:not(.outline-btn),
+.dark-bg .aximo-default-btn:not(.outline-btn) {
+    background: #C8B6E2 !important;
+    color: #fff !important;
+    border-color: #C8B6E2 !important;
+}
+
+.bg-dark .aximo-default-btn:not(.outline-btn):hover,
+.dark-bg .aximo-default-btn:not(.outline-btn):hover {
+    background: #B39FD5 !important;
+    color: #fff !important;
+}
+
+/* Pricing buttons */
+.aximo-pricing-btn {
+    background: #B39FD5 !important;
+    color: #fff !important;
+    border: 2px solid #B39FD5 !important;
+}
+
+.aximo-pricing-btn:hover {
+    background: #9b7fc5 !important;
+    color: #fff !important;
+    border-color: #9b7fc5 !important;
+}
+
+.aximo-pricing-btn.active {
+    background: #B39FD5 !important;
+    color: #fff !important;
+    border-color: #B39FD5 !important;
+}
+
+/* Ensure all pricing boxes have consistent height */
+.aximo-pricing-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 600px !important;
+}
+
+.aximo-pricing-body {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+/* Make pricing columns equal height */
+.aximo-pricing-wrap ~ .aximo-pricing-wrap {
+    margin-top: 0 !important;
+}
+
+[class*="col-"] .aximo-pricing-wrap {
+    margin-bottom: 0 !important;
+}
+
+.row .col-lg-4:has(.aximo-pricing-wrap),
+.row .col-md-6:has(.aximo-pricing-wrap) {
+    display: flex !important;
+}
+
+/* Counter section text */
+.aximo-counter-data2 p {
+    color: #fff !important;
+}
+
+/* Testimonial section on dark background */
+.bg-dark .aximo-default-content h2,
+.bg-dark .aximo-default-content p {
+    color: #fff !important;
+}
+
+/* Accent colors - lavender as secondary accent */
+:root {
+    --primary-600: #C8B6E2 !important;
+    --brand: #000 !important;
+}
+
+.bg-orange {
+    background-color: #1a1a1a !important;
+}
+
+/* Ensure lavender accent is accessible */
+.text-primary {
+    color: #C8B6E2 !important;
+}
+
+.btn-primary {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.bg-primary {
+    background-color: #C8B6E2 !important;
+    color: #000 !important;
+}
+
+/* Grayscale all decorative icons */
+.aximo-iconbox-icon2 img,
+.aximo-pricing-header img {
+    filter: grayscale(100%) brightness(0.8);
+}
+
+/* Links - lavender on hover */
+a:hover {
+    color: #C8B6E2 !important;
+}
+
+.aximo-footer-menu a:hover {
+    color: #C8B6E2 !important;
+}
+
+/* Form elements */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #C8B6E2 !important;
+    outline-color: #C8B6E2 !important;
+}
+
+button[type="submit"],
+#aximo-submit-btn,
+#aximo-subscription-btn {
+    background: #000 !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+button[type="submit"]:hover,
+#aximo-submit-btn:hover,
+#aximo-subscription-btn:hover {
+    background: #2a2a2a !important;
+}
+
+/* Remove any remaining color accents */
+.text-lime, .text-orange, .text-green {
+    color: #000 !important;
+}
+
+.bg-lime, .bg-green {
+    background-color: #f5f5f5 !important;
+}
+
+.border-lime, .border-orange, .border-green {
+    border-color: #000 !important;
+}
+
+/* Ensure text is readable on dark backgrounds */
+.bg-dark, .dark-bg, .aximo-footer-section, .aximo-footer-section2 {
+    color: #fff !important;
+}
+
+.bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6,
+.dark-bg h1, .dark-bg h2, .dark-bg h3, .dark-bg h4, .dark-bg h5, .dark-bg h6 {
+    color: #fff !important;
+}
+
+.bg-dark p, .dark-bg p {
+    color: #fff !important;
+}
+
+/* Service increase section images on dark background */
+.aximo-service-increase-item img {
+    filter: grayscale(100%) brightness(0.9);
+}
+
+/* Service arrows to lavender */
+.aximo-service-increase-icon i,
+.icon-arrow-right {
+    color: #B39FD5 !important;
+}
+
+/* CTA section styling - lavender background */
+.aximo-cta-section {
+    background: #C8B6E2 !important;
+}
+
+/* CTA referrals section - ensure black text with secondary serif */
+.aximo-cta-referrals h3 {
+    color: #000 !important;
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.aximo-cta-referrals p {
+    color: #000 !important;
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* CTA section heading - dark text for contrast */
+.aximo-cta-section h2 {
+    color: #000 !important;
+    font-family: 'Roxborough CF', serif !important;
+}
+
+/* CTA section buttons - secondary serif font */
+.aximo-cta-section .aximo-default-btn,
+.aximo-cta-section .aximo-header-btn {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* Primary CTA button - white with black text */
+.aximo-cta-primary-btn {
+    background: #fff !important;
+    border: 2px solid #000 !important;
+    color: #000 !important;
+}
+
+.aximo-cta-primary-btn .aximo-label-up {
+    color: #000 !important;
+}
+
+.aximo-cta-primary-btn:hover {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+.aximo-cta-primary-btn:hover .aximo-label-up {
+    color: #fff !important;
+}
+
+/* CTA button styling - outline button on lavender background */
+.aximo-cta-section .aximo-header-btn.outline-btn {
+    background: transparent !important;
+    border: 2px solid #000 !important;
+    color: #000 !important;
+}
+
+.aximo-cta-section .aximo-header-btn.outline-btn:hover {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+/* Ensure button text is readable on hover */
+.aximo-cta-section .aximo-header-btn.outline-btn:hover .aximo-label-up {
+    color: #fff !important;
+}
+
+.aximo-cta-section .aximo-header-btn.outline-btn .aximo-label-up {
+    color: #000 !important;
+}
+
+/* Counter numbers - keep visible */
+.aximo-counter-data2 h2 {
+    color: #fff !important;
+}
+
+/* Testimonial cards - completely transparent background */
+.aximo-testimonial-wrap2 {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Ensure all testimonial cards have the same transparent background regardless of position */
+.aximo-testimonial-column .aximo-testimonial-wrap2:nth-child(1),
+.aximo-testimonial-column .aximo-testimonial-wrap2:nth-child(2),
+.aximo-testimonial-column .aximo-testimonial-wrap2:nth-child(3),
+.aximo-testimonial-column .aximo-testimonial-wrap2:nth-child(n) {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Footer styling - with lavender accents */
+.aximo-footer-section, .aximo-footer-section2 {
+    background-color: #0a0a0a !important;
+}
+
+/* Make footer logo visible on dark background */
+.aximo-footer-textarea img,
+.aximo-footer-section img[alt="ARB Marketing"],
+.aximo-footer-section2 img[alt="ARB Marketing"] {
+    filter: brightness(0) invert(1) !important;
+    opacity: 1 !important;
+}
+
+/* Footer menu links - white with lavender hover */
+.aximo-footer-menu a {
+    color: #fff !important;
+}
+
+.aximo-footer-menu a:hover {
+    color: #C8B6E2 !important;
+}
+
+/* Footer titles - lavender accent */
+.aximo-footer-title p {
+    color: #C8B6E2 !important;
+}
+
+/* Footer social icons hover - lavender */
+.aximo-social-icon2 a:hover,
+.aximo-footer-section2 .aximo-social-icon2 a:hover i {
+    color: #C8B6E2 !important;
+}
+
+/* Footer subscribe button - lavender */
+#aximo-subscription-btn {
+    background: #C8B6E2 !important;
+    color: #000 !important;
+    border: none !important;
+}
+
+#aximo-subscription-btn:hover {
+    background: #B39FD5 !important;
+    color: #000 !important;
+}
+
+/* Footer text and paragraph colors */
+.aximo-footer-textarea p,
+.aximo-footer-section2 p,
+.aximo-copywright p {
+    color: #fff !important;
+}
+
+/* Footer input fields */
+.aximo-subscription input {
+    border-color: #C8B6E2 !important;
+    color: #fff !important;
+}
+
+.aximo-subscription input:focus {
+    border-color: #C8B6E2 !important;
+    outline-color: #C8B6E2 !important;
+}
+
+.aximo-subscription input::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Make all section backgrounds either pure white or dark */
+.bg-light2,
+body {
+    background-color: #ffffff !important;
+}
+
+/* Remove any colored overlays or accents */
+.aximo-hero-shape1,
+.aximo-hero-shape2,
+.aximo-increase-shape,
+.aximo-pricing-shape {
+    display: none !important;
+}
+
+/* Make header 30% transparent (70% opacity) */
+.site-header,
+.aximo-header-section,
+.aximo-header2,
+.aximo-header-section.is-sticky,
+.site-header.is-sticky {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Ensure sticky header also has transparency */
+.reveal-header {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Custom cursor for service section */
+.aximo-service-increase-wrap {
+    cursor: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove any borders from service section parent */
+.aximo-section-padding .aximo-service-increase-wrap {
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+/* Remove section borders */
+.section.aximo-section-padding.position-relative {
+    border: none !important;
+    outline: none !important;
+}
+
+.aximo-service-increase-row {
+    cursor: none !important;
+    transition: all 0.3s ease !important;
+    position: relative;
+    padding: 60px 30px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+}
+
+.aximo-service-increase-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 30px;
+    max-width: 1400px;
+    border: none !important;
+    border-bottom: none !important;
+}
+
+.aximo-service-increase-title {
+    flex-shrink: 0;
+    width: 280px;
+    border: none !important;
+}
+
+.aximo-service-increase-body {
+    flex: 1;
+    border: none !important;
+    border-bottom: none !important;
+}
+
+.aximo-service-increase-body p {
+    border: none !important;
+}
+
+.aximo-service-increase-icon {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+/* Responsive adjustments for service section */
+@media (max-width: 991px) {
+    .aximo-service-increase-row {
+        padding: 40px 20px !important;
+        margin: 0 !important;
+    }
+    
+    .aximo-service-increase-item {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 20px;
+    }
+    
+    .aximo-service-increase-title {
+        width: 100%;
+    }
+    
+    .aximo-service-increase-icon {
+        margin-left: 0;
+    }
+}
+
+/* Custom circular cursor that follows mouse */
+.custom-cursor {
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    background-color: #C8B6E2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+    line-height: 1.3;
+    mix-blend-mode: normal;
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.custom-cursor.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Hide swipe images since cursor follow effect is disabled */
+.aximo-service-increase-row img.swipeimage {
+    display: none !important;
+}
+
+/* Dot Grid Effect for CTA Section */
+.dot-grid-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.dot-grid-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Contact form button */
+#aximo-main-btn {
+    font-family: 'Libre Baskerville', serif !important;
+    background: #B39FD5 !important;
+    border-color: #B39FD5 !important;
+    color: #fff !important;
+    transition: all 0.3s ease !important;
+}
+
+#aximo-main-btn:hover {
+    background: #9b7fc5 !important;
+    border-color: #9b7fc5 !important;
+    color: #fff !important;
+}
+
+/* Contact info boxes */
+.aximo-contact-info-box {
+    transition: all 0.3s ease;
+}
+
+.aximo-contact-info-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Header button styling */
+.aximo-header-btn {
+    font-family: 'Libre Baskerville', serif !important;
+    background: #B39FD5 !important;
+    border-color: #B39FD5 !important;
+    color: #fff !important;
+    transition: all 0.3s ease !important;
+}
+
+.aximo-header-btn:hover {
+    background: #9b7fc5 !important;
+    border-color: #9b7fc5 !important;
+    color: #fff !important;
+}
+
+/* Homepage-style header (light background) */
+.aximo-header2 {
+    background: #fff !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.aximo-header2 .nav-link-item {
+    color: #1F2937 !important;
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+.aximo-header2 .nav-link-item:hover {
+    color: #B39FD5 !important;
+}
+
+.aximo-header2 .outline-btn {
+    background: transparent !important;
+    border: 2px solid #B39FD5 !important;
+    color: #B39FD5 !important;
+}
+
+.aximo-header2 .outline-btn:hover {
+    background: #B39FD5 !important;
+    color: #fff !important;
+}
+
+/* Footer submit button */
+#aximo-submit-btn {
+    font-family: 'Libre Baskerville', serif !important;
+    background: #B39FD5 !important;
+    border-color: #B39FD5 !important;
+    color: #fff !important;
+    transition: all 0.3s ease !important;
+}
+
+#aximo-submit-btn:hover {
+    background: #9b7fc5 !important;
+    border-color: #9b7fc5 !important;
+    color: #fff !important;
+}
+
+/* FAQ Section with Lavender Background and Dot Grid */
+.faq-section-with-dots {
+    position: relative;
+    background: linear-gradient(135deg, #C4B5FD 0%, #DDD6FE 50%, #C4B5FD 100%) !important;
+    overflow: hidden;
+}
+
+.faq-section-with-dots .dot-grid-container {
+    pointer-events: all;
+}
+
+/* Ensure FAQ content is readable on lavender background */
+.faq-section-with-dots .aximo-section-title h2,
+.faq-section-with-dots .aximo-accordion-header h3,
+.faq-section-with-dots .aximo-accordion-body p {
+    color: #1F2937 !important;
+}
+
+.faq-section-with-dots .aximo-accordion-item {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.faq-section-with-dots .aximo-accordion-item:hover {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* CTA section with gradient background and rounded top corners */
+.aximo-cta-section {
+    background: linear-gradient(135deg, #DDD6FE 0%, #ffffff 50%, #C4B5FD 100%) !important;
+    border-radius: 20px 20px 0 0 !important;
+}
+
+/* Referrals CTA section with rounded bottom corners */
+.aximo-cta-referrals {
+    border-radius: 0 0 20px 20px !important;
+}
+
+.aximo-cta-section h2 {
+    color: #1F2937 !important;
+    font-family: 'Roxborough CF', serif !important;
+    margin-bottom: 30px;
+}
+
+.aximo-cta-section .aximo-default-btn {
+    background: #B39FD5 !important;
+    border-color: #B39FD5 !important;
+    color: #fff !important;
+    font-family: 'Libre Baskerville', serif !important;
+    transition: all 0.3s ease !important;
+}
+
+.aximo-cta-section .aximo-default-btn:hover {
+    background: #9b7fc5 !important;
+    border-color: #9b7fc5 !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(179, 159, 213, 0.3);
+}
+
+/* Pricing section fonts */
+.aximo-pricing-wrap h3,
+.aximo-pricing-wrap h2 {
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.aximo-pricing-wrap li,
+.aximo-pricing-wrap .aximo-pricing-btn {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* Ensure consistent pricing section height */
+.aximo-pricing-price {
+    height: 140px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    padding-left: 30px !important;
+}
+
+.aximo-pricing-price h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    font-size: 3.8rem !important;
+}
+
+.aximo-pricing-price h2 span {
+    font-size: 1rem !important;
+}
+
+/* SVG icons in pricing - ensure proper sizing and left alignment */
+.aximo-pricing-header {
+    height: 200px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 20px 0 20px 30px !important;
+}
+
+.aximo-pricing-header img {
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: contain;
+    margin-bottom: 20px !important;
+}
+
+.aximo-pricing-header h3 {
+    margin: 0 !important;
+    text-align: left !important;
+}
+
+/* List item thumbs up icons sizing */
+.aximo-pricing-body li img {
+    width: 20px !important;
+    height: 20px !important;
+    object-fit: contain;
+}
+
+/* Remove double line separator and adjust spacing */
+.aximo-pricing-body {
+    padding-top: 30px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    border-top: none !important;
+    border: none !important;
+    margin-top: 0 !important;
+}
+
+.aximo-pricing-body ul {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+/* Ensure all pricing boxes have consistent structure */
+.aximo-pricing-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 5% !important;
+}
+
+/* Center pricing buttons */
+.aximo-pricing-wrap .aximo-pricing-btn {
+    margin: 30px auto 0 auto !important;
+    text-align: center !important;
+    display: block !important;
+    width: fit-content !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+}
+
+/* What Sets Us Apart section - Mixed fonts */
+.aximo-iconbox-wrap2 h3,
+.aximo-iconbox-data2 h3 {
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.aximo-iconbox-wrap2 p,
+.aximo-iconbox-data2 p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* SVG icons in feature boxes */
+.aximo-iconbox-icon2 img {
+    filter: none !important;
+}
+
+/* Testimonials section - Libre Baskerville for body text */
+.aximo-testimonial-wrap2 p,
+.aximo-testimonial-data p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+.aximo-testimonial-author-data p,
+.aximo-testimonial-author-data span {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* Counter section - keep descriptions in Roxborough CF */
+.aximo-counter-data2 p {
+    font-family: 'Roxborough CF', serif !important;
+}
+
+/* About section - secondary serif for body text */
+.aximo-default-content p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* FAQ section - Mixed fonts */
+.aximo-accordion-wrap2 h3,
+.aximo-accordion-header h3 {
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.aximo-accordion-wrap2 p,
+.aximo-accordion-body p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* FAQ accordion item background - lavender highlight */
+.aximo-accordion-wrap2 .aximo-accordion-item {
+    background-color: #C8B6E2 !important;
+}
+
+.aximo-accordion-wrap2 .aximo-accordion-item.open {
+    background-color: #B39FD5 !important;
+}
+
+/* Text selection highlight - lavender */
+::selection {
+    background-color: #C8B6E2;
+    color: #000;
+}
+
+::-moz-selection {
+    background-color: #C8B6E2;
+    color: #000;
+}
+
+/* Mark/highlight element - lavender with secondary serif */
+mark {
+    background-color: #C8B6E2;
+    color: #000;
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* Title highlight backgrounds - lavender with secondary serif */
+.aximo-title-animation mark,
+.aximo-section-title mark,
+h1 mark, h2 mark, h3 mark, p mark {
+    background-color: #C8B6E2;
+    color: #000;
+    padding: 0 10px;
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* Service section - Mixed fonts */
+.aximo-service-increase-title h3 {
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.aximo-service-increase-body p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* Hero section fonts */
+.aximo-hero-content2 h1 {
+    font-family: 'Roxborough CF', serif !important;
+}
+
+.aximo-hero-content2 p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+/* All buttons - Libre Baskerville secondary serif font */
+.aximo-default-btn,
+.aximo-header-btn,
+.aximo-pricing-btn,
+.aximo-default-btn-outline,
+.aximo-label-up,
+button[type="submit"],
+#aximo-subscription-btn {
+    font-family: 'Libre Baskerville', serif !important;
+}

@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <!-- Meta -->
+    <meta charset="UTF-8">
+    <title>Documentation for - Aximo Responsive Flask Template</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicons -->
+    <link rel="icon" href="assets/favicon.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div id="header">
+        <h1>Aximo - Creative Agency Flask Template</h1>
+    </div>
+
+    <!-- Menu -->
+    <div id="doc-menu">
+        <ul class="nav">
+            <li class="section active"><a href="#">Intro</a></li>
+            <li class="section"><a href="#notice">Read First</a></li>
+            <li class="section"><a href="#start">Installation</a></li>
+            <li class="section"><a href="#s1">Flask Structure</a></li>
+            <li class="section"><a href="#page">All Pages</a></li>
+            <li class="section"><a href="#fav">Favicon Settings</a></li>
+            <li class="section"><a href="#logo">Logo Settings</a></li>
+            <li class="section"><a href="#font">Fonts Settings</a></li>
+            <li class="section"><a href="#s2">CSS Structure</a></li>
+            <li class="section"><a href="#s3">JavaScripts</a></li>
+            <li class="section"><a href="#s4">Credits</a></li>
+            <li class="section"><a href="#thanks">Thanks 😊</a></li>
+        </ul>
+    </div>
+
+    <!-- Content -->
+    <div id="doc-content" data-spy="scroll" data-target="#menu">
+
+        <div id="intro">
+            <div class="vertical">
+                <h1>Aximo - Creative Agency Symfony Template <span>v1.0</span></h1>
+                <br>
+                <p>First of all, thank you for purchasing the <code>Aximo</code> Symfony Template. You can find the
+                    detailed information about the template in this document. <br> If there is anything you cannot find
+                    in this document, you can send an e-mail via the <a href="https://codecanyon.net/user/pixcelsthemes/portfolio"
+                        target="_blank">Profile page</a>.</p>
+            </div>
+        </div>
+
+
+        <!-- ===================================================================================-->
+        <!-- Notice-->
+        <!-- ===================================================================================-->
+        <h1 id="notice">Aximo in a Brief</h1>
+        <p><strong>Aximo</strong> Creative Agency Symfony Template.<br>
+            In download folder you will find <strong>Two folders:</strong>
+        <ul>
+            <li><code>Documentation</code> (Documentation for main template)</li>
+            <li><code>Aximo</code> (Main Template)</li>
+        </ul>
+        <br>
+        <p style="margin-top: 0;" class="files-folder"><img src="{{ asset('assets/files.png') }}" alt=""></p>
+        Remember, when you want to use the shortCode/element in any pages you need to adjust the section spacing by
+        giving <code>margin</code> or <code>padding</code>. Don't get panic if you messed up anything when you edit
+        the template. We are always available to support our customer.
+        </p>
+
+
+        <!-- ===================================================================================-->
+        <!-- 1 Installation-->
+        <!-- ===================================================================================-->
+        <h1 id="start"><span>01</span>Installation</h1>
+        <p>Follow the steps below to setup your site template:</p>
+        <div class="sec-content"> 
+            <h4 class="c_head">1. Install Server (Recommended PHP version: >8.2)</h4>
+            <p>Make sure to have the Xampp/WampServer/Lampp installed & running in your computer. If you already have installed server on your computer, you can skip this step if your existing PHP version is greater than >8.2.</p>
+
+            <h4 class="c_head">2. Install Composer (Recommended version: >= 2.2)</h4>
+            <p>Symfony uses Composer to manage its dependencies. If you haven't already installed Composer, you can download and install it following the instructions on the official Composer website.</p>
+
+            <h4 class="c_head">3. This would install all the required packages in the vendor folder.</h4>
+            <p>This would install all the required packages in the vendor folder.</p>
+            <code class="code">composer install</code>
+
+            <h4 class="c_head">4. Install Symfony CLI (Optional but Recommended):</h4>
+            <p>Symfony CLI provides additional tools and commands to simplify Symfony development. You can install Symfony CLI by following the instructions on the official Symfony website.</p>
+
+            <h4 class="c_head">5. Start the Development Server:</h4>
+            <p>This command will start a local development server. By default, Symfony will listen on <code>http://localhost:8000</code></p>   
+            <code class="code">symfony server:start</code>
+
+            <h4 class="c_head">6. Editing Aximo Template</h4>
+            <P>Before all that you have to edit your template and place your own contents by replacing old demo contents, in this case, you will need a code editor such as – VScode, Sublime Text etc.</P>
+        </div>
+        <!-- ===================================================================================-->
+        <!-- 2 HTML Structure-->
+        <!-- ===================================================================================-->
+
+        <h1 id="s1"><span>02</span>Symfony Structure</h1>
+        <p>We are used Bootstrap Latest Version <code>v5.1.3</code> framework in this template.<br> The general template
+            structure is the same throughout the template. Here is the general structure.</p>
+
+        <pre>
+    <code>
+
+        
+{% extends 'partials/layout1.html.twig' %}
+
+{% block content %}
+
+&lt;header class="site-header aximo-header-section aximo-header1 dark-bg" id="sticky-menu"&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/header&gt;
+&lt;!--End landex-header-section --&gt;
+
+&lt;div class="aximo-hero-section dark-bg"&gt;
+  &lt;div class="container position-relative"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="section aximo-section-padding4"&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="section aximo-section-padding"&gt;
+  &lt;div id="aximo-counter"&gt;&lt;/div&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="section dark-bg aximo-section-padding"&gt;
+  .....     .....     .....
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="section"&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="section aximo-section-padding3"&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="aximo-auto-slider-section"&gt;
+  &lt;div class="swiper aximo-auto-slider"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;div class="section aximo-section-padding3"&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- End section --&gt;
+
+&lt;!-- Footer  --&gt;
+&lt;footer class="aximo-footer-section dark-bg"&gt;
+  &lt;div class="container"&gt;
+    .....     .....     .....
+  &lt;/div&gt;
+&lt;/footer&gt;
+
+{% endblock content %}
+
+
+    </code>
+
+</pre>
+
+        <!-- ===================================================================================-->
+        <!-- 3 Favicon-->
+        <!-- ===================================================================================-->
+        <h1 id="page"><span>04</span>All Pages</h1>
+        <p>Introduce <code>Aximo</code> All Pages</p>
+        <ul class="list-wrap">
+            <li>
+                <h4><code>index.html.twig</code> is <code>====></code> Home One</h4>
+            </li>
+            <li>
+                <h4><code>index-02.html.twig</code> is <code>====></code> Home Two</h4>
+            </li>
+            <li>
+                <h4><code>index-03.html.twig</code> is <code>====></code> Home Three</h4>
+            </li>
+            <li>
+                <h4><code>index-04.html.twig</code> is <code>====></code> Home Four</h4>
+            </li>
+            <li>
+                <h4><code>about.html.twig</code> is <code>====></code> About Page</h4>
+            </li>
+            <li>
+                <h4><code>services.html.twig</code> is <code>====></code> Services Page</h4>
+            </li>
+            <li>
+                <h4><code>services-details.html.twig</code> is <code>====></code> Services Details Page</h4>
+            </li>
+            <li>
+                <h4><code>portfolio-01.html.twig</code> is <code>====></code> Portfolio Page One</h4>
+            </li>
+            <li>
+                <h4><code>portfolio-02.html.twig</code> is <code>====></code> Portfolio Page Two</h4>
+            </li>
+            <li>
+                <h4><code>portfolio-details.html.twig</code> is <code>====></code> Portfolio Details Page</h4>
+            </li>
+            <li>
+                <h4><code>team.html.twig</code> is <code>====></code> Team Page</h4>
+            </li>
+            <li>
+                <h4><code>team-details.html.twig</code> is <code>====></code> Team Details Page</h4>
+            </li>
+            <li>
+                <h4><code>testimonila.html.twig</code> is <code>====></code> Testimonila Page</h4>
+            </li>
+            <li>
+                <h4><code>pricing.html.twig</code> is <code>====></code> Pricing Page</h4>
+            </li>
+            <li>
+                <h4><code>blog.html.twig</code> is <code>====></code> Blog Post</h4>
+            </li>
+            <li>
+                <h4><code>blog-details.html.twig</code> is <code>====></code> Blog Details Page</h4>
+            </li>
+            <li>
+                <h4><code>sign-in.html.twig</code> is <code>====></code> Sign In Page</h4>
+            </li>
+            <li>
+                <h4><code>sign-up.html.twig</code> is <code>====></code> Sign Up Page</h4>
+            </li>
+            <li>
+                <h4><code>reset-password.html.twig</code> is <code>====></code> Reset password Post</h4>
+            </li>
+            <li>
+                <h4><code>faq.html.twig</code> is <code>====></code> Faq Post</h4>
+            </li>
+            <li>
+                <h4><code>coming-soon.html.twig</code> is <code>====></code> Coming Soon Post</h4>
+            </li>
+            <li>
+                <h4><code>errors-404.html.twig</code> is <code>====></code> 404 Post</h4>
+            </li>
+            <li>
+                <h4><code>contact.html.twig</code> is <code>====></code> Contact Us Page</h4>
+            </li>
+        </ul>
+
+
+        <!-- ===================================================================================-->
+        <!-- 3 Favicon-->
+        <!-- ===================================================================================-->
+        <h1 id="fav"><span>04</span>Favicon Settings</h1>
+        <p>Favicon Will be found in <code>&lt;head></code> section.</p>
+        <pre>
+    <!-- Favicon -->
+    &lt;link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
+    </pre>
+
+        <!-- ===================================================================================-->
+        <!-- 4 Logo-->
+        <!-- ===================================================================================-->
+        <h1 id="logo"><span>05</span>Logo Settings</h1>
+        <p>The Logo will be found in the <code>&lt;div class="brand-logo"></code> tag.</p>
+        <pre>
+
+
+    &lt;div class="brand-logo"&gt;&lt;a href="index.html"&gt;&lt;img src="{{ asset('assets/images/logo/logo-white.svg') }}" alt="logo"&gt;&lt;/a&gt;&lt;/div&gt;
+        </pre>
+        <p>You can replace any <code>.jpg</code> <code>.png</code> <code>.svg</code> logo. And set the
+            <code>width</code> according to your logo size.
+        </p>
+
+
+        <!-- ===================================================================================-->
+        <!-- 5 Fonts-->
+        <!-- ===================================================================================-->
+        <h1 id="font"><span>06</span>Fonts Settings</h1>
+        <p>In <code>Aximo</code> we use <code>Syne</code> & <code>Inters</code> font.<br>
+            You can change both fonts form <code>app.css Top</code>:
+        </p>
+
+        <div>
+            <pre class="code" data-language="css">
+
+&lt;link href="https://fonts.googleapis.com/css2?family=Arimo:wght@600;700&family=Familjen+Grotesk:wght@600;700&family=Inter:wght@400;600&family=Libre+Baskerville:wght@700&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+
+            </pre>
+        </div>
+        <!--====================================================================================-->
+
+
+
+
+        <!-- ===================================================================================-->
+        <!-- 2 CSS Structure-->
+        <!-- ===================================================================================-->
+
+        <h1 id="s2"><span>08</span>CSS Structure</h1>
+        <p>The <code>style.css</code> file contains all of the specific stylings for the page. The file is separated
+            into sections using:</p>
+
+
+        <ul>
+            <li>
+                <h4>bootstrap 5.min.css</h4>
+                <p>This file includes core <a href="https://getbootstrap.com" target="_blank">bootstrap</a> styles</p>
+                <a href="https://getbootstrap.com/docs/5.1/getting-started/download/"
+                    target="_blank"><small>Source</small></a>
+            </li>
+
+            <li>
+                <h4>font-awesome.css</h4>
+                <p>This file contains styles about <a href="https://fontawesome.com/v5.15/icons"
+                        target="_blank">Fontawesome</a> icon library</p>
+                <a href="https://fontawesome.com/v5.15/icons" target="_blank"><small>Source</small></a>
+
+                <h5>Example</h5>
+                <code>
+                    &lt;i class="fab fa-facebook-square">&lt;/i>
+                </code>
+            </li>
+
+            <li>
+                <h4>magnific-popup.css</h4>
+                <p>This file contains styles about <a href="https://dimsemenov.com/plugins/magnific-popup/"
+                        target="_blank">Popup</a> Style</p>
+                <a href="https://dimsemenov.com/plugins/magnific-popup/" target="_blank"><small>Source</small></a>
+            </li>
+
+            <li>
+                <h4>animate.min.css</h4>
+                <p><code>animate.css</code> is a bunch of cool, fun, and cross-browser animations for you to use in
+                    projects. Great for emphasis, home pages, sliders, and general just-add-water-awesomeness.</p>
+                <a href="https://animate.style/" target="_blank"><small>Source</small></a>
+
+                <h5>Example</h5>
+
+                <code>
+                    &lt;div class="wow slideInLeft">
+                    ...
+                    &lt;/div>
+                </code>
+            </li>
+
+            <li>
+                <h4>slick.css</h4>
+                <p>This file contains styles about slick carousel plugin</p>
+
+                <a href="https://kenwheeler.github.io/slick/" target="_blank"><small>Source</small></a>
+            </li>
+
+            <li>
+                <h4>style.css</h4>
+                <p>All styles about template</p>
+            </li>
+
+        </ul>
+
+        <!-- ===================================================================================-->
+        <!-- 3 JavaScripts-->
+        <!-- ===================================================================================-->
+
+        <h1 id="s3"><span>09</span>JavaScripts</h1>
+        <ul>
+            <li>
+                <h4>jQuery 3.6.0</h4>
+                <p>jQuery is a fast, small, and feature-rich JavaScript library.</p>
+                <a href="https://blog.jquery.com/2021/03/02/jquery-3-6-0-released/"><small>Source</small></a>
+            </li>
+
+            <li>
+                <h4>bootstrap 5.min.js</h4>
+                <p>Core bootstrap js file</p>
+                <a href="https://getbootstrap.com/docs/5.1/getting-started/download/"
+                    target="_blank"><small>Source</small></a>
+            </li>
+
+
+            <li>
+                <h4>gsap.js</h4>
+                <p>GSAP is a robust JavaScript toolset that turns developers into animation superheroes. Build
+                    high-performance animations that work in every major browser.</p>
+
+                <a href="https://greensock.com/gsap/" target="_blank"><small>Source</small></a>
+            </li>
+
+
+            <li>
+                <h4>slick.min.js</h4>
+                <p>jQuery carousel plugin from Slick</p>
+
+                <a href="https://kenwheeler.github.io/slick/" target="_blank"><small>Source</small></a>
+            </li>
+
+            <li>
+                <h4>wow.js</h4>
+                <p>A lightweight script to animate scrolling.Reveal Animations When You Scroll.</p>
+                <small><a href="https://wowjs.uk/" target="_blank">Source</a></small>
+
+            </li>
+
+            <li>
+                <h4>aos.js</h4>
+                <p>A lightweight script to animate scrolling. Reveal Animations When You Scroll.</p>
+                <small><a href="https://michalsnik.github.io/aos/" target="_blank">Source</a></small>
+
+            </li>
+
+            <li>
+                <h4>min.js</h4>
+                <p>This file contains all script about site.</p>
+            </li>
+
+
+        </ul>
+
+
+
+
+
+        <!-- ===================================================================================-->
+        <!-- 4 Credits -->
+        <!-- ===================================================================================-->
+
+        <h1 id="s4"><span>10</span>Credits</h1>
+        <ul>
+            <li>
+                <a href="http://getbootstrap.com">
+                    <h4>bootstrap 5</h4>
+                </a>
+            </li>
+
+
+            <li>
+                <h4>Stock Image<a href="https://unsplash.com/"> Unsplash</a>, <a href="https://www.pexels.com/">
+                        Pexels</a></h4>
+            </li>
+
+            <li>
+                <a href="http://fontawesome.io">
+                    <h4>Fontawesome</h4>
+                </a>
+            </li>
+
+            <li>
+                <a href="http://daneden.github.io/animate.css/">
+                    <h4>Animate.css</h4>
+                </a>
+            </li>
+
+        </ul>
+
+
+
+        <section id="thanks">
+            <h1 id="s6"><span>11</span>Thanks</h1>
+            <hr>
+            <h4 id="thanks_span_style">
+                <span>Once again thank you for purchasing one of our Templates</span>
+            </h4>
+            <h2>Best Regards</h2>
+            <h3><a href="https://codecanyon.net/user/pixcelsthemes/portfolio" target="_blank">PixcelsThemes</a></h3>
+        </section>
+
+        <footer>
+            <hr>
+            <p>Copyright PixcelsThemes 2024 made with the <a href="#">Documenter v1.0</a></p>
+        </footer>
+
+        <!-- ===================================================================================-->
+        <!-- 5 Credits -->
+        <!-- ===================================================================================-->
+        <!-- <h1 id="s7"><span>12</span>Changelog:</h1>
+    <small>Dates are formatted in <code>dd/mm/yy</code></small>
+
+    <pre>
+
+    ===========================
+    ----- (20 October 2023) ------
+    ===========================
+    Initial Released Aximo.
+
+    </pre> -->
+
+    </div>
+
+    <!-- JavaScripts -->
+    <script type='text/javascript' src='assets/js/jquery.min.js'></script>
+    <script type='text/javascript' src='assets/js/bootstrap.min.js'></script>
+    <script type='text/javascript' src='assets/js/jquery.scrollTo.min.js'></script>
+    <script type='text/javascript' src='assets/js/jquery.localscroll-1.2.7-min.js'></script>
+    <script type='text/javascript' src='assets/js/custom.js'></script>
+
+</body>
+
+</html>

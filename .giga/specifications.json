@@ -1,0 +1,18 @@
+[
+  {
+    "fileName": "main-overview.mdc",
+    "description": "High-level overview of the template-based website architecture, component organization, and key functionality points"
+  },
+  {
+    "fileName": "countdown-timer-implementation.mdc",
+    "description": "Technical documentation of the custom countdown timer logic including time unit calculations and display mechanisms"
+  },
+  {
+    "fileName": "skills-display-system.mdc",
+    "description": "Documentation of the percentage-based skills visualization system including data structure and rendering approach"
+  },
+  {
+    "fileName": "template-inheritance-patterns.mdc",
+    "description": "Documentation of the template inheritance hierarchy and conditional rendering patterns used across the site"
+  }
+]

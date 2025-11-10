@@ -1,0 +1,108 @@
+/* Mobile Menu Z-Index Fix
+ * Ensures mobile menu renders above all page content without affecting desktop layout
+ */
+
+@media (max-width: 991px) {
+  /* CRITICAL: Menu block must be highest - DON'T touch its transform! */
+  .site-header .menu-block {
+    z-index: 999999 !important;
+  }
+  
+  /* Menu overlay behind menu but above everything else */
+  .menu-overlay {
+    z-index: 999998 !important;
+  }
+  
+  /* Ensure mobile menu trigger is accessible */
+  .mobile-menu-trigger {
+    z-index: 999999 !important;
+    position: relative !important;
+  }
+  
+  /* Menu head and items */
+  .mobile-menu-head {
+    z-index: 1000000 !important;
+  }
+  
+  .site-menu-main {
+    z-index: 1000000 !important;
+  }
+  
+  /* Force body to create lower stacking context */
+  body {
+    position: relative;
+    z-index: 0;
+  }
+  
+  /* Force ALL page content (except header/menu) to lower z-index */
+  body > *:not(header):not(.site-header):not(.menu-block-wrapper):not(.menu-overlay) {
+    z-index: 1 !important;
+    position: relative !important;
+  }
+  
+  /* Target all major content sections - only z-index, preserve transforms */
+  .main-wrapper,
+  .aximo-all-section,
+  .aximo-hero-section,
+  .aximo-hero-section2,
+  .aximo-cta-section,
+  .section {
+    z-index: 1 !important;
+    isolation: auto !important;
+  }
+  
+  /* Remove z-index from ALL content descendants */
+  .aximo-all-section *:not([class*="menu"]):not(.menu-overlay),
+  .aximo-hero-section2 *:not([class*="menu"]):not(.menu-overlay),
+  .aximo-hero-content2 *:not([class*="menu"]):not(.menu-overlay),
+  .aximo-hero-thumb-wrap *:not([class*="menu"]):not(.menu-overlay),
+  .section *:not([class*="menu"]):not(.menu-overlay),
+  .container *:not([class*="menu"]):not(.menu-overlay),
+  .row *:not([class*="menu"]):not(.menu-overlay) {
+    z-index: auto !important;
+  }
+  
+  /* Specific hero section overrides */
+  .aximo-hero-section2 {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  .aximo-hero-content2,
+  .aximo-hero-thumb-wrap,
+  .aximo-hero-thumb-item {
+    z-index: auto !important;
+  }
+  
+  /* Container overrides */
+  .container:not(.menu-block-wrapper *),
+  .container.position-relative:not(.menu-block-wrapper *) {
+    z-index: auto !important;
+  }
+  
+  /* Header positioning - below menu */
+  .site-header {
+    position: relative !important;
+    z-index: 999990 !important;
+  }
+  
+  /* Ensure header container doesn't interfere */
+  .site-header .container {
+    position: relative !important;
+  }
+}
+
+/* Desktop - ensure no interference with centering */
+@media (min-width: 992px) {
+  /* Reset body */
+  body {
+    z-index: auto;
+  }
+  
+  /* Reset page content positioning */
+  body > *:not(header):not(.site-header) {
+    z-index: auto !important;
+    position: static !important;
+  }
+}
+
