@@ -125,7 +125,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div className="aximo-cta-section aximo-cta-referrals extra-side-margin" style={{ padding: '60px 0', backgroundColor: '#C8B6E2', borderRadius: '20px !important', marginTop: '80px', marginBottom: '80px' }}>
+      <div className="aximo-cta-section aximo-cta-referrals extra-side-margin" style={{ padding: '60px 0', backgroundColor: '#C8B6E2', borderRadius: '20px', marginTop: '80px', marginBottom: '80px' }}>
         <div className="container">
           <div className="aximo-cta-wrap text-center">
             <div className="aximo-cta-content">
