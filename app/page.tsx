@@ -119,13 +119,37 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Spacing between sections */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .aximo-iconbox-wrap2 {
+            margin-bottom: 40px !important;
+            padding: 30px 20px !important;
+          }
+          .aximo-iconbox-data2 {
+            padding: 0 10px !important;
+          }
+          .aximo-iconbox-data2 h3 {
+            font-size: 24px !important;
+          }
+          .aximo-iconbox-data2 p {
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+          }
+          .section.aximo-section-padding3 .container {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+        }
+      `}</style>
+
       {/* About Section */}
       <div className="aximo-about-section bg-dark extra-side-margin" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
         <div id="aximo-counter"></div>
         <div className="container">
           <div className="row">
             <div className="col-lg-5">
-              <div className="aximo-thumb" id="rotatetwo" style={{ marginTop: '-90px' }}>
+              <div className="aximo-thumb wow fadeInUpX" data-wow-delay="0s" id="rotatetwo" style={{ marginTop: '-90px' }}>
                 <img src="/assets/img/images/th-2/content-img-1.jpg" alt="Happy attorneys team" />
               </div>
             </div>
