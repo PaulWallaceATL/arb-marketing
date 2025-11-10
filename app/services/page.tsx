@@ -1,8 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function ServicesPage() {
+  const [openAccordion, setOpenAccordion] = useState(0);
+
+  const toggleAccordion = (index: number) => {
+    setOpenAccordion(openAccordion === index ? -1 : index);
+  };
+
   return (
     <>
       <style jsx>{`
@@ -171,35 +178,62 @@ export default function ServicesPage() {
               </div>
               <div className="col-lg-5">
                 <div className="aximo-accordion-wrap wow fadeInUpX" data-wow-delay="0.1s" id="aximo-accordion">
-                  <div className="aximo-accordion-item process-accordion-item open">
-                    <div className="aximo-accordion-header process-accordion-header">
+                  <div className={`aximo-accordion-item process-accordion-item ${openAccordion === 0 ? 'open' : ''}`}>
+                    <div 
+                      className="aximo-accordion-header process-accordion-header" 
+                      onClick={() => toggleAccordion(0)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>01/ Discovery & Strategy</h3>
+                      <div className="aximo-accordion-icon">
+                        <i className={openAccordion === 0 ? 'icon-minus' : 'icon-plus'}></i>
+                      </div>
                     </div>
-                    <div className="aximo-accordion-body process-accordion-body">
-                      <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
-                        We start with a comprehensive consultation to understand your firm's goals, target cases, and current marketing challenges.
-                      </p>
-                    </div>
+                    {openAccordion === 0 && (
+                      <div className="aximo-accordion-body process-accordion-body">
+                        <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
+                          We start with a comprehensive consultation to understand your firm's goals, target cases, and current marketing challenges.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <div className="aximo-accordion-item process-accordion-item">
-                    <div className="aximo-accordion-header process-accordion-header">
+                  <div className={`aximo-accordion-item process-accordion-item ${openAccordion === 1 ? 'open' : ''}`}>
+                    <div 
+                      className="aximo-accordion-header process-accordion-header" 
+                      onClick={() => toggleAccordion(1)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>02/ Implementation</h3>
+                      <div className="aximo-accordion-icon">
+                        <i className={openAccordion === 1 ? 'icon-minus' : 'icon-plus'}></i>
+                      </div>
                     </div>
-                    <div className="aximo-accordion-body process-accordion-body">
-                      <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
-                        Our team executes your custom marketing strategy, delivering qualified leads, content, and campaigns designed to convert.
-                      </p>
-                    </div>
+                    {openAccordion === 1 && (
+                      <div className="aximo-accordion-body process-accordion-body">
+                        <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
+                          Our team executes your custom marketing strategy, delivering qualified leads, content, and campaigns designed to convert.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <div className="aximo-accordion-item process-accordion-item">
-                    <div className="aximo-accordion-header process-accordion-header">
+                  <div className={`aximo-accordion-item process-accordion-item ${openAccordion === 2 ? 'open' : ''}`}>
+                    <div 
+                      className="aximo-accordion-header process-accordion-header" 
+                      onClick={() => toggleAccordion(2)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>03/ Optimization & Growth</h3>
+                      <div className="aximo-accordion-icon">
+                        <i className={openAccordion === 2 ? 'icon-minus' : 'icon-plus'}></i>
+                      </div>
                     </div>
-                    <div className="aximo-accordion-body process-accordion-body">
-                      <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
-                        We continuously monitor performance, optimize campaigns, and scale what works to maximize your ROI and case wins.
-                      </p>
-                    </div>
+                    {openAccordion === 2 && (
+                      <div className="aximo-accordion-body process-accordion-body">
+                        <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
+                          We continuously monitor performance, optimize campaigns, and scale what works to maximize your ROI and case wins.
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

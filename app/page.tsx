@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section - Referrals */}
-      <div className="aximo-cta-section aximo-cta-referrals extra-side-margin" style={{ padding: '60px 0', backgroundColor: '#C8B6E2', borderRadius: '20px !important' }}>
+      <div className="aximo-cta-section aximo-cta-referrals extra-side-margin" style={{ padding: '60px 0', backgroundColor: '#C8B6E2', borderRadius: '20px' }}>
         <div className="container">
           <div className="aximo-cta-wrap text-center">
             <div className="aximo-cta-content">
@@ -282,7 +282,7 @@ export default function Home() {
       </div>
 
       {/* Final CTA Section */}
-      <div className="aximo-cta-section aximo-section-padding extra-side-margin position-relative" style={{ background: 'linear-gradient(135deg, #DDD6FE 0%, #ffffff 50%, #C4B5FD 100%)', overflow: 'hidden', minHeight: '500px', borderRadius: '20px 20px 0 0', marginTop: '80px' }}>
+      <div className="aximo-cta-section aximo-section-padding extra-side-margin position-relative" style={{ background: 'linear-gradient(135deg, #DDD6FE 0%, #ffffff 50%, #C4B5FD 100%)', overflow: 'hidden', minHeight: '500px', borderRadius: '20px', marginTop: '80px' }}>
         <div className="container position-relative">
           <div className="aximo-cta-wrap">
             <h2 style={{ fontFamily: "'Roxborough CF', serif", color: '#1F2937' }}>Ready to Build Your Practice?</h2>
