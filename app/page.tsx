@@ -1,21 +1,67 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
 
 export default function Home() {
+  const heroTitleRef = useRef<HTMLHeadingElement>(null);
+  const heroParaRef = useRef<HTMLParagraphElement>(null);
+  const heroButtonsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // GSAP animation for hero text
+    const ctx = gsap.context(() => {
+      // Animate heading
+      gsap.from(heroTitleRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 0.2
+      });
+
+      // Animate paragraph
+      gsap.from(heroParaRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 0.5
+      });
+
+      // Animate buttons
+      gsap.from(heroButtonsRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 0.8
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="aximo-all-section">
       {/* Hero Section */}
       <div className="aximo-hero-section2">
         <div className="container position-relative">
           <div className="aximo-hero-content2">
-            <h1 style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2 }}>
+            <h1 
+              ref={heroTitleRef}
+              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2 }}
+            >
               Elite Leads. Winning Cases.<br />Your Practice Elevated.
             </h1>
-            <p style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6 }}>
+            <p 
+              ref={heroParaRef}
+              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6 }}
+            >
               Trusted referral solutions and strategic marketing for personal injury law&nbsp;firms that are ready to grow bigger, win more, and scale with&nbsp;purpose. We deliver qualified injury leads and premium content that move cases&nbsp;forward.
             </p>
-            <div className="aximo-hero-btn-wrap center">
+            <div className="aximo-hero-btn-wrap center" ref={heroButtonsRef}>
               <Link href="/contact" className="aximo-default-btn">
                 <span className="aximo-label-up">Schedule Free Consultation</span>
                 <span className="aximo-label-up">Schedule Free Consultation</span>
