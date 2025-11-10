@@ -1,10 +1,6 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'About Us | ARB Marketing',
-  description: 'Learn about ARB Marketing and how we help personal injury law firms grow through qualified leads and strategic marketing.',
-};
+import Link from 'next/link';
 
 export default function AboutPage() {
   return (
