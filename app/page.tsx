@@ -64,7 +64,7 @@ export default function Home() {
           ease={80}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 10 }}>
+        <div className="container position-relative">
           <div className="aximo-hero-content2">
             <h1 
               ref={heroTitleRef}

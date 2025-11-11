@@ -43,6 +43,15 @@ a {
   .site-header .menu-block {
     z-index: 99999 !important;
   }
+  
+  /* Force all page content below menu */
+  .aximo-all-section,
+  .aximo-hero-section2,
+  .aximo-hero-section2 *,
+  main,
+  main * {
+    z-index: 1 !important;
+  }
 }
 
 .menu-overlay {
