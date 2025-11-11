@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <header className="site-header site-header--menu-center aximo-header-section aximo-header2" id="sticky-menu">
       <div className="container">
@@ -19,26 +22,26 @@ export default function Header() {
             </Link>
           </div>
           
-          <div className="menu-block-wrapper">
+          <div className={`menu-block-wrapper ${isMenuOpen ? 'mobile-active' : ''}`}>
             <nav className="menu-block" id="append-menu-header">
               <ul className="site-menu-main" style={{ fontFamily: "'Roxborough CF', serif" }}>
                 <li className="nav-item">
-                  <Link href="/" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     Home
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/about" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/about" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     About
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/services" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/services" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     Services
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/contact" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/contact" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     Contact
                   </Link>
                 </li>
@@ -56,8 +59,20 @@ export default function Header() {
               <span className="aximo-label-up" style={{ color: '#000 !important' }}>Hire Us!</span>
             </Link>
           </div>
+
+          {/* Hamburger - only shows on mobile */}
+          <button 
+            className="hamburger-toggle"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </nav>
       </div>
+      {isMenuOpen && <div className="menu-backdrop" onClick={() => setIsMenuOpen(false)} />}
     </header>
   );
 }
