@@ -212,7 +212,7 @@ export default function Header() {
         className="site-header site-header--menu-center aximo-header-section aximo-header2" 
         id="sticky-menu"
         style={{
-          transform: headerVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transform: (headerVisible && !mobileOpen) ? 'translateY(0)' : 'translateY(-100%)',
           transition: 'transform 0.3s ease-in-out'
         }}
       >
