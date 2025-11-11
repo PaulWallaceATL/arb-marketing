@@ -1,10 +1,123 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const mobileMenu = mobileOpen ? (
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 999999, pointerEvents: 'auto' }}>
+      <div 
+        style={{ 
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.5)',
+          zIndex: 999998
+        }}
+        onClick={() => setMobileOpen(false)}
+      />
+      <div 
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          width: '280px',
+          maxWidth: '80vw',
+          height: '100vh',
+          background: '#fff',
+          zIndex: 999999,
+          padding: '60px 30px',
+          overflowY: 'auto',
+          boxShadow: '-4px 0 20px rgba(0,0,0,0.2)'
+        }}
+      >
+        <button 
+          onClick={() => setMobileOpen(false)}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            background: 'none',
+            border: 'none',
+            fontSize: '32px',
+            cursor: 'pointer',
+            color: '#333',
+            zIndex: 1000000
+          }}
+        >
+          ×
+        </button>
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <Link 
+            href="/" 
+            onClick={() => setMobileOpen(false)}
+            style={{ 
+              fontFamily: "'Roxborough CF', serif",
+              fontSize: '20px',
+              color: '#333',
+              textDecoration: 'none',
+              padding: '10px 0',
+              borderBottom: '1px solid #eee'
+            }}
+          >
+            Home
+          </Link>
+          <Link 
+            href="/about" 
+            onClick={() => setMobileOpen(false)}
+            style={{ 
+              fontFamily: "'Roxborough CF', serif",
+              fontSize: '20px',
+              color: '#333',
+              textDecoration: 'none',
+              padding: '10px 0',
+              borderBottom: '1px solid #eee'
+            }}
+          >
+            About
+          </Link>
+          <Link 
+            href="/services" 
+            onClick={() => setMobileOpen(false)}
+            style={{ 
+              fontFamily: "'Roxborough CF', serif",
+              fontSize: '20px',
+              color: '#333',
+              textDecoration: 'none',
+              padding: '10px 0',
+              borderBottom: '1px solid #eee'
+            }}
+          >
+            Services
+          </Link>
+          <Link 
+            href="/contact" 
+            onClick={() => setMobileOpen(false)}
+            style={{ 
+              fontFamily: "'Roxborough CF', serif",
+              fontSize: '20px',
+              color: '#333',
+              textDecoration: 'none',
+              padding: '10px 0',
+              borderBottom: '1px solid #eee'
+            }}
+          >
+            Contact
+          </Link>
+        </nav>
+      </div>
+    </div>
+  ) : null;
 
   return (
     <>
@@ -72,112 +185,8 @@ export default function Header() {
         </div>
       </header>
 
-      {/* PORTAL - Mobile Menu Outside Everything */}
-      {mobileOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 999999 }}>
-          <div 
-            style={{ 
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(0,0,0,0.5)',
-              zIndex: 999998
-            }}
-            onClick={() => setMobileOpen(false)}
-          />
-          <div 
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: '280px',
-              maxWidth: '80vw',
-              height: '100%',
-              background: '#fff',
-              zIndex: 999999,
-              padding: '60px 30px',
-              overflowY: 'auto',
-              boxShadow: '-4px 0 20px rgba(0,0,0,0.2)'
-            }}
-          >
-            <button 
-              onClick={() => setMobileOpen(false)}
-              style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                background: 'none',
-                border: 'none',
-                fontSize: '32px',
-                cursor: 'pointer',
-                color: '#333'
-              }}
-            >
-              ×
-            </button>
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <Link 
-                href="/" 
-                onClick={() => setMobileOpen(false)}
-                style={{ 
-                  fontFamily: "'Roxborough CF', serif",
-                  fontSize: '20px',
-                  color: '#333',
-                  textDecoration: 'none',
-                  padding: '10px 0',
-                  borderBottom: '1px solid #eee'
-                }}
-              >
-                Home
-              </Link>
-              <Link 
-                href="/about" 
-                onClick={() => setMobileOpen(false)}
-                style={{ 
-                  fontFamily: "'Roxborough CF', serif",
-                  fontSize: '20px',
-                  color: '#333',
-                  textDecoration: 'none',
-                  padding: '10px 0',
-                  borderBottom: '1px solid #eee'
-                }}
-              >
-                About
-              </Link>
-              <Link 
-                href="/services" 
-                onClick={() => setMobileOpen(false)}
-                style={{ 
-                  fontFamily: "'Roxborough CF', serif",
-                  fontSize: '20px',
-                  color: '#333',
-                  textDecoration: 'none',
-                  padding: '10px 0',
-                  borderBottom: '1px solid #eee'
-                }}
-              >
-                Services
-              </Link>
-              <Link 
-                href="/contact" 
-                onClick={() => setMobileOpen(false)}
-                style={{ 
-                  fontFamily: "'Roxborough CF', serif",
-                  fontSize: '20px',
-                  color: '#333',
-                  textDecoration: 'none',
-                  padding: '10px 0',
-                  borderBottom: '1px solid #eee'
-                }}
-              >
-                Contact
-              </Link>
-            </nav>
-          </div>
-        </div>
-      )}
+      {/* Mobile Menu - Portal to body */}
+      {mounted && mobileMenu && createPortal(mobileMenu, document.body)}
     </>
   );
 }
