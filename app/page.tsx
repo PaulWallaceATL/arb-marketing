@@ -1,13 +1,24 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
+import Particles from '@/components/Particles';
 
 export default function Home() {
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const heroParaRef = useRef<HTMLParagraphElement>(null);
   const heroButtonsRef = useRef<HTMLDivElement>(null);
+  const [particleCount, setParticleCount] = useState(120);
+
+  useEffect(() => {
+    const updateParticleCount = () => {
+      setParticleCount(window.innerWidth <= 768 ? 50 : 120);
+    };
+    updateParticleCount();
+    window.addEventListener('resize', updateParticleCount);
+    return () => window.removeEventListener('resize', updateParticleCount);
+  }, []);
 
   useEffect(() => {
     // GSAP animation for hero text
@@ -46,8 +57,14 @@ export default function Home() {
   return (
     <div className="aximo-all-section">
       {/* Hero Section */}
-      <div className="aximo-hero-section2">
-        <div className="container position-relative">
+      <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden' }}>
+        <Particles
+          className="particles-bg"
+          quantity={particleCount}
+          ease={80}
+          color="#9333EA"
+        />
+        <div className="container position-relative" style={{ zIndex: 10 }}>
           <div className="aximo-hero-content2">
             <h1 
               ref={heroTitleRef}
