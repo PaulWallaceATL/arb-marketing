@@ -38,45 +38,30 @@ a {
   display: block !important;
 }
 
-/* Mobile Menu Z-Index Fix - Force menu above all page content */
+/* Mobile Hamburger Menu */
+.mobile-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.mobile-hamburger span {
+  width: 25px;
+  height: 2px;
+  background: #000;
+  border-radius: 2px;
+}
+
 @media (max-width: 991px) {
-  /* Header must be high to contain the menu */
-  .site-header,
-  .aximo-header-section,
-  .aximo-header2 {
-    z-index: 100000 !important;
-    position: relative !important;
+  .mobile-hamburger {
+    display: flex;
   }
   
-  .site-header .menu-block {
-    z-index: 99999 !important;
+  .desktop-only {
+    display: none !important;
   }
-  
-  /* Force all page content below menu */
-  main {
-    z-index: 1 !important;
-    position: relative !important;
-  }
-  
-  .aximo-all-section {
-    z-index: 1 !important;
-  }
-}
-
-.menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 99998;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
 }
