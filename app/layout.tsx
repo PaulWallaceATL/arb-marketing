@@ -29,10 +29,11 @@ export const metadata: Metadata = {
     title: 'ARB Marketing || Legal Marketing & Referral Solutions',
     description: 'ARB Marketing delivers qualified personal injury leads and strategic marketing for law firms. Helping attorneys win bigger cases and scale sustainably.',
     images: [{
-      url: 'https://arb-marketing.vercel.app/assets/img/logo-black.png',
+      url: 'https://arb-marketing.vercel.app/og-image.svg',
       width: 1200,
       height: 630,
-      alt: 'ARB Marketing - Legal Marketing & Referral Solutions',
+      alt: 'ARB Marketing',
+      type: 'image/svg+xml',
     }],
     type: 'website',
   },
@@ -41,8 +42,8 @@ export const metadata: Metadata = {
     title: 'ARB Marketing || Legal Marketing & Referral Solutions',
     description: 'ARB Marketing delivers qualified personal injury leads and strategic marketing for law firms. Helping attorneys win bigger cases and scale sustainably.',
     images: [{
-      url: 'https://arb-marketing.vercel.app/assets/img/logo-black.png',
-      alt: 'ARB Marketing - Legal Marketing & Referral Solutions',
+      url: 'https://arb-marketing.vercel.app/og-image.svg',
+      alt: 'ARB Marketing',
     }],
   },
   icons: {
