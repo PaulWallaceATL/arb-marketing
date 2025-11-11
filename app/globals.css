@@ -38,7 +38,13 @@ a {
   display: block !important;
 }
 
-/* Mobile Menu Overlay Fix */
+/* Mobile Menu Z-Index Fix - Force menu above all page content */
+@media (max-width: 991px) {
+  .site-header .menu-block {
+    z-index: 99999 !important;
+  }
+}
+
 .menu-overlay {
   position: fixed;
   top: 0;
@@ -46,7 +52,7 @@ a {
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
-  z-index: 1098;
+  z-index: 99998;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
