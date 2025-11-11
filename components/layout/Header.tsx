@@ -1,10 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuActive, setIsMenuActive] = useState(false);
+
+  useEffect(() => {
+    // Prevent body scroll when menu is open
+    if (isMenuActive) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuActive]);
 
   return (
     <header className="site-header site-header--menu-center aximo-header-section aximo-header2" id="sticky-menu">
@@ -22,31 +34,38 @@ export default function Header() {
             </Link>
           </div>
           
-          <div className={`menu-block-wrapper ${isMenuOpen ? 'mobile-active' : ''}`}>
-            <nav className="menu-block" id="append-menu-header">
+          <div className="menu-block-wrapper">
+            <div className={`menu-block ${isMenuActive ? 'active' : ''}`} id="append-menu-header">
+              <div className="mobile-menu-head">
+                <div className="go-back">
+                  <i className="fa fa-angle-left"></i>
+                </div>
+                <div className="current-menu-title"></div>
+                <div className="mobile-menu-close" onClick={() => setIsMenuActive(false)}>×</div>
+              </div>
               <ul className="site-menu-main" style={{ fontFamily: "'Roxborough CF', serif" }}>
                 <li className="nav-item">
-                  <Link href="/" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/" className="nav-link-item" onClick={() => setIsMenuActive(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     Home
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/about" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/about" className="nav-link-item" onClick={() => setIsMenuActive(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     About
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/services" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/services" className="nav-link-item" onClick={() => setIsMenuActive(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     Services
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link href="/contact" className="nav-link-item" onClick={() => setIsMenuOpen(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
+                  <Link href="/contact" className="nav-link-item" onClick={() => setIsMenuActive(false)} style={{ fontFamily: "'Roxborough CF', serif" }}>
                     Contact
                   </Link>
                 </li>
               </ul>
-            </nav>
+            </div>
           </div>
 
           <div className="header-btn header-btn-l1 ms-auto d-none d-xs-inline-flex">
@@ -60,19 +79,15 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Hamburger - only shows on mobile */}
-          <button 
-            className="hamburger-toggle"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Menu"
-          >
+          {/* Mobile menu trigger - uses existing CSS */}
+          <div className="mobile-menu-trigger" onClick={() => setIsMenuActive(!isMenuActive)}>
             <span></span>
-            <span></span>
-            <span></span>
-          </button>
+          </div>
         </nav>
       </div>
-      {isMenuOpen && <div className="menu-backdrop" onClick={() => setIsMenuOpen(false)} />}
+      
+      {/* Menu overlay */}
+      <div className={`menu-overlay ${isMenuActive ? 'active' : ''}`} onClick={() => setIsMenuActive(false)}></div>
     </header>
   );
 }
