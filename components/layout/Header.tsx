@@ -13,7 +13,7 @@ export default function Header() {
   }, []);
 
   const mobileMenu = mobileOpen ? (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 999999, pointerEvents: 'auto' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999999, pointerEvents: 'auto' }}>
       <div 
         style={{ 
           position: 'fixed',
@@ -22,7 +22,7 @@ export default function Header() {
           width: '100vw',
           height: '100vh',
           background: 'rgba(0,0,0,0.5)',
-          zIndex: 999998
+          zIndex: 9999998
         }}
         onClick={() => setMobileOpen(false)}
       />
@@ -35,7 +35,7 @@ export default function Header() {
           maxWidth: '80vw',
           height: '100vh',
           background: '#fff',
-          zIndex: 999999,
+          zIndex: 9999999,
           padding: '60px 30px',
           overflowY: 'auto',
           boxShadow: '-4px 0 20px rgba(0,0,0,0.2)'
