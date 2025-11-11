@@ -7,13 +7,36 @@ import { createPortal } from 'react-dom';
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY < 10) {
+        setHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling down
+        setHeaderVisible(false);
+      } else {
+        // Scrolling up
+        setHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   const mobileMenu = mobileOpen ? (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 9999999, pointerEvents: 'auto' }}>
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 2147483647, pointerEvents: 'auto' }}>
       <div 
         style={{ 
           position: 'fixed',
@@ -21,8 +44,8 @@ export default function Header() {
           left: 0,
           width: '100vw',
           height: '100vh',
-          background: 'rgba(0,0,0,0.5)',
-          zIndex: 9999998
+          background: 'rgba(0,0,0,0.6)',
+          zIndex: 2147483646
         }}
         onClick={() => setMobileOpen(false)}
       />
@@ -31,88 +54,152 @@ export default function Header() {
           position: 'fixed',
           top: 0,
           right: 0,
-          width: '280px',
-          maxWidth: '80vw',
+          width: '85vw',
+          maxWidth: '350px',
           height: '100vh',
-          background: '#fff',
-          zIndex: 9999999,
-          padding: '60px 30px',
+          background: 'linear-gradient(180deg, #ffffff 0%, #f9fafb 100%)',
+          zIndex: 2147483647,
+          padding: '0',
           overflowY: 'auto',
-          boxShadow: '-4px 0 20px rgba(0,0,0,0.2)'
+          boxShadow: '-8px 0 32px rgba(0,0,0,0.3)'
         }}
       >
-        <button 
-          onClick={() => setMobileOpen(false)}
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            background: 'none',
-            border: 'none',
-            fontSize: '32px',
-            cursor: 'pointer',
-            color: '#333',
-            zIndex: 1000000
-          }}
-        >
-          ×
-        </button>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <Link 
-            href="/" 
+        {/* Menu Header */}
+        <div style={{
+          padding: '24px',
+          borderBottom: '1px solid #e5e7eb',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          background: '#fff'
+        }}>
+          <img 
+            src="/assets/img/logo-arb.svg"
+            alt="ARB Marketing" 
+            style={{ maxHeight: '35px' }} 
+          />
+          <button 
             onClick={() => setMobileOpen(false)}
-            style={{ 
-              fontFamily: "'Roxborough CF', serif",
-              fontSize: '20px',
+            style={{
+              background: '#f3f4f6',
+              border: 'none',
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              fontSize: '24px',
+              cursor: 'pointer',
               color: '#333',
-              textDecoration: 'none',
-              padding: '10px 0',
-              borderBottom: '1px solid #eee'
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'background 0.2s'
             }}
           >
-            Home
-          </Link>
-          <Link 
-            href="/about" 
-            onClick={() => setMobileOpen(false)}
-            style={{ 
-              fontFamily: "'Roxborough CF', serif",
-              fontSize: '20px',
-              color: '#333',
-              textDecoration: 'none',
-              padding: '10px 0',
-              borderBottom: '1px solid #eee'
-            }}
-          >
-            About
-          </Link>
-          <Link 
-            href="/services" 
-            onClick={() => setMobileOpen(false)}
-            style={{ 
-              fontFamily: "'Roxborough CF', serif",
-              fontSize: '20px',
-              color: '#333',
-              textDecoration: 'none',
-              padding: '10px 0',
-              borderBottom: '1px solid #eee'
-            }}
-          >
-            Services
-          </Link>
+            ×
+          </button>
+        </div>
+
+        {/* Menu Items */}
+        <nav style={{ padding: '32px 24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <Link 
+              href="/" 
+              onClick={() => setMobileOpen(false)}
+              style={{ 
+                fontFamily: "'Roxborough CF', serif",
+                fontSize: '22px',
+                fontWeight: 500,
+                color: '#1f2937',
+                textDecoration: 'none',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: '#fff',
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                display: 'block'
+              }}
+            >
+              Home
+            </Link>
+            <Link 
+              href="/about" 
+              onClick={() => setMobileOpen(false)}
+              style={{ 
+                fontFamily: "'Roxborough CF', serif",
+                fontSize: '22px',
+                fontWeight: 500,
+                color: '#1f2937',
+                textDecoration: 'none',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: '#fff',
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                display: 'block'
+              }}
+            >
+              About
+            </Link>
+            <Link 
+              href="/services" 
+              onClick={() => setMobileOpen(false)}
+              style={{ 
+                fontFamily: "'Roxborough CF', serif",
+                fontSize: '22px',
+                fontWeight: 500,
+                color: '#1f2937',
+                textDecoration: 'none',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: '#fff',
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                display: 'block'
+              }}
+            >
+              Services
+            </Link>
+            <Link 
+              href="/contact" 
+              onClick={() => setMobileOpen(false)}
+              style={{ 
+                fontFamily: "'Roxborough CF', serif",
+                fontSize: '22px',
+                fontWeight: 500,
+                color: '#1f2937',
+                textDecoration: 'none',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: '#fff',
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                display: 'block'
+              }}
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* CTA Button */}
           <Link 
             href="/contact" 
             onClick={() => setMobileOpen(false)}
             style={{ 
-              fontFamily: "'Roxborough CF', serif",
-              fontSize: '20px',
-              color: '#333',
+              fontFamily: "'Libre Baskerville', serif",
+              fontSize: '18px',
+              fontWeight: 600,
+              color: '#fff',
               textDecoration: 'none',
-              padding: '10px 0',
-              borderBottom: '1px solid #eee'
+              padding: '16px 24px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #9333EA 0%, #7C3AED 100%)',
+              marginTop: '24px',
+              textAlign: 'center',
+              boxShadow: '0 4px 12px rgba(147, 51, 234, 0.3)',
+              display: 'block'
             }}
           >
-            Contact
+            Hire Us!
           </Link>
         </nav>
       </div>
@@ -121,7 +208,14 @@ export default function Header() {
 
   return (
     <>
-      <header className="site-header site-header--menu-center aximo-header-section aximo-header2" id="sticky-menu">
+      <header 
+        className="site-header site-header--menu-center aximo-header-section aximo-header2" 
+        id="sticky-menu"
+        style={{
+          transform: headerVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transition: 'transform 0.3s ease-in-out'
+        }}
+      >
         <div className="container">
           <nav className="navbar site-navbar">
             {/* Brand Logo */}
