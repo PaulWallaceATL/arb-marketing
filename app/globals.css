@@ -40,16 +40,25 @@ a {
 
 /* Mobile Menu Z-Index Fix - Force menu above all page content */
 @media (max-width: 991px) {
+  /* Header must be high to contain the menu */
+  .site-header,
+  .aximo-header-section,
+  .aximo-header2 {
+    z-index: 100000 !important;
+    position: relative !important;
+  }
+  
   .site-header .menu-block {
     z-index: 99999 !important;
   }
   
   /* Force all page content below menu */
-  .aximo-all-section,
-  .aximo-hero-section2,
-  .aximo-hero-section2 *,
-  main,
-  main * {
+  main {
+    z-index: 1 !important;
+    position: relative !important;
+  }
+  
+  .aximo-all-section {
     z-index: 1 !important;
   }
 }
