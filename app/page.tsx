@@ -58,19 +58,19 @@ export default function Home() {
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 10 }}>
-          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10 }}>
+        <div className="container position-relative" style={{ zIndex: 10, minHeight: '400px', paddingTop: '40px', paddingBottom: '40px' }}>
+          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10, color: '#000' }}>
             <h1 
-              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: 1, visibility: 'visible' }}
+              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: 1, visibility: 'visible', color: '#000' }}
             >
               Elite Leads. Winning Cases. Elevating Your Practice.
             </h1>
             <p 
-              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: 1, visibility: 'visible' }}
+              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: 1, visibility: 'visible', color: '#000' }}
             >
               Trusted referral solutions and strategic marketing for personal injury law&nbsp;firms that are ready to grow bigger, win more, and scale with&nbsp;purpose. We deliver qualified injury leads and premium content that move cases&nbsp;forward.
             </p>
-            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10 }}>
+            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10, display: 'flex' }}>
               <Link href="/contact" className="aximo-default-btn" style={{ opacity: 1, visibility: 'visible' }}>
                 <span className="aximo-label-up">Schedule Free Consultation</span>
                 <span className="aximo-label-up">Schedule Free Consultation</span>
