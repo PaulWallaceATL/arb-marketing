@@ -77,7 +77,7 @@ export default function Hyperspeed({
     const rgb = hexToRgb(color);
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
       ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
       linesRef.current.forEach((line) => {
@@ -129,7 +129,7 @@ export default function Hyperspeed({
   }, [lineCount, speed, color]);
 
   return (
-    <div className={className}>
+    <div className={className} style={{ zIndex: 0, position: 'absolute' }}>
       <canvas
         ref={canvasRef}
         style={{
@@ -139,6 +139,7 @@ export default function Hyperspeed({
           top: 0,
           left: 0,
           pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
     </div>

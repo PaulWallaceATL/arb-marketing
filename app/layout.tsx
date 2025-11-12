@@ -93,6 +93,7 @@ export default function RootLayout({
         <Script src="/assets/js/vendors/counterup.js" strategy="lazyOnload" />
         <Script src="/assets/js/wow.min.js" strategy="lazyOnload" />
         <Script src="/assets/js/aos.js" strategy="lazyOnload" />
+        <Script src="/assets/js/app.js" strategy="lazyOnload" />
         <Script src="/assets/js/main.js" strategy="lazyOnload" />
         
         {/* Initialize WOW.js and AOS */}
