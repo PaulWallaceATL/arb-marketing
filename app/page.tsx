@@ -3,17 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
-import Particles from '@/components/Particles';
+import Hyperspeed from '@/components/Hyperspeed';
 
 export default function Home() {
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const heroParaRef = useRef<HTMLParagraphElement>(null);
   const heroButtonsRef = useRef<HTMLDivElement>(null);
-  const [particleCount, setParticleCount] = useState(120);
+  const [particleCount, setParticleCount] = useState(80);
 
   useEffect(() => {
     const updateParticleCount = () => {
-      setParticleCount(window.innerWidth <= 768 ? 50 : 120);
+      setParticleCount(window.innerWidth <= 768 ? 40 : 80);
     };
     updateParticleCount();
     window.addEventListener('resize', updateParticleCount);
@@ -58,10 +58,10 @@ export default function Home() {
     <div className="aximo-all-section">
       {/* Hero Section */}
       <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden' }}>
-        <Particles
+        <Hyperspeed
           className="particles-bg"
-          quantity={particleCount}
-          ease={80}
+          lineCount={particleCount}
+          speed={15}
           color="#9333EA"
         />
         <div className="container position-relative">
