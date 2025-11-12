@@ -85,6 +85,9 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: showContent ? 1 : 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
+        style={{
+          pointerEvents: showContent ? 'auto' : 'none',
+        }}
         className="aximo-all-section"
       >
         {/* Hero Section */}
