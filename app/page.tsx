@@ -173,54 +173,54 @@ export default function Home() {
       {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
-      <div className="aximo-all-section" style={{ opacity: (!isMobile && !showContent) ? 0 : 1, transition: 'opacity 0.6s ease-out' }}>
+      <div className="aximo-all-section">
         {/* Hero Section */}
-        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
+        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff', opacity: 1 }}>
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 9999, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative' }}>
-          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', zIndex: 9999, position: 'relative' }}>
+        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative', opacity: 1 }}>
+          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', zIndex: 10000, position: 'relative' }}>
             <h1 
-              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, color: '#000000', fontWeight: 900, position: 'relative', opacity: 1, visibility: 'visible' }}
+              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, color: '#000000', fontWeight: 900, position: 'relative', opacity: 1, visibility: 'visible', zIndex: 10000 }}
             >
               Elite Leads. Winning Cases. Elevating Your Practice.
             </h1>
             <p 
-              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, color: '#000000', fontWeight: 500, position: 'relative', opacity: 1, visibility: 'visible' }}
+              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, color: '#000000', fontWeight: 500, position: 'relative', opacity: 1, visibility: 'visible', zIndex: 10000 }}
             >
               Trusted referral solutions and strategic marketing for personal injury law&nbsp;firms that are ready to grow bigger, win more, and scale with&nbsp;purpose. We deliver qualified injury leads and premium content that move cases&nbsp;forward.
             </p>
-            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative' }}>
-              <Link href="/contact" className="aximo-default-btn" style={{ backgroundColor: '#000000', color: '#ffffff', opacity: 1, visibility: 'visible' }}>
-                <span className="aximo-label-up" style={{ color: '#ffffff' }}>Schedule Free Consultation</span>
-                <span className="aximo-label-up" style={{ color: '#ffffff' }}>Schedule Free Consultation</span>
+            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10000 }}>
+              <Link href="/contact" className="aximo-default-btn" style={{ backgroundColor: '#000000', color: '#ffffff', opacity: 1, visibility: 'visible', zIndex: 10000 }}>
+                <span className="aximo-label-up" style={{ color: '#ffffff', opacity: 1 }}>Schedule Free Consultation</span>
+                <span className="aximo-label-up" style={{ color: '#ffffff', opacity: 1 }}>Schedule Free Consultation</span>
               </Link>
-              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ borderColor: '#9333EA', borderWidth: '2px', color: '#9333EA', opacity: 1, visibility: 'visible' }}>
-                <span className="aximo-label-up" style={{ color: '#9333EA' }}>View Our Services</span>
-                <span className="aximo-label-up" style={{ color: '#9333EA' }}>View Our Services</span>
+              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ borderColor: '#9333EA', borderWidth: '2px', color: '#9333EA', opacity: 1, visibility: 'visible', zIndex: 10000, backgroundColor: '#ffffff' }}>
+                <span className="aximo-label-up" style={{ color: '#9333EA', opacity: 1 }}>View Our Services</span>
+                <span className="aximo-label-up" style={{ color: '#9333EA', opacity: 1 }}>View Our Services</span>
               </Link>
             </div>
           </div>
         </div>
-        <div className="aximo-hero-thumb-wrap">
+        <div className="aximo-hero-thumb-wrap" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10000 }}>
           <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" style={{ opacity: 1 }} />
+            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" style={{ opacity: 1 }} />
+            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" style={{ opacity: 1 }} />
+            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" style={{ opacity: 1 }} />
+            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.8} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" style={{ opacity: 1 }} />
+            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
         </div>
       </div>
