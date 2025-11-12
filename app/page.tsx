@@ -18,10 +18,14 @@ export default function Home() {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
+    // Show content after loading completes
+    setTimeout(() => {
+      setShowContent(true);
+    }, 100);
     // Trigger bounce animations after loading
     setTimeout(() => {
       setShouldAnimateCards(true);
-    }, 500);
+    }, 800);
   };
 
   useEffect(() => {
@@ -29,10 +33,12 @@ export default function Home() {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
       setParticleCount(mobile ? 40 : 80);
-      setShowLoading(true); // Show loading screen on all devices
+      setShowLoading(!mobile); // Show loading screen only on desktop
+      
       if (mobile) {
-        // On mobile, trigger card animations after loading
-        setTimeout(() => setShouldAnimateCards(true), 3500);
+        // On mobile, show content immediately and trigger animations
+        setShowContent(true);
+        setTimeout(() => setShouldAnimateCards(true), 1500);
       }
     };
     
@@ -50,19 +56,21 @@ export default function Home() {
         @media (max-width: 768px) {
           /* Hero Section Visibility Fix */
           .aximo-hero-section2 {
-            min-height: 100vh !important;
+            min-height: auto !important;
             height: auto !important;
-            display: flex !important;
-            align-items: center !important;
+            display: block !important;
             background-color: #fff !important;
             overflow: visible !important;
+            padding-top: 40px !important;
+            padding-bottom: 40px !important;
           }
 
           .aximo-hero-section2 .container {
             z-index: 100 !important;
             position: relative !important;
             width: 100% !important;
-            padding: 40px 20px !important;
+            padding: 0 20px !important;
+            margin-top: 0 !important;
           }
 
           .aximo-hero-content2,
@@ -138,7 +146,7 @@ export default function Home() {
       {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
-      <div className="aximo-all-section">
+      <div className="aximo-all-section" style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
         {/* Hero Section */}
         <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
         <Hyperspeed
