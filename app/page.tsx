@@ -10,14 +10,13 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
-  const [isLoading, setIsLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(true); // Show loading by default
   const [showContent, setShowContent] = useState(false);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   const handleLoadingComplete = () => {
-    setIsLoading(false);
+    setShowLoading(false);
     // Show content after loading completes
     setTimeout(() => {
       setShowContent(true);
@@ -29,26 +28,19 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setMounted(true);
-    
     // Check device type
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
     setParticleCount(mobile ? 40 : 80);
     
     if (mobile) {
-      // Mobile: Show content immediately, no loading screen
+      // Mobile: Hide loading, show content immediately
+      setShowLoading(false);
       setShowContent(true);
-      setIsLoading(false);
       setTimeout(() => setShouldAnimateCards(true), 1000);
     }
-    // Desktop: isLoading stays true, loading screen will show
+    // Desktop: showLoading stays true, loading screen will render
   }, []);
-
-  // Don't render until mounted (prevent SSR mismatch)
-  if (!mounted) {
-    return null;
-  }
 
   // Removed GSAP animations - causing mobile visibility issues
 
@@ -165,8 +157,8 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Loading Screen - only on desktop */}
-      {mounted && !isMobile && isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {/* Loading Screen */}
+      {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
