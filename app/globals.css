@@ -38,6 +38,33 @@ a {
   display: block !important;
 }
 
+/* Global Button Centering Fix */
+.aximo-default-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.aximo-default-btn .aximo-label-up {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.aximo-pricing-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.aximo-cta-buttons a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 /* Mobile Hamburger Menu */
 .mobile-hamburger {
   display: none;
@@ -123,7 +150,6 @@ a {
   .aximo-hero-btn-wrap a {
     width: 100% !important;
     max-width: 100% !important;
-    text-align: center !important;
     padding: 15px 25px !important;
     font-size: 14px !important;
   }
