@@ -7,12 +7,23 @@ import Hyperspeed from '@/components/Hyperspeed';
 import BounceCard from '@/components/BounceCard';
 import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
+import LoadingScreen from '@/components/LoadingScreen';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
   const heroParaRef = useRef<HTMLParagraphElement>(null);
   const heroButtonsRef = useRef<HTMLDivElement>(null);
   const [particleCount, setParticleCount] = useState(80);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    setTimeout(() => {
+      setShowContent(true);
+    }, 100);
+  };
 
   useEffect(() => {
     const updateParticleCount = () => {
@@ -24,7 +35,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // GSAP animation for hero text
+    if (!showContent) return;
+
+    // GSAP animation for hero text - only after loading
     const ctx = gsap.context(() => {
       // Animate heading
       gsap.from(heroTitleRef.current, {
@@ -55,12 +68,22 @@ export default function Home() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [showContent]);
 
   return (
-    <div className="aximo-all-section">
-      {/* Hero Section */}
-      <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden' }}>
+    <>
+      {/* Loading Screen */}
+      <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showContent ? 1 : 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="aximo-all-section"
+      >
+        {/* Hero Section */}
+        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden' }}>
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
@@ -490,6 +513,7 @@ export default function Home() {
         </div>
       </div>
       </FadeIn>
-    </div>
+      </motion.div>
+    </>
   );
 }
