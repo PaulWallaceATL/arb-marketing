@@ -24,7 +24,7 @@ export default function Hyperspeed({
 }: HyperspeedProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const linesRef = useRef<Line[]>([]);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const canvas = canvasRef.current;
