@@ -13,7 +13,7 @@ interface BounceCardProps {
 export default function BounceCard({ children, delay = 0, className = '', shouldAnimate = true }: BounceCardProps) {
   return (
     <motion.div
-      initial={{ scale: shouldAnimate ? 0 : 1, opacity: shouldAnimate ? 0 : 1 }}
+      initial={shouldAnimate ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{
         type: 'spring',
@@ -22,7 +22,6 @@ export default function BounceCard({ children, delay = 0, className = '', should
         delay: shouldAnimate ? delay : 0,
       }}
       className={className}
-      style={{ willChange: 'transform, opacity' }}
     >
       {children}
     </motion.div>

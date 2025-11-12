@@ -190,21 +190,21 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="aximo-hero-thumb-wrap" style={{ opacity: 1, visibility: 'visible' }}>
+        <div className="aximo-hero-thumb-wrap" style={{ opacity: showContent ? 1 : 0, visibility: showContent ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
           <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" style={{ opacity: 1, visibility: 'visible' }} />
+            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" />
           </BounceCard>
           <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" style={{ opacity: 1, visibility: 'visible' }} />
+            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" />
           </BounceCard>
           <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" style={{ opacity: 1, visibility: 'visible' }} />
+            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" />
           </BounceCard>
           <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" style={{ opacity: 1, visibility: 'visible' }} />
+            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" />
           </BounceCard>
           <BounceCard delay={0.8} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" style={{ opacity: 1, visibility: 'visible' }} />
+            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" />
           </BounceCard>
         </div>
       </div>
