@@ -148,9 +148,9 @@ export default function ContactPage() {
               <div className="aximo-section-title">
                 <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>
                   <span className="aximo-title-animation">
-                    Contact us for a
+                    Experience the
                   </span>
-                  personal experience
+                  difference
                 </h2>
               </div>
             </div>

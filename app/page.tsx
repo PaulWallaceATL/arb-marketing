@@ -71,7 +71,7 @@ export default function Home() {
               ref={heroTitleRef}
               style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2 }}
             >
-              Elite Leads. Winning Cases.<br />Your Practice Elevated.
+              Elite Leads. Winning Cases. Elevating Your Practice.
             </h1>
             <p 
               ref={heroParaRef}
@@ -208,98 +208,6 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Solutions Stack Section */}
-      <div className="section aximo-section-padding position-relative">
-        <div className="container">
-          <div className="aximo-section-title center clash-grotesk">
-            <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>Solutions Designed to Move Cases Forward</h2>
-          </div>
-        </div>
-        <div className="aximo-service-increase-wrap">
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Premium Referral Solutions" />
-              <div className="aximo-service-increase-title">
-                <h3>Premium Referral Solutions:</h3>
-              </div>
-              <div className="aximo-service-increase-body">
-                <p>We deliver qualified personal injury leads that convert into winning cases. Pre-screened clients with higher case acceptance rates for elite injury firms.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Content Marketing Services" />
-              <div className="aximo-service-increase-title">
-                <h3>Content Marketing:</h3>
-              </div>
-              <div className="aximo-service-increase-body">
-                <p>Professional content production and strategic social media management designed to build your brand and convert views into clients for personal injury firms.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Strategic Marketing Consulting" />
-              <div className="aximo-service-increase-title">
-                <h3>Strategic Consulting:</h3>
-              </div>
-              <div className="aximo-service-increase-body">
-                <p>ROI-focused marketing consulting and campaign optimization strategies tailored specifically for personal injury law firms looking to scale sustainably.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Custom Campaign Development" />
-              <div className="aximo-service-increase-title">
-                <h3>Custom Campaigns:</h3>
-              </div>
-              <div className="aximo-service-increase-body">
-                <p>Comprehensive multi-channel marketing campaigns including video production, TV/streaming commercials, and radio advertisements designed to grow your practice.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Attorney Network Building" />
-              <div className="aximo-service-increase-title">
-                <h3>Partnership Marketing:</h3>
-              </div>
-              <div className="aximo-service-increase-body">
-                <p>Building strategic attorney-to-attorney networks and partnerships that create case-winning referral opportunities for personal injury powerhouses.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Video Section */}
-      <div className="aximo-video-section extra-side-margin wow fadeInUpX" data-wow-delay="0s">
-        <img src="/assets/img/images/th-2/video-img.jpg" alt="" />
-        <a className="aximo-video-popup play-btn-size video-init" href="https://www.youtube.com/watch?v=7e90gBu4pas">
-          <img src="/assets/img/icons/icon-play-button.svg" alt="" />
-          <div className="waves wave-1"></div>
-          <div className="waves wave-2"></div>
-          <div className="waves wave-3"></div>
-        </a>
-      </div>
-
       {/* Pricing Section */}
       <div className="section aximo-section-padding3 position-relative">
         <div className="container">
@@ -403,6 +311,98 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Solutions Stack Section */}
+      <div className="section aximo-section-padding position-relative">
+        <div className="container">
+          <div className="aximo-section-title center clash-grotesk">
+            <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>Solutions Designed to Move Cases Forward</h2>
+          </div>
+        </div>
+        <div className="aximo-service-increase-wrap">
+          <div className="aximo-service-increase-row">
+            <div className="aximo-service-increase-item">
+              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Premium Referral Solutions" />
+              <div className="aximo-service-increase-title">
+                <h3>Premium Referral Solutions:</h3>
+              </div>
+              <div className="aximo-service-increase-body">
+                <p>We deliver qualified personal injury leads that convert into winning cases. Pre-screened clients with higher case acceptance rates for elite injury firms.</p>
+              </div>
+              <a href="/services" className="aximo-service-increase-icon">
+                <i className="icon-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+          <div className="aximo-service-increase-row">
+            <div className="aximo-service-increase-item">
+              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Content Marketing Services" />
+              <div className="aximo-service-increase-title">
+                <h3>Content Marketing:</h3>
+              </div>
+              <div className="aximo-service-increase-body">
+                <p>Professional content production and strategic social media management designed to build your brand and convert views into clients for personal injury firms.</p>
+              </div>
+              <a href="/services" className="aximo-service-increase-icon">
+                <i className="icon-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+          <div className="aximo-service-increase-row">
+            <div className="aximo-service-increase-item">
+              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Strategic Marketing Consulting" />
+              <div className="aximo-service-increase-title">
+                <h3>Strategic Consulting:</h3>
+              </div>
+              <div className="aximo-service-increase-body">
+                <p>ROI-focused marketing consulting and campaign optimization strategies tailored specifically for personal injury law firms looking to scale sustainably.</p>
+              </div>
+              <a href="/services" className="aximo-service-increase-icon">
+                <i className="icon-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+          <div className="aximo-service-increase-row">
+            <div className="aximo-service-increase-item">
+              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Custom Campaign Development" />
+              <div className="aximo-service-increase-title">
+                <h3>Custom Campaigns:</h3>
+              </div>
+              <div className="aximo-service-increase-body">
+                <p>Comprehensive multi-channel marketing campaigns including video production, TV/streaming commercials, and radio advertisements designed to grow your practice.</p>
+              </div>
+              <a href="/services" className="aximo-service-increase-icon">
+                <i className="icon-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+          <div className="aximo-service-increase-row">
+            <div className="aximo-service-increase-item">
+              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Attorney Network Building" />
+              <div className="aximo-service-increase-title">
+                <h3>Partnership Marketing:</h3>
+              </div>
+              <div className="aximo-service-increase-body">
+                <p>Building strategic attorney-to-attorney networks and partnerships that create case-winning referral opportunities for personal injury powerhouses.</p>
+              </div>
+              <a href="/services" className="aximo-service-increase-icon">
+                <i className="icon-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Video Section */}
+      <div className="aximo-video-section extra-side-margin wow fadeInUpX" data-wow-delay="0s">
+        <img src="/assets/img/images/th-2/video-img.jpg" alt="" />
+        <a className="aximo-video-popup play-btn-size video-init" href="https://www.youtube.com/watch?v=7e90gBu4pas">
+          <img src="/assets/img/icons/icon-play-button.svg" alt="" />
+          <div className="waves wave-1"></div>
+          <div className="waves wave-2"></div>
+          <div className="waves wave-3"></div>
+        </a>
       </div>
 
       {/* About Section */}
