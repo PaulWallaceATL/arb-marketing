@@ -37,6 +37,12 @@ export default function Home() {
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
         @media (max-width: 768px) {
+          /* Force ALL content visible on mobile */
+          body, html, #__next, .aximo-all-section {
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+
           /* Hero Section Visibility Fix */
           .aximo-hero-section2 {
             min-height: auto !important;
@@ -46,6 +52,8 @@ export default function Home() {
             overflow: visible !important;
             padding-top: 40px !important;
             padding-bottom: 40px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
           }
 
           .aximo-hero-section2 .container {
@@ -54,6 +62,8 @@ export default function Home() {
             width: 100% !important;
             padding: 0 20px !important;
             margin-top: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
           }
 
           /* Force ALL hero elements visible on mobile */
@@ -106,6 +116,16 @@ export default function Home() {
 
           .particles-bg {
             z-index: 1 !important;
+          }
+
+          /* Pricing section visible on mobile */
+          .section.aximo-section-padding3,
+          .aximo-pricing-wrap,
+          .aximo-pricing-header,
+          .aximo-pricing-price,
+          .aximo-pricing-body {
+            opacity: 1 !important;
+            visibility: visible !important;
           }
 
           /* Iconbox Spacing */
