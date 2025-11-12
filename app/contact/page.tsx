@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import FadeIn from '@/components/FadeIn';
 
 type ContactFormData = {
   name: string;
@@ -145,20 +146,23 @@ export default function ContactPage() {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className="aximo-section-title">
-                <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>
-                  <span className="aximo-title-animation">
-                    Experience the
-                  </span>
-                  difference
-                </h2>
-              </div>
+              <FadeIn delay={0.1} direction="up">
+                <div className="aximo-section-title">
+                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>
+                    <span className="aximo-title-animation">
+                      Experience the
+                    </span>
+                    difference
+                  </h2>
+                </div>
+              </FadeIn>
             </div>
           </div>
 
           <div className="row">
             <div className="col-lg-5 order-lg-2">
-              <div className="aximo-contact-thumb wow fadeInRight" data-wow-delay="0.1s" style={{ borderRadius: '10px', overflow: 'hidden' }}>
+              <FadeIn delay={0.2} direction="right">
+                <div className="aximo-contact-thumb wow fadeInRight" data-wow-delay="0.1s" style={{ borderRadius: '10px', overflow: 'hidden' }}>
                 <iframe 
                   src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d424143.47484722535!2d-84.38800199999999!3d33.7489954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus" 
                   width="100%" 
@@ -169,10 +173,12 @@ export default function ContactPage() {
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
               </div>
+              </FadeIn>
             </div>
             
             <div className="col-lg-7">
-              <div className="aximo-main-form">
+              <FadeIn delay={0.3} direction="left">
+                <div className="aximo-main-form">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="aximo-main-field">
                     <label style={{ fontFamily: "'Libre Baskerville', serif" }}>Your name</label>
@@ -283,6 +289,7 @@ export default function ContactPage() {
                   </button>
                 </form>
               </div>
+              </FadeIn>
             </div>
           </div>
         </div>
@@ -290,17 +297,20 @@ export default function ContactPage() {
 
       <div className="aximo-contact-info-section extra-side-margin">
         <div className="container">
-          <div className="aximo-contact-info-title">
-            <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>
-              <span className="aximo-title-animation">
-                Contact Information
-              </span>
-            </h2>
-          </div>
+          <FadeIn delay={0.2} direction="up">
+            <div className="aximo-contact-info-title">
+              <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>
+                <span className="aximo-title-animation">
+                  Contact Information
+                </span>
+              </h2>
+            </div>
+          </FadeIn>
           <div className="row">
             <div className="col-xl-4 col-md-6">
-              <a href="">
-                <div className="aximo-contact-info-box wow fadeInUpX" data-wow-delay="0.1s">
+              <FadeIn delay={0.3} direction="up">
+                <a href="">
+                  <div className="aximo-contact-info-box wow fadeInUpX" data-wow-delay="0.1s">
                   <div className="aximo-contact-info-icon">
                     <img src="/assets/img/icons/icon-orange-phone.svg" alt="" />
                   </div>
@@ -311,10 +321,12 @@ export default function ContactPage() {
                   </div>
                 </div>
               </a>
+              </FadeIn>
             </div>
             <div className="col-xl-4 col-md-6">
-              <a href="">
-                <div className="aximo-contact-info-box wow fadeInUpX" data-wow-delay="0.2s">
+              <FadeIn delay={0.4} direction="up">
+                <a href="">
+                  <div className="aximo-contact-info-box wow fadeInUpX" data-wow-delay="0.2s">
                   <div className="aximo-contact-info-icon">
                     <img src="/assets/images/icon/email.svg" alt="" />
                   </div>
@@ -325,9 +337,11 @@ export default function ContactPage() {
                   </div>
                 </div>
               </a>
+              </FadeIn>
             </div>
             <div className="col-xl-4 col-md-6">
-              <div className="aximo-contact-info-box wow fadeInUpX" data-wow-delay="0.3s">
+              <FadeIn delay={0.5} direction="up">
+                <div className="aximo-contact-info-box wow fadeInUpX" data-wow-delay="0.3s">
                 <div className="aximo-contact-info-icon">
                   <img src="/assets/images/icon/map.svg" alt="" />
                 </div>
@@ -336,6 +350,7 @@ export default function ContactPage() {
                   <p style={{ fontFamily: "'Libre Baskerville', serif" }}>4132 Thornridge City, New York.</p>
                 </div>
               </div>
+              </FadeIn>
             </div>
           </div>
         </div>
