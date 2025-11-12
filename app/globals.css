@@ -77,6 +77,9 @@ a {
   width: 100% !important;
   height: 100% !important;
   display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
 }
 
 /* Global Button Fix - Proper centering and hide duplicates */
