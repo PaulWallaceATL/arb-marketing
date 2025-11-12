@@ -35,6 +35,8 @@ export default function Home() {
     setParticleCount(mobile ? 40 : 80);
     setIsReady(true);
     
+    console.log('Device check:', { mobile, showLoading, showContent });
+    
     if (mobile) {
       // Mobile: Hide loading, show content immediately
       setShowLoading(false);
@@ -43,15 +45,6 @@ export default function Home() {
     }
     // Desktop: showLoading stays true, loading screen will render
   }, []);
-
-  // Prevent flash of content before hydration
-  if (typeof window === 'undefined') {
-    return (
-      <div style={{ width: '100vw', height: '100vh', backgroundColor: '#fff' }}>
-        {/* Empty during SSR */}
-      </div>
-    );
-  }
 
   // Removed GSAP animations - causing mobile visibility issues
 
