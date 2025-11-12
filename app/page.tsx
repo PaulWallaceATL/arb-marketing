@@ -11,28 +11,24 @@ import PageLoader from '@/components/PageLoader';
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     // Set particle count based on screen size
-    const updateParticleCount = () => {
-      setParticleCount(window.innerWidth <= 768 ? 40 : 80);
-    };
-    
-    updateParticleCount();
-    window.addEventListener('resize', updateParticleCount);
+    const mobile = window.innerWidth <= 768;
+    setIsMobile(mobile);
+    setParticleCount(mobile ? 40 : 80);
     
     // Trigger card animations after a delay
     setTimeout(() => setShouldAnimateCards(true), 1500);
-    
-    return () => window.removeEventListener('resize', updateParticleCount);
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
 
   return (
     <>
-      {/* Page Loading Animation */}
-      <PageLoader />
+      {/* Page Loading Animation - Desktop Only */}
+      {!isMobile && <PageLoader />}
 
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
