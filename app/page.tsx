@@ -48,11 +48,11 @@ export default function Home() {
     <>
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
-        /* Always hide header/footer during loading */
+        /* Hide header/footer during loading */
         #site-content {
-          opacity: ${(isMobile || showContent) ? '1' : '0'} !important;
-          visibility: ${(isMobile || showContent) ? 'visible' : 'hidden'} !important;
-          ${(!isMobile && !showContent) ? 'pointer-events: none !important;' : ''}
+          opacity: ${showContent ? '1' : '0'} !important;
+          visibility: ${showContent ? 'visible' : 'hidden'} !important;
+          ${!showContent ? 'pointer-events: none !important;' : ''}
           transition: opacity 0.6s ease-out;
         }
 
