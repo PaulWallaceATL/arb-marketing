@@ -238,6 +238,8 @@ a.aximo-default-btn {
     height: auto !important;
     padding: 30px 20px !important;
     box-sizing: border-box !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .aximo-pricing-header {

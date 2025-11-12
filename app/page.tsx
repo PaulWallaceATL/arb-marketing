@@ -57,9 +57,7 @@ export default function Home() {
           }
 
           /* Force ALL hero elements visible on mobile */
-          .container,
-          .aximo-all-section,
-          .aximo-hero-section2,
+          .aximo-hero-section2 .container,
           .aximo-hero-content2,
           .aximo-hero-content2 h1,
           .aximo-hero-content2 p,
@@ -74,11 +72,6 @@ export default function Home() {
             display: block !important;
             position: relative !important;
             z-index: 10000 !important;
-          }
-
-          /* Fix container on mobile */
-          .aximo-hero-section2 .container {
-            opacity: 1 !important;
           }
           
           .aximo-hero-btn-wrap {
