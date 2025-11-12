@@ -48,12 +48,13 @@ export default function Home() {
     <>
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
-        /* Hide site content during loading on DESKTOP only */
-        ${!isMobile && !showContent ? `
-          #site-content {
-            display: none !important;
-          }
-        ` : ''}
+        /* Always hide header/footer during loading */
+        #site-content {
+          opacity: ${(isMobile || showContent) ? '1' : '0'} !important;
+          visibility: ${(isMobile || showContent) ? 'visible' : 'hidden'} !important;
+          ${(!isMobile && !showContent) ? 'pointer-events: none !important;' : ''}
+          transition: opacity 0.6s ease-out;
+        }
 
         @media (max-width: 768px) {
           /* Hero Section Visibility Fix */
@@ -160,16 +161,16 @@ export default function Home() {
       {isClient && !isMobile && !showContent && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
-      <div className="aximo-all-section">
+      <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
         {/* Hero Section */}
-        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff', opacity: 1 }}>
+        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative', opacity: 1 }}>
+        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative' }}>
           <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', zIndex: 10000, position: 'relative' }}>
             <h1 
               style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, color: '#000000', fontWeight: 900, position: 'relative', opacity: 1, visibility: 'visible', zIndex: 10000 }}
