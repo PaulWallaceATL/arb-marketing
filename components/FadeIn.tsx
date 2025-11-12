@@ -39,7 +39,7 @@ export default function FadeIn({
       }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{
-        duration,
+        duration: 0.4,
         delay,
         ease: 'easeOut',
       }}

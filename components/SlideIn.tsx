@@ -12,14 +12,13 @@ interface SlideInProps {
 export default function SlideIn({ children, delay = 0, className = '' }: SlideInProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -50 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{
-        type: 'spring',
-        stiffness: 100,
-        damping: 20,
+        duration: 0.3,
         delay,
+        ease: 'easeOut',
       }}
       className={className}
     >

@@ -231,7 +231,7 @@ export default function Home() {
           </FadeIn>
           <div className="row">
             <div className="col-lg-4 col-md-6">
-              <SlideIn delay={0.2}>
+              <SlideIn delay={0}>
                 <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.1s">
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-4-service-icon-1.svg" alt="" style={{ width: '80px', height: '80px' }} />
@@ -264,7 +264,7 @@ export default function Home() {
               </SlideIn>
             </div>
             <div className="col-lg-4 col-md-6">
-              <SlideIn delay={0.3}>
+              <SlideIn delay={0.1}>
                 <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.2s">
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-4-service-icon-2.svg" alt="" style={{ width: '80px', height: '80px' }} />
@@ -297,7 +297,7 @@ export default function Home() {
               </SlideIn>
             </div>
             <div className="col-lg-4 col-md-6">
-              <SlideIn delay={0.4}>
+              <SlideIn delay={0.2}>
                 <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.3s">
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-1-service-icon-3.svg" alt="" style={{ width: '80px', height: '80px' }} />
