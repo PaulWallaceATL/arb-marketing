@@ -221,11 +221,14 @@ a.aximo-default-btn {
   /* Fix pricing cards - consistent height and centering */
   .aximo-pricing-wrap {
     margin-bottom: 30px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 95% !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    justify-content: center !important;
     min-height: 550px !important;
     height: auto !important;
     padding: 30px 20px !important;
@@ -254,6 +257,10 @@ a.aximo-default-btn {
     text-align: center !important;
     width: 100% !important;
     margin-bottom: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .aximo-pricing-body {
@@ -501,14 +508,22 @@ a.aximo-default-btn {
 
   .aximo-pricing-header h3 {
     font-size: 20px !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
   }
 
   .aximo-pricing-price h2 {
-    font-size: 32px !important;
+    font-size: 28px !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    line-height: 1.3 !important;
   }
 
   .aximo-pricing-price h2 span {
-    font-size: 16px !important;
+    font-size: 14px !important;
+    display: block !important;
+    margin-top: 5px !important;
   }
 
   .aximo-pricing-body ul li {
@@ -534,6 +549,17 @@ a.aximo-default-btn {
     display: flex !important;
     flex-direction: column !important;
     gap: 20px !important;
+    align-items: center !important;
+  }
+
+  .aximo-section-padding3 .col-lg-4,
+  .aximo-section-padding3 .col-md-6 {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    display: flex !important;
+    justify-content: center !important;
   }
 
   .aximo-section-padding3 .container {
@@ -541,6 +567,7 @@ a.aximo-default-btn {
     padding-right: 20px !important;
     width: 100% !important;
     max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Smooth animations */

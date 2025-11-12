@@ -76,35 +76,54 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
               gap: '20px',
             }}
           >
-            {/* ARB Logo */}
-            <motion.img
-              src="/assets/img/logo-arb.svg"
-              alt="ARB Marketing"
-              style={{
-                width: '150px',
-                height: 'auto',
-              }}
-              animate={{
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: 1,
-                ease: 'easeInOut',
-              }}
-            />
+            {/* ARB Logo and Marketing Text */}
+            <div style={{ textAlign: 'center' }}>
+              <motion.img
+                src="/assets/img/logo-arb.svg"
+                alt="ARB Marketing"
+                style={{
+                  width: '150px',
+                  height: 'auto',
+                  marginBottom: '10px',
+                }}
+                animate={{
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: 1,
+                  ease: 'easeInOut',
+                }}
+              />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                style={{
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: '#000',
+                  letterSpacing: '4px',
+                  textTransform: 'uppercase',
+                  fontFamily: "'Roxborough CF', serif",
+                }}
+              >
+                Marketing
+              </motion.div>
+            </div>
 
             {/* Loading Text */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
               style={{
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: 500,
                 color: '#9333EA',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
+                marginTop: '30px',
               }}
             >
               Loading
