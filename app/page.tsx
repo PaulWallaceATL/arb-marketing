@@ -6,7 +6,7 @@ import Hyperspeed from '@/components/Hyperspeed';
 import BounceCard from '@/components/BounceCard';
 import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
-import SimpleLoadingScreen from '@/components/SimpleLoadingScreen';
+import LoadingScreenFixed from '@/app/loading-screen';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
@@ -161,8 +161,8 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Loading Screen - Simple version without framer-motion */}
-      {showLoading && <SimpleLoadingScreen onComplete={handleLoadingComplete} />}
+      {/* Loading Screen - Always renders, self-manages visibility */}
+      <LoadingScreenFixed />
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
