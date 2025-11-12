@@ -1,22 +1,17 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import gsap from 'gsap';
 import Hyperspeed from '@/components/Hyperspeed';
 import BounceCard from '@/components/BounceCard';
 import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
 import LoadingScreen from '@/components/LoadingScreen';
-import { motion } from 'framer-motion';
 
 export default function Home() {
-  const heroTitleRef = useRef<HTMLHeadingElement>(null);
-  const heroParaRef = useRef<HTMLParagraphElement>(null);
-  const heroButtonsRef = useRef<HTMLDivElement>(null);
   const [particleCount, setParticleCount] = useState(80);
   const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(true); // Start as true for mobile
+  const [showContent, setShowContent] = useState(true);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
@@ -46,44 +41,7 @@ export default function Home() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    // Only run GSAP animations on desktop
-    if (typeof window === 'undefined') return;
-    
-    const isDesktop = window.innerWidth > 768;
-    if (!isDesktop || !showContent) return;
-
-    const ctx = gsap.context(() => {
-      // Animate heading
-      gsap.from(heroTitleRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 0.2
-      });
-
-      // Animate paragraph
-      gsap.from(heroParaRef.current, {
-        opacity: 0,
-        y: 30,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 0.5
-      });
-
-      // Animate buttons
-      gsap.from(heroButtonsRef.current, {
-        opacity: 0,
-        y: 30,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 0.8
-      });
-    });
-
-    return () => ctx.revert();
-  }, [showContent]);
+  // Removed GSAP animations - causing mobile visibility issues
 
   return (
     <>
@@ -100,26 +58,24 @@ export default function Home() {
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative">
-          <div className="aximo-hero-content2">
+        <div className="container position-relative" style={{ zIndex: 10 }}>
+          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10 }}>
             <h1 
-              ref={heroTitleRef}
-              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2 }}
+              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: 1, visibility: 'visible' }}
             >
               Elite Leads. Winning Cases. Elevating Your Practice.
             </h1>
             <p 
-              ref={heroParaRef}
-              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6 }}
+              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: 1, visibility: 'visible' }}
             >
               Trusted referral solutions and strategic marketing for personal injury law&nbsp;firms that are ready to grow bigger, win more, and scale with&nbsp;purpose. We deliver qualified injury leads and premium content that move cases&nbsp;forward.
             </p>
-            <div className="aximo-hero-btn-wrap center" ref={heroButtonsRef}>
-              <Link href="/contact" className="aximo-default-btn">
+            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10 }}>
+              <Link href="/contact" className="aximo-default-btn" style={{ opacity: 1, visibility: 'visible' }}>
                 <span className="aximo-label-up">Schedule Free Consultation</span>
                 <span className="aximo-label-up">Schedule Free Consultation</span>
               </Link>
-              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline">
+              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ opacity: 1, visibility: 'visible' }}>
                 <span className="aximo-label-up">View Our Services</span>
                 <span className="aximo-label-up">View Our Services</span>
               </Link>
