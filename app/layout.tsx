@@ -110,6 +110,7 @@ export default function RootLayout({
                 once: true
               });
             }
+            console.log('Animations initialized, app.js should have loaded custom cursor');
           `}
         </Script>
       </body>
