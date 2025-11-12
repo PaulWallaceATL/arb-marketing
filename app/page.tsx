@@ -95,6 +95,7 @@ export default function Home() {
           }
 
           /* Force ALL hero elements visible on mobile */
+          .container,
           .aximo-all-section,
           .aximo-hero-section2,
           .aximo-hero-content2,
@@ -110,7 +111,12 @@ export default function Home() {
             visibility: visible !important;
             display: block !important;
             position: relative !important;
-            z-index: 9999 !important;
+            z-index: 10000 !important;
+          }
+
+          /* Fix container on mobile */
+          .aximo-hero-section2 .container {
+            opacity: 1 !important;
           }
           
           .aximo-hero-btn-wrap {
@@ -182,8 +188,8 @@ export default function Home() {
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative', opacity: 1 }}>
-          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', zIndex: 10000, position: 'relative' }}>
+        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative', opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
+          <div className="aximo-hero-content2" style={{ opacity: showContent ? 1 : 0, visibility: showContent ? 'visible' : 'hidden', zIndex: 10000, position: 'relative' }}>
             <h1 
               style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, color: '#000000', fontWeight: 900, position: 'relative', opacity: 1, visibility: 'visible', zIndex: 10000 }}
             >
