@@ -10,10 +10,11 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
-  const [showLoading, setShowLoading] = useState(true); // Show loading by default
+  const [showLoading, setShowLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const handleLoadingComplete = () => {
     setShowLoading(false);
@@ -32,6 +33,7 @@ export default function Home() {
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
     setParticleCount(mobile ? 40 : 80);
+    setIsReady(true);
     
     if (mobile) {
       // Mobile: Hide loading, show content immediately
@@ -41,6 +43,15 @@ export default function Home() {
     }
     // Desktop: showLoading stays true, loading screen will render
   }, []);
+
+  // Prevent flash of content before hydration
+  if (typeof window === 'undefined') {
+    return (
+      <div style={{ width: '100vw', height: '100vh', backgroundColor: '#fff' }}>
+        {/* Empty during SSR */}
+      </div>
+    );
+  }
 
   // Removed GSAP animations - causing mobile visibility issues
 
@@ -158,7 +169,7 @@ export default function Home() {
       `}</style>
 
       {/* Loading Screen */}
-      {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {isReady && showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
