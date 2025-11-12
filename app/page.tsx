@@ -6,44 +6,24 @@ import Hyperspeed from '@/components/Hyperspeed';
 import BounceCard from '@/components/BounceCard';
 import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
-import LoadingScreenFixed from '@/app/loading-screen';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
-  const [showLoading, setShowLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-
-  const handleLoadingComplete = () => {
-    setShowLoading(false);
-    // Show content after loading completes
-    setTimeout(() => {
-      setShowContent(true);
-    }, 100);
-    // Trigger bounce animations after loading
-    setTimeout(() => {
-      setShouldAnimateCards(true);
-    }, 800);
-  };
 
   useEffect(() => {
-    // Check device type
-    const mobile = window.innerWidth <= 768;
-    setIsMobile(mobile);
-    setParticleCount(mobile ? 40 : 80);
-    setIsReady(true);
+    // Set particle count based on screen size
+    const updateParticleCount = () => {
+      setParticleCount(window.innerWidth <= 768 ? 40 : 80);
+    };
     
-    console.log('Device check:', { mobile, showLoading, showContent });
+    updateParticleCount();
+    window.addEventListener('resize', updateParticleCount);
     
-    if (mobile) {
-      // Mobile: Hide loading, show content immediately
-      setShowLoading(false);
-      setShowContent(true);
-      setTimeout(() => setShouldAnimateCards(true), 1000);
-    }
-    // Desktop: showLoading stays true, loading screen will render
+    // Trigger card animations after a delay
+    setTimeout(() => setShouldAnimateCards(true), 1500);
+    
+    return () => window.removeEventListener('resize', updateParticleCount);
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
@@ -52,14 +32,6 @@ export default function Home() {
     <>
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
-        /* Hide header/footer during loading */
-        #site-content {
-          opacity: ${showContent ? '1' : '0'} !important;
-          visibility: ${showContent ? 'visible' : 'hidden'} !important;
-          ${!showContent ? 'pointer-events: none !important;' : ''}
-          transition: opacity 0.6s ease-out;
-        }
-
         @media (max-width: 768px) {
           /* Hero Section Visibility Fix */
           .aximo-hero-section2 {
@@ -161,11 +133,8 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Loading Screen - Always renders, self-manages visibility */}
-      <LoadingScreenFixed />
-
       {/* Main Content */}
-      <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
+      <div className="aximo-all-section">
         {/* Hero Section */}
         <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
         <Hyperspeed
