@@ -45,9 +45,10 @@ export default function Home() {
 
   return (
     <>
-      {/* Critical Mobile Hero Fix - Inline CSS to override everything */}
+      {/* Critical Mobile CSS Overrides */}
       <style jsx global>{`
         @media (max-width: 768px) {
+          /* Hero Section Visibility Fix */
           .aximo-hero-section2 {
             min-height: 100vh !important;
             height: auto !important;
@@ -92,6 +93,26 @@ export default function Home() {
 
           .particles-bg {
             z-index: 1 !important;
+          }
+
+          /* Iconbox Spacing */
+          .aximo-iconbox-wrap2 {
+            margin-bottom: 40px !important;
+            padding: 30px 20px !important;
+          }
+          .aximo-iconbox-data2 {
+            padding: 0 10px !important;
+          }
+          .aximo-iconbox-data2 h3 {
+            font-size: 24px !important;
+          }
+          .aximo-iconbox-data2 p {
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+          }
+          .section.aximo-section-padding3 .container {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
           }
         }
       `}</style>
@@ -236,29 +257,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Spacing between sections */}
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .aximo-iconbox-wrap2 {
-            margin-bottom: 40px !important;
-            padding: 30px 20px !important;
-          }
-          .aximo-iconbox-data2 {
-            padding: 0 10px !important;
-          }
-          .aximo-iconbox-data2 h3 {
-            font-size: 24px !important;
-          }
-          .aximo-iconbox-data2 p {
-            font-size: 16px !important;
-            line-height: 1.6 !important;
-          }
-          .section.aximo-section-padding3 .container {
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-        }
-      `}</style>
 
       {/* Pricing Section */}
       <div className="section aximo-section-padding3 position-relative">
