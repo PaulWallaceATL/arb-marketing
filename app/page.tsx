@@ -11,10 +11,10 @@ import LoadingScreen from '@/components/LoadingScreen';
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
   const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false); // Start hidden
+  const [showContent, setShowContent] = useState(false);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
-  const [isMobile, setIsMobile] = useState(true); // Assume mobile first
-  const [showLoading, setShowLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -29,22 +29,17 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      setParticleCount(mobile ? 40 : 80);
-      setShowLoading(!mobile); // Show loading screen only on desktop
-      
-      if (mobile) {
-        // On mobile, show content immediately and trigger animations
-        setShowContent(true);
-        setTimeout(() => setShouldAnimateCards(true), 1500);
-      }
-    };
+    setIsClient(true);
+    const mobile = window.innerWidth <= 768;
+    setIsMobile(mobile);
+    setParticleCount(mobile ? 40 : 80);
     
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    if (mobile) {
+      // Mobile: Show everything immediately
+      setShowContent(true);
+      setTimeout(() => setShouldAnimateCards(true), 1000);
+    }
+    // Desktop: loading screen will show, content hidden
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
@@ -54,13 +49,11 @@ export default function Home() {
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
         /* Hide site content during loading on DESKTOP only */
-        @media (min-width: 769px) {
-          ${showLoading ? `
-            #site-content {
-              display: none !important;
-            }
-          ` : ''}
-        }
+        ${!isMobile && !showContent ? `
+          #site-content {
+            display: none !important;
+          }
+        ` : ''}
 
         @media (max-width: 768px) {
           /* Hero Section Visibility Fix */
@@ -164,7 +157,7 @@ export default function Home() {
       `}</style>
 
       {/* Loading Screen - only on desktop */}
-      {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {isClient && !isMobile && !showContent && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section">
