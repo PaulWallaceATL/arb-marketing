@@ -14,6 +14,7 @@ export default function Home() {
   const [showContent, setShowContent] = useState(false);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -28,6 +29,8 @@ export default function Home() {
   };
 
   useEffect(() => {
+    setMounted(true);
+    
     // Check device type
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
@@ -41,6 +44,11 @@ export default function Home() {
     }
     // Desktop: isLoading stays true, loading screen will show
   }, []);
+
+  // Don't render until mounted (prevent SSR mismatch)
+  if (!mounted) {
+    return null;
+  }
 
   // Removed GSAP animations - causing mobile visibility issues
 
@@ -158,7 +166,7 @@ export default function Home() {
       `}</style>
 
       {/* Loading Screen - only on desktop */}
-      {!isMobile && isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {mounted && !isMobile && isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
