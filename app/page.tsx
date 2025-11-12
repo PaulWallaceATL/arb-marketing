@@ -11,9 +11,9 @@ import LoadingScreen from '@/components/LoadingScreen';
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
   const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(true);
+  const [showContent, setShowContent] = useState(false); // Start hidden
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Assume mobile first
   const [showLoading, setShowLoading] = useState(false);
 
   const handleLoadingComplete = () => {
@@ -157,7 +157,7 @@ export default function Home() {
       {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
-      <div className="aximo-all-section">
+      <div className="aximo-all-section" style={{ opacity: (!isMobile && !showContent) ? 0 : 1, transition: 'opacity 0.6s ease-out' }}>
         {/* Hero Section */}
         <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
         <Hyperspeed
