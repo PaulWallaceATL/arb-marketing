@@ -17,11 +17,16 @@ export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
+  const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
     setTimeout(() => {
       setShowContent(true);
+      // Trigger bounce animations after content fades in
+      setTimeout(() => {
+        setShouldAnimateCards(true);
+      }, 800); // Wait for content fade + small delay
     }, 100);
   };
 
@@ -117,19 +122,19 @@ export default function Home() {
           </div>
         </div>
         <div className="aximo-hero-thumb-wrap">
-          <BounceCard delay={0.2} className="aximo-hero-thumb-item">
+          <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" />
           </BounceCard>
-          <BounceCard delay={0.35} className="aximo-hero-thumb-item">
+          <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" />
           </BounceCard>
-          <BounceCard delay={0.5} className="aximo-hero-thumb-item">
+          <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" />
           </BounceCard>
-          <BounceCard delay={0.65} className="aximo-hero-thumb-item">
+          <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" />
           </BounceCard>
-          <BounceCard delay={0.8} className="aximo-hero-thumb-item">
+          <BounceCard delay={0.8} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" />
           </BounceCard>
         </div>
