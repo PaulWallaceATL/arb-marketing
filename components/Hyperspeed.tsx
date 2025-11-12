@@ -77,8 +77,7 @@ export default function Hyperspeed({
     const rgb = hexToRgb(color);
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-      ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
       linesRef.current.forEach((line) => {
         line.prevZ = line.z;

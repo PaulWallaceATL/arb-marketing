@@ -75,7 +75,7 @@ export default function Home() {
             visibility: visible !important;
             display: block !important;
             position: relative !important;
-            z-index: 100 !important;
+            z-index: 9999 !important;
           }
           
           .aximo-hero-btn-wrap {
@@ -86,19 +86,26 @@ export default function Home() {
             display: flex !important;
           }
 
-          .aximo-hero-content2 h1,
-          .aximo-hero-content2 p {
-            color: #000 !important;
-            font-weight: bold !important;
-          }
-
           .aximo-hero-content2 h1 {
+            color: #000000 !important;
+            font-weight: 900 !important;
             opacity: 1 !important;
+            text-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
           }
 
           .aximo-hero-content2 p {
             opacity: 1 !important;
-            color: #1a1a1a !important;
+            color: #000000 !important;
+            font-weight: 500 !important;
+            text-shadow: 0 0 1px rgba(0,0,0,0.1) !important;
+          }
+
+          .aximo-hero-btn-wrap a {
+            opacity: 1 !important;
+          }
+
+          .aximo-hero-btn-wrap .aximo-label-up {
+            opacity: 1 !important;
           }
 
           .particles-bg {
@@ -140,26 +147,26 @@ export default function Home() {
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 100, width: '100%', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="aximo-hero-content2" style={{ opacity: '1 !important', visibility: 'visible', position: 'relative', zIndex: 10 }}>
+        <div className="container position-relative" style={{ zIndex: 9999, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative' }}>
+          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 9999 }}>
             <h1 
-              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: '1 !important', visibility: 'visible', color: '#000000', fontWeight: 700 }}
+              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: 1, visibility: 'visible', color: '#000000', fontWeight: 900, zIndex: 9999, position: 'relative', textShadow: '0 0 1px rgba(0,0,0,0.1)' }}
             >
               Elite Leads. Winning Cases. Elevating Your Practice.
             </h1>
             <p 
-              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: '1 !important', visibility: 'visible', color: '#1a1a1a', fontWeight: 400 }}
+              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: 1, visibility: 'visible', color: '#000000', fontWeight: 500, zIndex: 9999, position: 'relative', textShadow: '0 0 1px rgba(0,0,0,0.1)' }}
             >
               Trusted referral solutions and strategic marketing for personal injury law&nbsp;firms that are ready to grow bigger, win more, and scale with&nbsp;purpose. We deliver qualified injury leads and premium content that move cases&nbsp;forward.
             </p>
-            <div className="aximo-hero-btn-wrap center" style={{ opacity: '1 !important', visibility: 'visible', position: 'relative', zIndex: 10, display: 'flex' }}>
-              <Link href="/contact" className="aximo-default-btn" style={{ opacity: '1 !important', visibility: 'visible', backgroundColor: '#000', color: '#fff' }}>
-                <span className="aximo-label-up" style={{ color: '#fff' }}>Schedule Free Consultation</span>
-                <span className="aximo-label-up" style={{ color: '#fff' }}>Schedule Free Consultation</span>
+            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 9999, display: 'flex' }}>
+              <Link href="/contact" className="aximo-default-btn" style={{ opacity: 1, visibility: 'visible', backgroundColor: '#000000', color: '#ffffff', zIndex: 9999, position: 'relative' }}>
+                <span className="aximo-label-up" style={{ color: '#ffffff', opacity: 1 }}>Schedule Free Consultation</span>
+                <span className="aximo-label-up" style={{ color: '#ffffff', opacity: 1 }}>Schedule Free Consultation</span>
               </Link>
-              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ opacity: '1 !important', visibility: 'visible', borderColor: '#000', color: '#000' }}>
-                <span className="aximo-label-up" style={{ color: '#000' }}>View Our Services</span>
-                <span className="aximo-label-up" style={{ color: '#000' }}>View Our Services</span>
+              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ opacity: 1, visibility: 'visible', borderColor: '#000000', borderWidth: '2px', color: '#000000', backgroundColor: 'rgba(255,255,255,0.9)', zIndex: 9999, position: 'relative' }}>
+                <span className="aximo-label-up" style={{ color: '#000000', opacity: 1 }}>View Our Services</span>
+                <span className="aximo-label-up" style={{ color: '#000000', opacity: 1 }}>View Our Services</span>
               </Link>
             </div>
           </div>
