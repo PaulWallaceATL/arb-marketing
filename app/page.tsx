@@ -161,8 +161,8 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Loading Screen - Render unconditionally, let it handle visibility */}
-      {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {/* Loading Screen - Simple version without framer-motion */}
+      {showLoading && <SimpleLoadingScreen onComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
