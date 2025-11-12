@@ -16,33 +16,40 @@ export default function Home() {
   const heroButtonsRef = useRef<HTMLDivElement>(null);
   const [particleCount, setParticleCount] = useState(80);
   const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
+  const [showContent, setShowContent] = useState(true); // Start as true for mobile
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
+    // Trigger bounce animations after loading
     setTimeout(() => {
-      setShowContent(true);
-      // Trigger bounce animations after content fades in
-      setTimeout(() => {
-        setShouldAnimateCards(true);
-      }, 800); // Wait for content fade + small delay
-    }, 100);
+      setShouldAnimateCards(true);
+    }, 500);
   };
 
   useEffect(() => {
-    const updateParticleCount = () => {
-      setParticleCount(window.innerWidth <= 768 ? 40 : 80);
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      setParticleCount(mobile ? 40 : 80);
+      setShowLoading(!mobile); // Only show loading screen on desktop
+      if (mobile) {
+        // On mobile, trigger card animations immediately
+        setTimeout(() => setShouldAnimateCards(true), 1000);
+      }
     };
-    updateParticleCount();
-    window.addEventListener('resize', updateParticleCount);
-    return () => window.removeEventListener('resize', updateParticleCount);
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
-    if (!showContent) return;
+    // Only run GSAP animations on desktop after loading completes
+    if (isMobile || !showContent) return;
 
-    // GSAP animation for hero text - only after loading
     const ctx = gsap.context(() => {
       // Animate heading
       gsap.from(heroTitleRef.current, {
@@ -73,23 +80,15 @@ export default function Home() {
     });
 
     return () => ctx.revert();
-  }, [showContent]);
+  }, [showContent, isMobile]);
 
   return (
     <>
-      {/* Loading Screen */}
-      <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+      {/* Loading Screen - only on desktop */}
+      {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showContent ? 1 : 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        style={{
-          pointerEvents: showContent ? 'auto' : 'none',
-        }}
-        className="aximo-all-section"
-      >
+      <div className="aximo-all-section">
         {/* Hero Section */}
         <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden' }}>
         <Hyperspeed
@@ -521,7 +520,7 @@ export default function Home() {
         </div>
       </div>
       </FadeIn>
-      </motion.div>
+      </div>
     </>
   );
 }
