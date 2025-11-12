@@ -45,6 +45,42 @@ export default function Home() {
 
   return (
     <>
+      {/* Critical Mobile Hero Fix - Inline CSS to override everything */}
+      <style jsx global>{`
+        @media (max-width: 768px) {
+          .aximo-hero-content2,
+          .aximo-hero-content2 h1,
+          .aximo-hero-content2 p,
+          .aximo-hero-btn-wrap,
+          .aximo-hero-btn-wrap a,
+          .aximo-hero-btn-wrap .aximo-label-up {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            position: relative !important;
+            z-index: 100 !important;
+          }
+          
+          .aximo-hero-btn-wrap {
+            display: flex !important;
+          }
+          
+          .aximo-hero-btn-wrap a {
+            display: flex !important;
+          }
+
+          .aximo-hero-content2 h1,
+          .aximo-hero-content2 p {
+            color: #000 !important;
+          }
+
+          .aximo-hero-section2 .container {
+            z-index: 100 !important;
+            position: relative !important;
+          }
+        }
+      `}</style>
+
       {/* Loading Screen - only on desktop */}
       {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
