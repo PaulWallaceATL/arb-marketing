@@ -99,7 +99,7 @@ export default function Hyperspeed({
         const maxDist = canvas.width / dpr;
         const dist = Math.sqrt(line.x * line.x + line.y * line.y);
         const alpha = Math.max(0, Math.min(1, 1 - dist / maxDist));
-        const lineWidth = Math.max(1, (canvas.width / dpr - line.z) / canvas.width * dpr * 3);
+        const lineWidth = Math.max(2, (canvas.width / dpr - line.z) / canvas.width * dpr * 8);
 
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha * 0.8})`;
