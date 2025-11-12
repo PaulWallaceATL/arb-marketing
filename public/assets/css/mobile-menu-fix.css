@@ -68,7 +68,30 @@
     z-index: 1 !important;
   }
   
-  .aximo-hero-content2,
+  .aximo-hero-content2 {
+    z-index: 2 !important;
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .aximo-hero-content2 h1,
+  .aximo-hero-content2 p,
+  .aximo-hero-btn-wrap,
+  .aximo-hero-btn-wrap a {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  .aximo-hero-btn-wrap {
+    display: flex !important;
+  }
+
+  .aximo-hero-btn-wrap a {
+    display: flex !important;
+  }
+
   .aximo-hero-thumb-wrap,
   .aximo-hero-thumb-item {
     z-index: auto !important;
