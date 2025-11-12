@@ -6,7 +6,7 @@ import Hyperspeed from '@/components/Hyperspeed';
 import BounceCard from '@/components/BounceCard';
 import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
-import LoadingScreen from '@/components/LoadingScreen';
+import SimpleLoadingScreen from '@/components/SimpleLoadingScreen';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
