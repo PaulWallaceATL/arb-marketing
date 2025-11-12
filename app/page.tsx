@@ -61,7 +61,7 @@ export default function Home() {
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
-          speed={15}
+          speed={5}
           color="#9333EA"
         />
         <div className="container position-relative">
