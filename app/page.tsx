@@ -89,6 +89,16 @@ export default function Home() {
           .aximo-hero-content2 h1,
           .aximo-hero-content2 p {
             color: #000 !important;
+            font-weight: bold !important;
+          }
+
+          .aximo-hero-content2 h1 {
+            opacity: 1 !important;
+          }
+
+          .aximo-hero-content2 p {
+            opacity: 1 !important;
+            color: #1a1a1a !important;
           }
 
           .particles-bg {
@@ -131,25 +141,25 @@ export default function Home() {
           color="#9333EA"
         />
         <div className="container position-relative" style={{ zIndex: 100, width: '100%', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10, color: '#000' }}>
+          <div className="aximo-hero-content2" style={{ opacity: '1 !important', visibility: 'visible', position: 'relative', zIndex: 10 }}>
             <h1 
-              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: 1, visibility: 'visible', color: '#000' }}
+              style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: '1 !important', visibility: 'visible', color: '#000000', fontWeight: 700 }}
             >
               Elite Leads. Winning Cases. Elevating Your Practice.
             </h1>
             <p 
-              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: 1, visibility: 'visible', color: '#000' }}
+              style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '850px', margin: '0 auto', fontSize: '18px', lineHeight: 1.6, opacity: '1 !important', visibility: 'visible', color: '#1a1a1a', fontWeight: 400 }}
             >
               Trusted referral solutions and strategic marketing for personal injury law&nbsp;firms that are ready to grow bigger, win more, and scale with&nbsp;purpose. We deliver qualified injury leads and premium content that move cases&nbsp;forward.
             </p>
-            <div className="aximo-hero-btn-wrap center" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10, display: 'flex' }}>
-              <Link href="/contact" className="aximo-default-btn" style={{ opacity: 1, visibility: 'visible' }}>
-                <span className="aximo-label-up">Schedule Free Consultation</span>
-                <span className="aximo-label-up">Schedule Free Consultation</span>
+            <div className="aximo-hero-btn-wrap center" style={{ opacity: '1 !important', visibility: 'visible', position: 'relative', zIndex: 10, display: 'flex' }}>
+              <Link href="/contact" className="aximo-default-btn" style={{ opacity: '1 !important', visibility: 'visible', backgroundColor: '#000', color: '#fff' }}>
+                <span className="aximo-label-up" style={{ color: '#fff' }}>Schedule Free Consultation</span>
+                <span className="aximo-label-up" style={{ color: '#fff' }}>Schedule Free Consultation</span>
               </Link>
-              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ opacity: 1, visibility: 'visible' }}>
-                <span className="aximo-label-up">View Our Services</span>
-                <span className="aximo-label-up">View Our Services</span>
+              <Link href="/services" className="aximo-default-btn aximo-default-btn-outline" style={{ opacity: '1 !important', visibility: 'visible', borderColor: '#000', color: '#000' }}>
+                <span className="aximo-label-up" style={{ color: '#000' }}>View Our Services</span>
+                <span className="aximo-label-up" style={{ color: '#000' }}>View Our Services</span>
               </Link>
             </div>
           </div>
