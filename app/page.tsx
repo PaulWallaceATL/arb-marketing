@@ -168,8 +168,10 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Loading Screen */}
-      {isReady && showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {/* Loading Screen - Always render, hide with CSS on mobile */}
+      <div style={{ display: (isReady && showLoading && !isMobile) ? 'block' : 'none' }}>
+        <LoadingScreen onLoadingComplete={handleLoadingComplete} />
+      </div>
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
