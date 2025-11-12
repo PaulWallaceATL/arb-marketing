@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
 import Hyperspeed from '@/components/Hyperspeed';
+import BounceCard from '@/components/BounceCard';
 
 export default function Home() {
   const heroTitleRef = useRef<HTMLHeadingElement>(null);
@@ -91,21 +92,21 @@ export default function Home() {
           </div>
         </div>
         <div className="aximo-hero-thumb-wrap">
-          <div className="aximo-hero-thumb-item">
+          <BounceCard delay={0.2} className="aximo-hero-thumb-item">
             <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" />
-          </div>
-          <div className="aximo-hero-thumb-item">
+          </BounceCard>
+          <BounceCard delay={0.35} className="aximo-hero-thumb-item">
             <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" />
-          </div>
-          <div className="aximo-hero-thumb-item">
+          </BounceCard>
+          <BounceCard delay={0.5} className="aximo-hero-thumb-item">
             <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" />
-          </div>
-          <div className="aximo-hero-thumb-item">
+          </BounceCard>
+          <BounceCard delay={0.65} className="aximo-hero-thumb-item">
             <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" />
-          </div>
-          <div className="aximo-hero-thumb-item">
+          </BounceCard>
+          <BounceCard delay={0.8} className="aximo-hero-thumb-item">
             <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" />
-          </div>
+          </BounceCard>
         </div>
       </div>
 
