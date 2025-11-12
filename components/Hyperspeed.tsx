@@ -128,7 +128,7 @@ export default function Hyperspeed({
   }, [lineCount, speed, color]);
 
   return (
-    <div className={className} style={{ zIndex: 0, position: 'absolute' }}>
+    <div className={className}>
       <canvas
         ref={canvasRef}
         style={{
@@ -138,7 +138,6 @@ export default function Hyperspeed({
           top: 0,
           left: 0,
           pointerEvents: 'none',
-          zIndex: 0,
         }}
       />
     </div>
