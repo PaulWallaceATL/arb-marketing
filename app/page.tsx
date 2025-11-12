@@ -269,7 +269,7 @@ export default function Home() {
 
 
       {/* Pricing Section */}
-      <div className="section aximo-section-padding3 position-relative">
+      <div className="section aximo-section-padding3 position-relative" style={{ opacity: 1, visibility: 'visible' }}>
         <div className="container">
           <FadeIn delay={0.1} direction="up">
             <div className="aximo-section-title center clash-grotesk">
@@ -279,8 +279,7 @@ export default function Home() {
           </FadeIn>
           <div className="row">
             <div className="col-lg-4 col-md-6">
-              <SlideIn delay={0}>
-                <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.1s">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.1s" style={{ opacity: 1, visibility: 'visible' }}>
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-4-service-icon-1.svg" alt="" style={{ width: '80px', height: '80px' }} />
                   <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Starter Package</h3>
@@ -309,11 +308,9 @@ export default function Home() {
                 </div>
                 <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Get Started</Link>
               </div>
-              </SlideIn>
             </div>
             <div className="col-lg-4 col-md-6">
-              <SlideIn delay={0.1}>
-                <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.2s">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.2s" style={{ opacity: 1, visibility: 'visible' }}>
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-4-service-icon-2.svg" alt="" style={{ width: '80px', height: '80px' }} />
                   <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Growth Package</h3>
@@ -342,11 +339,9 @@ export default function Home() {
                 </div>
                 <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Get Started</Link>
               </div>
-              </SlideIn>
             </div>
             <div className="col-lg-4 col-md-6">
-              <SlideIn delay={0.2}>
-                <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.3s">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.3s" style={{ opacity: 1, visibility: 'visible' }}>
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-1-service-icon-3.svg" alt="" style={{ width: '80px', height: '80px' }} />
                   <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Custom Campaign</h3>
@@ -375,7 +370,6 @@ export default function Home() {
                 </div>
                 <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Schedule Consultation</Link>
               </div>
-              </SlideIn>
             </div>
           </div>
         </div>
