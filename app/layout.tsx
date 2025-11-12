@@ -81,9 +81,11 @@ export default function RootLayout({
         <link rel="stylesheet" href="/assets/css/mobile-menu-fix.css" />
       </head>
       <body className="light">
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <div id="site-content">
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </div>
         
         {/* JavaScript Files */}
         <Script src="/assets/js/jquery-3.6.0.min.js" strategy="beforeInteractive" />

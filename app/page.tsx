@@ -145,8 +145,19 @@ export default function Home() {
       {/* Loading Screen - only on desktop */}
       {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
+      {/* Hide everything during loading */}
+      {showLoading && (
+        <style jsx global>{`
+          #site-content {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+          }
+        `}</style>
+      )}
+
       {/* Main Content */}
-      <div className="aximo-all-section" style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
+      <div className="aximo-all-section" style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out', visibility: showContent ? 'visible' : 'hidden' }}>
         {/* Hero Section */}
         <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
         <Hyperspeed
