@@ -14,7 +14,6 @@ export default function Home() {
   const [showContent, setShowContent] = useState(false);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -29,19 +28,18 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Check device type
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
     setParticleCount(mobile ? 40 : 80);
-    setIsClient(true);
     
     if (mobile) {
-      // Mobile: Show everything immediately
+      // Mobile: Show content immediately, no loading screen
       setShowContent(true);
+      setIsLoading(false);
       setTimeout(() => setShouldAnimateCards(true), 1000);
-    } else {
-      // Desktop: Ensure loading screen will show
-      setShowContent(false);
     }
+    // Desktop: isLoading stays true, loading screen will show
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
@@ -160,7 +158,7 @@ export default function Home() {
       `}</style>
 
       {/* Loading Screen - only on desktop */}
-      {isClient && !isMobile && isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {!isMobile && isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
