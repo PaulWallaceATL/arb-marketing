@@ -62,6 +62,16 @@ export default function Home() {
               pointer-events: none !important;
             }
           ` : ''}
+
+          /* Force images visible after loading */
+          ${showContent ? `
+            .aximo-hero-thumb-wrap,
+            .aximo-hero-thumb-item,
+            .aximo-hero-thumb-wrap img {
+              opacity: 1 !important;
+              visibility: visible !important;
+            }
+          ` : ''}
         }
 
         @media (max-width: 768px) {
@@ -84,12 +94,18 @@ export default function Home() {
             margin-top: 0 !important;
           }
 
+          /* Force ALL hero elements visible on mobile */
+          .aximo-all-section,
+          .aximo-hero-section2,
           .aximo-hero-content2,
           .aximo-hero-content2 h1,
           .aximo-hero-content2 p,
           .aximo-hero-btn-wrap,
           .aximo-hero-btn-wrap a,
-          .aximo-hero-btn-wrap .aximo-label-up {
+          .aximo-hero-btn-wrap .aximo-label-up,
+          .aximo-hero-thumb-wrap,
+          .aximo-hero-thumb-item,
+          .aximo-hero-thumb-wrap img {
             opacity: 1 !important;
             visibility: visible !important;
             display: block !important;
@@ -190,21 +206,21 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="aximo-hero-thumb-wrap" style={{ opacity: showContent ? 1 : 0, visibility: showContent ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
+        <div className="aximo-hero-thumb-wrap">
           <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" />
+            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" style={{ opacity: 1 }} />
           </BounceCard>
           <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" />
+            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" style={{ opacity: 1 }} />
           </BounceCard>
           <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" />
+            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" style={{ opacity: 1 }} />
           </BounceCard>
           <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" />
+            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" style={{ opacity: 1 }} />
           </BounceCard>
           <BounceCard delay={0.8} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" />
+            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" style={{ opacity: 1 }} />
           </BounceCard>
         </div>
       </div>
