@@ -312,6 +312,7 @@ a.aximo-default-btn {
     display: block !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
   }
 
   .aximo-hero-content2 h1 {
@@ -320,6 +321,8 @@ a.aximo-default-btn {
     margin-bottom: 20px !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
+    display: block !important;
   }
 
   .aximo-hero-content2 p {
@@ -328,6 +331,8 @@ a.aximo-default-btn {
     margin-bottom: 25px !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
+    display: block !important;
   }
 
   /* Button improvements */
@@ -339,6 +344,8 @@ a.aximo-default-btn {
     visibility: visible !important;
     position: relative !important;
     z-index: 10 !important;
+    display: flex !important;
+    transform: none !important;
   }
 
   .aximo-hero-btn-wrap a {
@@ -353,6 +360,20 @@ a.aximo-default-btn {
     justify-content: center !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transform: none !important;
+  }
+
+  /* Prevent GSAP from hiding mobile elements */
+  @media (max-width: 768px) {
+    .aximo-hero-content2,
+    .aximo-hero-content2 *,
+    .aximo-hero-btn-wrap,
+    .aximo-hero-btn-wrap * {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      transition: none !important;
+    }
   }
 
   /* Hero images mobile stacking */

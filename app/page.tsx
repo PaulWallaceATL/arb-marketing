@@ -47,8 +47,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Only run GSAP animations on desktop after loading completes
-    if (isMobile || !showContent) return;
+    // Only run GSAP animations on desktop
+    if (typeof window === 'undefined') return;
+    
+    const isDesktop = window.innerWidth > 768;
+    if (!isDesktop || !showContent) return;
 
     const ctx = gsap.context(() => {
       // Animate heading
@@ -80,7 +83,7 @@ export default function Home() {
     });
 
     return () => ctx.revert();
-  }, [showContent, isMobile]);
+  }, [showContent]);
 
   return (
     <>
