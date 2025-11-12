@@ -57,19 +57,7 @@ export default function Home() {
         @media (min-width: 769px) {
           ${showLoading ? `
             #site-content {
-              opacity: 0 !important;
-              visibility: hidden !important;
-              pointer-events: none !important;
-            }
-          ` : ''}
-
-          /* Force images visible after loading */
-          ${showContent ? `
-            .aximo-hero-thumb-wrap,
-            .aximo-hero-thumb-item,
-            .aximo-hero-thumb-wrap img {
-              opacity: 1 !important;
-              visibility: visible !important;
+              display: none !important;
             }
           ` : ''}
         }
@@ -188,8 +176,8 @@ export default function Home() {
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative', opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out' }}>
-          <div className="aximo-hero-content2" style={{ opacity: showContent ? 1 : 0, visibility: showContent ? 'visible' : 'hidden', zIndex: 10000, position: 'relative' }}>
+        <div className="container position-relative" style={{ zIndex: 10000, width: '100%', paddingTop: '40px', paddingBottom: '40px', position: 'relative', opacity: 1 }}>
+          <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', zIndex: 10000, position: 'relative' }}>
             <h1 
               style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, color: '#000000', fontWeight: 900, position: 'relative', opacity: 1, visibility: 'visible', zIndex: 10000 }}
             >

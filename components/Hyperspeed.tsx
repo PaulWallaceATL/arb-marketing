@@ -46,8 +46,8 @@ export default function Hyperspeed({
 
     resizeCanvas();
 
-    const centerX = canvas.width / (2 * dpr);
-    const centerY = canvas.height / (2 * dpr);
+    let centerX = canvas.width / (2 * dpr);
+    let centerY = canvas.height / (2 * dpr);
 
     // Initialize lines
     const initLine = (): Line => {
