@@ -48,6 +48,22 @@ export default function Home() {
       {/* Critical Mobile Hero Fix - Inline CSS to override everything */}
       <style jsx global>{`
         @media (max-width: 768px) {
+          .aximo-hero-section2 {
+            min-height: 100vh !important;
+            height: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            background-color: #fff !important;
+            overflow: visible !important;
+          }
+
+          .aximo-hero-section2 .container {
+            z-index: 100 !important;
+            position: relative !important;
+            width: 100% !important;
+            padding: 40px 20px !important;
+          }
+
           .aximo-hero-content2,
           .aximo-hero-content2 h1,
           .aximo-hero-content2 p,
@@ -74,9 +90,8 @@ export default function Home() {
             color: #000 !important;
           }
 
-          .aximo-hero-section2 .container {
-            z-index: 100 !important;
-            position: relative !important;
+          .particles-bg {
+            z-index: 1 !important;
           }
         }
       `}</style>
@@ -87,14 +102,14 @@ export default function Home() {
       {/* Main Content */}
       <div className="aximo-all-section">
         {/* Hero Section */}
-        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
           speed={5}
           color="#9333EA"
         />
-        <div className="container position-relative" style={{ zIndex: 10, minHeight: '400px', paddingTop: '40px', paddingBottom: '40px' }}>
+        <div className="container position-relative" style={{ zIndex: 100, width: '100%', paddingTop: '40px', paddingBottom: '40px' }}>
           <div className="aximo-hero-content2" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10, color: '#000' }}>
             <h1 
               style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '1100px', margin: '0 auto', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 1.2, opacity: 1, visibility: 'visible', color: '#000' }}
