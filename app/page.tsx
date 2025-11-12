@@ -29,10 +29,10 @@ export default function Home() {
       const mobile = window.innerWidth <= 768;
       setIsMobile(mobile);
       setParticleCount(mobile ? 40 : 80);
-      setShowLoading(!mobile); // Only show loading screen on desktop
+      setShowLoading(true); // Show loading screen on all devices
       if (mobile) {
-        // On mobile, trigger card animations immediately
-        setTimeout(() => setShouldAnimateCards(true), 1000);
+        // On mobile, trigger card animations after loading
+        setTimeout(() => setShouldAnimateCards(true), 3500);
       }
     };
     

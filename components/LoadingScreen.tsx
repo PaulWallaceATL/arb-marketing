@@ -12,11 +12,14 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Logo animation duration
+    // Logo animation duration - shorter on mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const duration = isMobile ? 2000 : 2500;
+    
     const timer = setTimeout(() => {
       setIsLoading(false);
       onLoadingComplete();
-    }, 2500);
+    }, duration);
 
     return () => clearTimeout(timer);
   }, [onLoadingComplete]);
