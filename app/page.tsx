@@ -51,8 +51,17 @@ export default function Home() {
 
   return (
     <>
-      {/* Critical Mobile CSS Overrides */}
+      {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
+        /* Hide site content during loading */
+        ${showLoading ? `
+          #site-content {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+          }
+        ` : ''}
+
         @media (max-width: 768px) {
           /* Hero Section Visibility Fix */
           .aximo-hero-section2 {
@@ -144,17 +153,6 @@ export default function Home() {
 
       {/* Loading Screen - only on desktop */}
       {showLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
-
-      {/* Hide everything during loading */}
-      {showLoading && (
-        <style jsx global>{`
-          #site-content {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-          }
-        `}</style>
-      )}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: showContent ? 1 : 0, transition: 'opacity 0.6s ease-out', visibility: showContent ? 'visible' : 'hidden' }}>
