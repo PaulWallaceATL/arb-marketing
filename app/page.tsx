@@ -29,17 +29,19 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setIsClient(true);
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
     setParticleCount(mobile ? 40 : 80);
+    setIsClient(true);
     
     if (mobile) {
       // Mobile: Show everything immediately
       setShowContent(true);
       setTimeout(() => setShouldAnimateCards(true), 1000);
+    } else {
+      // Desktop: Ensure loading screen will show
+      setShowContent(false);
     }
-    // Desktop: loading screen will show, content hidden
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
@@ -158,7 +160,7 @@ export default function Home() {
       `}</style>
 
       {/* Loading Screen - only on desktop */}
-      {isClient && !isMobile && !showContent && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+      {isClient && !isMobile && isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
 
       {/* Main Content */}
       <div className="aximo-all-section" style={{ opacity: (isMobile || showContent) ? 1 : 0, visibility: (isMobile || showContent) ? 'visible' : 'hidden', transition: 'opacity 0.6s ease-out' }}>
