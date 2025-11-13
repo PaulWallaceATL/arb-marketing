@@ -30,8 +30,6 @@ export default function Home() {
       {/* Page Loading Animation - Desktop Only */}
       {!isMobile && <PageLoader />}
 
-      `}</style>
-
       {/* Main Content */}
       <div className="aximo-all-section">
         {/* Hero Section */}
