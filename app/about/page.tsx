@@ -26,15 +26,8 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-8">
-              <div className="aximo-video-wrap wow fadeInUpX" data-wow-delay="0.1s" style={{ borderRadius: '12px', overflow: 'hidden' }}>
-                <img src="/assets/img/images/th-2/video-img.jpg" alt="Legal marketing team collaboration" />
-                <a className="aximo-video-popup video-init" href="https://www.youtube.com/watch?v=Vx2aLNgGoAE">
-                  <img src="/assets/img/icons/icon-play-button.svg" alt="" />
-                </a>
-              </div>
-            </div>
-            <div className="col-lg-4">
+            <div className="col-lg-12">
+              <div style={{ maxWidth: '600px', margin: '0 auto' }}>
               <div className="aximo-counter-wrap" style={{ background: 'white', border: '2px solid #B39FD5', borderRadius: '12px', padding: '30px' }}>
                 <div className="aximo-counter-data">
                   <h2 className="aximo-counter-number" style={{ fontFamily: "'Roxborough CF', serif", color: '#B39FD5' }}>
@@ -57,6 +50,7 @@ export default function AboutPage() {
                   </h2>
                   <p style={{ fontFamily: "'Libre Baskerville', serif", color: '#333' }}>Client satisfaction rate</p>
                 </div>
+              </div>
               </div>
             </div>
           </div>
