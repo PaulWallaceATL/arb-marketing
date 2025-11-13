@@ -7,6 +7,7 @@ import BounceCard from '@/components/BounceCard';
 import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
 import PageLoader from '@/components/PageLoader';
+import CustomCursor from '@/components/CustomCursor';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
@@ -21,9 +22,15 @@ export default function Home() {
     
     // Trigger card animations after a delay (longer for desktop with loader)
     if (mobile) {
-      setTimeout(() => setShouldAnimateCards(true), 1500);
+      setTimeout(() => {
+        console.log('Setting shouldAnimateCards to true on mobile');
+        setShouldAnimateCards(true);
+      }, 1500);
     } else {
-      setTimeout(() => setShouldAnimateCards(true), 3500); // After loading screen
+      setTimeout(() => {
+        console.log('Setting shouldAnimateCards to true on desktop');
+        setShouldAnimateCards(true);
+      }, 3500); // After loading screen
     }
   }, []);
 
@@ -31,6 +38,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Custom Cursor for Solutions Section */}
+      <CustomCursor />
+
       {/* Page Loading Animation - All Devices */}
       <PageLoader />
 
