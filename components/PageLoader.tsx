@@ -10,16 +10,12 @@ export default function PageLoader() {
     // Check if mobile
     const isMobile = window.innerWidth <= 768;
     
-    if (isMobile) {
-      // Hide immediately on mobile
-      setIsVisible(false);
-      return;
-    }
-
-    // Desktop: show for 2.5 seconds
+    // Show for less time on mobile
+    const duration = isMobile ? 1500 : 2500;
+    
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 2500);
+    }, duration);
 
     return () => clearTimeout(timer);
   }, []);

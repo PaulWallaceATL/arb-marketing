@@ -542,21 +542,24 @@ a.aximo-default-btn {
   }
 
   .aximo-pricing-header h3 {
-    font-size: 20px !important;
+    font-size: 18px !important;
     text-align: center !important;
     word-wrap: break-word !important;
+    word-break: break-word !important;
     hyphens: auto !important;
-  }
-
-  .aximo-pricing-price h2 {
-    font-size: 28px !important;
-    text-align: center !important;
-    word-wrap: break-word !important;
     line-height: 1.3 !important;
   }
 
+  .aximo-pricing-price h2 {
+    font-size: 24px !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    line-height: 1.2 !important;
+  }
+
   .aximo-pricing-price h2 span {
-    font-size: 14px !important;
+    font-size: 13px !important;
     display: block !important;
     margin-top: 5px !important;
   }

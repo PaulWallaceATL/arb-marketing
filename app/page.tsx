@@ -17,18 +17,22 @@ export default function Home() {
     // Set particle count based on screen size
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
-    setParticleCount(mobile ? 60 : 80); // More lines on mobile
+    setParticleCount(mobile ? 60 : 80);
     
-    // Trigger card animations after a delay
-    setTimeout(() => setShouldAnimateCards(true), 1500);
+    // Trigger card animations after a delay (longer for desktop with loader)
+    if (mobile) {
+      setTimeout(() => setShouldAnimateCards(true), 1500);
+    } else {
+      setTimeout(() => setShouldAnimateCards(true), 3500); // After loading screen
+    }
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
 
   return (
     <>
-      {/* Page Loading Animation - Desktop Only */}
-      {!isMobile && <PageLoader />}
+      {/* Page Loading Animation - All Devices */}
+      <PageLoader />
 
       {/* Mobile Hero Visibility Fix */}
       <style jsx global>{`
