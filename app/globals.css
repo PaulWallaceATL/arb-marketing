@@ -551,11 +551,12 @@ a.aximo-default-btn {
   }
 
   .aximo-pricing-price h2 {
-    font-size: 24px !important;
+    font-size: 20px !important;
     text-align: center !important;
     word-wrap: break-word !important;
     word-break: break-word !important;
     line-height: 1.2 !important;
+    padding: 0 10px !important;
   }
 
   .aximo-pricing-price h2 span {
@@ -564,9 +565,25 @@ a.aximo-default-btn {
     margin-top: 5px !important;
   }
 
+  /* Fix list item layout - icon above text */
+  .aximo-pricing-body ul {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .aximo-pricing-body ul li {
-    font-size: 14px !important;
-    padding: 10px 0 !important;
+    font-size: 13px !important;
+    padding: 8px 5px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    line-height: 1.4 !important;
+  }
+
+  .aximo-pricing-body ul li img {
+    flex-shrink: 0 !important;
+    margin-top: 2px !important;
   }
 
   .aximo-pricing-btn {
