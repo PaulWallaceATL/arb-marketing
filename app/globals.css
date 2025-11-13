@@ -575,12 +575,12 @@ a.aximo-default-btn {
   }
 
   .aximo-pricing-price h2 {
-    font-size: 1.5px !important;
+    font-size: 1px !important;
     text-align: center !important;
-    line-height: 0.9 !important;
-    padding: 0 45px !important;
+    line-height: 0.8 !important;
+    padding: 0 50px !important;
     max-width: 100% !important;
-    margin: 0 auto 10px !important;
+    margin: 0 auto 8px !important;
     word-spacing: 1000px !important;
     display: flex !important;
     flex-direction: column !important;
@@ -588,7 +588,7 @@ a.aximo-default-btn {
     justify-content: center !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    letter-spacing: 0.3px !important;
+    letter-spacing: 0.2px !important;
   }
 
   .aximo-pricing-price h2 span {
