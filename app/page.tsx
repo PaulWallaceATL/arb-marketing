@@ -11,7 +11,7 @@ import PageLoader from '@/components/PageLoader';
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true); // Start as true to prevent loader flash on mobile
 
   useEffect(() => {
     // Set particle count based on screen size
@@ -34,10 +34,7 @@ export default function Home() {
       <style jsx global>{`
         @media (max-width: 768px) {
           .aximo-hero-content2 h1,
-          .aximo-hero-content2 p,
-          .aximo-hero-btn-wrap,
-          .aximo-hero-btn-wrap a,
-          .aximo-hero-btn-wrap .aximo-label-up {
+          .aximo-hero-content2 p {
             color: #000000 !important;
             opacity: 1 !important;
             visibility: visible !important;
@@ -50,6 +47,26 @@ export default function Home() {
 
           .aximo-hero-content2 p {
             font-weight: 500 !important;
+          }
+
+          /* Buttons on mobile */
+          .aximo-hero-btn-wrap,
+          .aximo-hero-btn-wrap a {
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 10000 !important;
+          }
+
+          /* Black button - white text */
+          .aximo-hero-btn-wrap .aximo-default-btn:not(.aximo-default-btn-outline) .aximo-label-up {
+            color: #ffffff !important;
+            opacity: 1 !important;
+          }
+
+          /* Outline button - purple text */
+          .aximo-hero-btn-wrap .aximo-default-btn-outline .aximo-label-up {
+            color: #9333EA !important;
+            opacity: 1 !important;
           }
         }
       `}</style>
