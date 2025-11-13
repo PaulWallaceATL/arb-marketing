@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [cursorText, setCursorText] = useState('View Details');
   const [bgColor, setBgColor] = useState('#C8B6E2');
 
   useEffect(() => {
@@ -69,16 +68,9 @@ export default function CustomCursor() {
         zIndex: 99999,
         transform: `translate(-50%, -50%) scale(${isHovering ? 1 : 0})`,
         transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        fontSize: '16px',
-        fontWeight: 600,
-        color: '#000',
-        textAlign: 'center',
-        fontFamily: "'Roxborough CF', serif",
-        lineHeight: 1.3,
       }}
-    >
-      {cursorText}
-    </div>
+    />
+  
   );
 }
 
