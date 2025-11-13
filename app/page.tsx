@@ -226,7 +226,7 @@ export default function Home() {
       </div>
 
       {/* Pricing Section */}
-      <div className="section aximo-section-padding3 position-relative" style={{ opacity: 1, visibility: 'visible' }}>
+      <div className="section aximo-section-padding3 position-relative" style={{ opacity: 1, visibility: 'visible', display: 'block' }}>
         <div className="container">
           <div className="aximo-section-title center clash-grotesk">
             <h2 style={{ fontFamily: "'Roxborough CF', serif", maxWidth: '100%', margin: '0 auto 40px' }}>Strategic Growth for Personal&nbsp;Injury Firms</h2>
@@ -412,7 +412,7 @@ export default function Home() {
       </div>
 
       {/* Video Section */}
-      <div className="aximo-video-section extra-side-margin wow fadeInUpX" data-wow-delay="0s">
+      <div className="aximo-video-section extra-side-margin wow fadeInUpX" data-wow-delay="0s" style={{ opacity: 1, visibility: 'visible', display: 'block' }}>
           <img src="/assets/img/images/th-2/video-img.jpg" alt="" />
           <a className="aximo-video-popup play-btn-size video-init" href="https://www.youtube.com/watch?v=7e90gBu4pas">
             <img src="/assets/img/icons/icon-play-button.svg" alt="" />
@@ -423,7 +423,7 @@ export default function Home() {
       </div>
 
       {/* About Section */}
-      <div className="aximo-about-section bg-dark extra-side-margin" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+      <div className="aximo-about-section bg-dark extra-side-margin" style={{ paddingTop: '80px', paddingBottom: '80px', opacity: 1, visibility: 'visible', display: 'block' }}>
         <div id="aximo-counter"></div>
         <div className="container">
           <div className="row">
