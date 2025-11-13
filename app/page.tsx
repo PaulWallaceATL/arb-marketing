@@ -338,76 +338,86 @@ export default function Home() {
           </div>
         </div>
         <div className="aximo-service-increase-wrap">
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Premium Referral Solutions" />
-              <div className="aximo-service-increase-title">
-                <h3>Premium Referral Solutions:</h3>
+          <Link href="/services" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <div className="aximo-service-increase-row">
+              <div className="aximo-service-increase-item">
+                <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Premium Referral Solutions" />
+                <div className="aximo-service-increase-title">
+                  <h3>Premium Referral Solutions:</h3>
+                </div>
+                <div className="aximo-service-increase-body">
+                  <p>We deliver qualified personal injury leads that convert into winning cases. Pre-screened clients with higher case acceptance rates for elite injury firms.</p>
+                </div>
+                <div className="aximo-service-increase-icon">
+                  <i className="icon-arrow-right"></i>
+                </div>
               </div>
-              <div className="aximo-service-increase-body">
-                <p>We deliver qualified personal injury leads that convert into winning cases. Pre-screened clients with higher case acceptance rates for elite injury firms.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
             </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Content Marketing Services" />
-              <div className="aximo-service-increase-title">
-                <h3>Content Marketing:</h3>
+          </Link>
+          <Link href="/services" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <div className="aximo-service-increase-row">
+              <div className="aximo-service-increase-item">
+                <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Content Marketing Services" />
+                <div className="aximo-service-increase-title">
+                  <h3>Content Marketing:</h3>
+                </div>
+                <div className="aximo-service-increase-body">
+                  <p>Professional content production and strategic social media management designed to build your brand and convert views into clients for personal injury firms.</p>
+                </div>
+                <div className="aximo-service-increase-icon">
+                  <i className="icon-arrow-right"></i>
+                </div>
               </div>
-              <div className="aximo-service-increase-body">
-                <p>Professional content production and strategic social media management designed to build your brand and convert views into clients for personal injury firms.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
             </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Strategic Marketing Consulting" />
-              <div className="aximo-service-increase-title">
-                <h3>Strategic Consulting:</h3>
+          </Link>
+          <Link href="/services" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <div className="aximo-service-increase-row">
+              <div className="aximo-service-increase-item">
+                <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Strategic Marketing Consulting" />
+                <div className="aximo-service-increase-title">
+                  <h3>Strategic Consulting:</h3>
+                </div>
+                <div className="aximo-service-increase-body">
+                  <p>ROI-focused marketing consulting and campaign optimization strategies tailored specifically for personal injury law firms looking to scale sustainably.</p>
+                </div>
+                <div className="aximo-service-increase-icon">
+                  <i className="icon-arrow-right"></i>
+                </div>
               </div>
-              <div className="aximo-service-increase-body">
-                <p>ROI-focused marketing consulting and campaign optimization strategies tailored specifically for personal injury law firms looking to scale sustainably.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
             </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Custom Campaign Development" />
-              <div className="aximo-service-increase-title">
-                <h3>Custom Campaigns:</h3>
+          </Link>
+          <Link href="/services" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <div className="aximo-service-increase-row">
+              <div className="aximo-service-increase-item">
+                <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Custom Campaign Development" />
+                <div className="aximo-service-increase-title">
+                  <h3>Custom Campaigns:</h3>
+                </div>
+                <div className="aximo-service-increase-body">
+                  <p>Comprehensive multi-channel marketing campaigns including video production, TV/streaming commercials, and radio advertisements designed to grow your practice.</p>
+                </div>
+                <div className="aximo-service-increase-icon">
+                  <i className="icon-arrow-right"></i>
+                </div>
               </div>
-              <div className="aximo-service-increase-body">
-                <p>Comprehensive multi-channel marketing campaigns including video production, TV/streaming commercials, and radio advertisements designed to grow your practice.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
             </div>
-          </div>
-          <div className="aximo-service-increase-row">
-            <div className="aximo-service-increase-item">
-              <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Attorney Network Building" />
-              <div className="aximo-service-increase-title">
-                <h3>Partnership Marketing:</h3>
+          </Link>
+          <Link href="/services" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+            <div className="aximo-service-increase-row">
+              <div className="aximo-service-increase-item">
+                <img className="swipeimage" src="/assets/img/images/th-2/content-img-1.jpg" alt="Attorney Network Building" />
+                <div className="aximo-service-increase-title">
+                  <h3>Partnership Marketing:</h3>
+                </div>
+                <div className="aximo-service-increase-body">
+                  <p>Building strategic attorney-to-attorney networks and partnerships that create case-winning referral opportunities for personal injury powerhouses.</p>
+                </div>
+                <div className="aximo-service-increase-icon">
+                  <i className="icon-arrow-right"></i>
+                </div>
               </div>
-              <div className="aximo-service-increase-body">
-                <p>Building strategic attorney-to-attorney networks and partnerships that create case-winning referral opportunities for personal injury powerhouses.</p>
-              </div>
-              <a href="/services" className="aximo-service-increase-icon">
-                <i className="icon-arrow-right"></i>
-              </a>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
 
