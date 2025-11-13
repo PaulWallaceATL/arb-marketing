@@ -88,7 +88,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="aximo-all-section">
         {/* Hero Section */}
-        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', alignItems: 'center', backgroundColor: '#fff' }}>
+        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#fff' }}>
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
