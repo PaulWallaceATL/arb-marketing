@@ -47,16 +47,6 @@ export default function Footer() {
               </div>
             </div>
             
-            <div className="col-xl-2 col-md-4">
-              <div className="aximo-footer-menu">
-                <div className="aximo-footer-title">
-                  <p style={{ fontFamily: "'Roxborough CF', serif" }}>Follow Us</p>
-                </div>
-                <ul style={{ fontFamily: "'Libre Baskerville', serif" }}>
-                  <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-                </ul>
-              </div>
-            </div>
             
             <div className="col-xl-3 col-md-4">
               <div className="aximo-subscription">
@@ -84,18 +74,7 @@ export default function Footer() {
         
         <div className="aximo-footer-bottom two">
           <div className="row">
-            <div className="col-lg-6 order-lg-2">
-              <div className="aximo-social-icon2 right">
-                <ul>
-                  <li>
-                    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-                      <i className="icon-instagram"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-lg-6 d-flex align-items-center">
+            <div className="col-lg-12 d-flex align-items-center justify-content-center">
               <div className="aximo-copywright two">
                 <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
                   &copy; Copyright 2025, All Rights Reserved by ARB Marketing

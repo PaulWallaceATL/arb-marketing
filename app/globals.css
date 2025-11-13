@@ -558,6 +558,12 @@ a.aximo-default-btn {
   }
 
   /* Forms mobile */
+  .aximo-main-form {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 15px !important;
+  }
+
   .aximo-main-field {
     margin-bottom: 20px !important;
   }
@@ -566,6 +572,12 @@ a.aximo-default-btn {
   .aximo-main-field textarea {
     font-size: 16px !important;
     padding: 12px 15px !important;
+  }
+
+  .aximo-contact-thumb {
+    max-width: 100% !important;
+    margin: 20px auto 0 !important;
+    padding: 0 15px !important;
   }
 
   /* Pricing mobile fixes - prevent overflow */
