@@ -30,6 +30,30 @@ export default function Home() {
       {/* Page Loading Animation - Desktop Only */}
       {!isMobile && <PageLoader />}
 
+      {/* Mobile Hero Visibility Fix */}
+      <style jsx global>{`
+        @media (max-width: 768px) {
+          .aximo-hero-content2 h1,
+          .aximo-hero-content2 p,
+          .aximo-hero-btn-wrap,
+          .aximo-hero-btn-wrap a,
+          .aximo-hero-btn-wrap .aximo-label-up {
+            color: #000000 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 10000 !important;
+          }
+
+          .aximo-hero-content2 h1 {
+            font-weight: 900 !important;
+          }
+
+          .aximo-hero-content2 p {
+            font-weight: 500 !important;
+          }
+        }
+      `}</style>
+
       {/* Main Content */}
       <div className="aximo-all-section">
         {/* Hero Section */}
