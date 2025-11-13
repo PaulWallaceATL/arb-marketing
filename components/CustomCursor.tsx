@@ -6,10 +6,15 @@ export default function CustomCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [bgColor, setBgColor] = useState('#C8B6E2');
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const mobile = window.innerWidth <= 768;
+    setIsMobile(mobile);
+    
     // Only on desktop
-    if (window.innerWidth <= 768) return;
+    if (mobile) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
@@ -50,6 +55,9 @@ export default function CustomCursor() {
       document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  // Don't render on mobile
+  if (isMobile) return null;
 
   return (
     <div

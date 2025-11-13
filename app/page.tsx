@@ -421,16 +421,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Video Section */}
-      <div className="aximo-video-section extra-side-margin wow fadeInUpX" data-wow-delay="0s" style={{ opacity: 1, visibility: 'visible', display: 'block' }}>
-          <img src="/assets/img/images/th-2/video-img.jpg" alt="" />
-          <a className="aximo-video-popup play-btn-size video-init" href="https://www.youtube.com/watch?v=7e90gBu4pas">
-            <img src="/assets/img/icons/icon-play-button.svg" alt="" />
-            <div className="waves wave-1"></div>
-            <div className="waves wave-2"></div>
-            <div className="waves wave-3"></div>
-        </a>
-      </div>
 
       {/* About Section */}
       <div className="aximo-about-section bg-dark extra-side-margin" style={{ paddingTop: '80px', paddingBottom: '80px', opacity: 1, visibility: 'visible', display: 'block' }}>
