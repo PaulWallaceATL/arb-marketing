@@ -77,7 +77,13 @@ export default function Hyperspeed({
     const rgb = hexToRgb(color);
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+      // Clear on mobile for better performance, fade on desktop
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+      if (isMobile) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      } else {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+      }
       ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
       linesRef.current.forEach((line) => {

@@ -33,7 +33,12 @@ export default function Home() {
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
         @media (max-width: 768px) {
-          /* Force ALL content visible on mobile */
+          /* Nuclear option - force EVERYTHING visible on mobile */
+          * {
+            opacity: 1 !important;
+            visibility: visible !important;
+          }
+
           body, html, #__next, .aximo-all-section {
             opacity: 1 !important;
             visibility: visible !important;
@@ -112,6 +117,11 @@ export default function Home() {
 
           .particles-bg {
             z-index: 1 !important;
+            opacity: 0.6 !important;
+          }
+
+          .particles-bg canvas {
+            opacity: 0.6 !important;
           }
 
           /* Pricing section visible on mobile */
