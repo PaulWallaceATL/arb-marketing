@@ -196,10 +196,9 @@ a.aximo-default-btn {
 
   .aximo-all-section {
     width: 100% !important;
-    overflow-x: hidden !important;
-    overflow-y: visible !important;
+    overflow: visible !important;
     position: relative !important;
-    min-height: 100vh !important;
+    min-height: auto !important;
     display: block !important;
   }
 
@@ -413,8 +412,7 @@ a.aximo-default-btn {
   .section {
     padding: 40px 0 !important;
     width: 100% !important;
-    overflow-x: hidden !important;
-    overflow-y: visible !important;
+    overflow: visible !important;
     position: relative !important;
     display: block !important;
   }
