@@ -184,6 +184,21 @@ a.aximo-default-btn {
   }
 }
 
+/* Base Pricing Card Styles - DESKTOP */
+.aximo-pricing-wrap {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.aximo-pricing-header,
+.aximo-pricing-price,
+.aximo-pricing-body {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 /* Mobile-First Responsive Improvements */
 @media (max-width: 768px) {
   /* Fix container overflow */
@@ -223,7 +238,7 @@ a.aximo-default-btn {
     }
   }
 
-  /* Fix pricing cards - consistent height and centering */
+  /* Fix pricing cards - MOBILE ONLY consistent height and centering */
   .aximo-pricing-wrap {
     margin-bottom: 30px !important;
     margin-left: auto !important;
