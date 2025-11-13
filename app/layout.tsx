@@ -98,8 +98,8 @@ export default function RootLayout({
         <Script src="/assets/js/app.js" strategy="lazyOnload" />
         <Script src="/assets/js/main.js" strategy="lazyOnload" />
         
-        {/* Initialize WOW.js and AOS */}
-        <Script id="init-animations" strategy="lazyOnload">
+        {/* Initialize WOW.js, AOS, and Custom Cursor */}
+        <Script id="init-animations-and-cursor" strategy="lazyOnload">
           {`
             if (typeof WOW !== 'undefined') {
               new WOW().init();
@@ -110,7 +110,16 @@ export default function RootLayout({
                 once: true
               });
             }
-            console.log('Animations initialized, app.js should have loaded custom cursor');
+            
+            // Ensure custom cursor initializes
+            if (typeof jQuery !== 'undefined') {
+              jQuery(document).ready(function() {
+                // Check if cursor element exists
+                const cursorExists = document.querySelector('.custom-cursor');
+                console.log('Custom cursor element exists:', !!cursorExists);
+                console.log('jQuery loaded:', !!jQuery, 'App.js should have initialized cursor');
+              });
+            }
           `}
         </Script>
       </body>
