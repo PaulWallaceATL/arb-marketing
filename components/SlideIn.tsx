@@ -10,20 +10,7 @@ interface SlideInProps {
 }
 
 export default function SlideIn({ children, delay = 0, className = '' }: SlideInProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.01 }}
-      transition={{
-        duration: 0.3,
-        delay,
-        ease: 'easeOut',
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+  // Just return children without animation to prevent issues
+  return <div className={className}>{children}</div>;
 }
 
