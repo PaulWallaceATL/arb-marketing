@@ -542,29 +542,30 @@ a.aximo-default-btn {
   }
 
   .aximo-pricing-header h3 {
-    font-size: 18px !important;
+    font-size: 16px !important;
     text-align: center !important;
     word-wrap: break-word !important;
     word-break: break-word !important;
     hyphens: auto !important;
-    line-height: 1.3 !important;
+    line-height: 1.2 !important;
+    padding: 0 10px !important;
   }
 
   .aximo-pricing-price h2 {
-    font-size: 12px !important;
+    font-size: 11px !important;
     text-align: center !important;
     word-wrap: break-word !important;
     word-break: break-word !important;
-    line-height: 1.1 !important;
-    padding: 5px 15px !important;
+    line-height: 1 !important;
+    padding: 0 20px !important;
     max-width: 100% !important;
     margin: 0 auto 15px !important;
   }
 
   .aximo-pricing-price h2 span {
-    font-size: 13px !important;
+    font-size: 11px !important;
     display: block !important;
-    margin-top: 5px !important;
+    margin-top: 3px !important;
   }
 
   /* Fix list item layout - icon above text */
@@ -574,25 +575,34 @@ a.aximo-default-btn {
     margin: 0 !important;
   }
 
+  .aximo-pricing-body ul {
+    padding: 0 10px !important;
+  }
+
   .aximo-pricing-body ul li {
-    font-size: 11px !important;
-    padding: 5px 0 !important;
+    font-size: 10px !important;
+    padding: 4px 0 !important;
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
-    gap: 8px !important;
-    line-height: 1.2 !important;
+    gap: 6px !important;
+    line-height: 1.1 !important;
     text-align: left !important;
+    width: 100% !important;
   }
 
   .aximo-pricing-body ul li img {
     flex-shrink: 0 !important;
-    width: 14px !important;
-    height: 14px !important;
+    width: 12px !important;
+    height: 12px !important;
     margin: 0 !important;
+    display: block !important;
   }
 
   .aximo-pricing-body {
-    padding: 0 15px !important;
+    padding: 0 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .aximo-pricing-btn {
