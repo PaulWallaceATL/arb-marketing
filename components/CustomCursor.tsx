@@ -9,46 +9,46 @@ export default function CustomCursor() {
   const [bgColor, setBgColor] = useState('#C8B6E2');
 
   useEffect(() => {
+    // Only on desktop
+    if (window.innerWidth <= 768) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseEnter = (e: Event) => {
-      const target = e.target as HTMLElement;
-      const serviceItem = target.closest('.aximo-service-increase-row');
+    document.addEventListener('mousemove', handleMouseMove);
+
+    // Set up hover detection on service section
+    const setupHoverListeners = () => {
+      const serviceSection = document.querySelector('.aximo-service-increase-wrap');
       
-      if (serviceItem) {
-        setIsHovering(true);
-        // Could change color based on which item
-        const bgStyle = window.getComputedStyle(serviceItem).backgroundColor;
-        if (bgStyle && bgStyle !== 'rgba(0, 0, 0, 0)') {
-          // Has background, use contrasting color
-          setBgColor('#C8B6E2');
-        } else {
-          setBgColor('#C8B6E2');
-        }
+      console.log('Service section found:', !!serviceSection);
+      
+      if (serviceSection) {
+        serviceSection.addEventListener('mouseenter', () => {
+          console.log('Mouse entered service section');
+          setIsHovering(true);
+        });
+        
+        serviceSection.addEventListener('mouseleave', () => {
+          console.log('Mouse left service section');
+          setIsHovering(false);
+        });
+
+        // Also hide default cursor
+        (serviceSection as HTMLElement).style.cursor = 'none';
       }
     };
 
-    const handleMouseLeave = () => {
-      setIsHovering(false);
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-
-    // Add listeners to service section
-    const serviceSection = document.querySelector('.aximo-service-increase-wrap');
-    if (serviceSection) {
-      serviceSection.addEventListener('mouseenter', handleMouseEnter as EventListener);
-      serviceSection.addEventListener('mouseleave', handleMouseLeave);
+    // Wait for DOM to be ready
+    if (document.readyState === 'complete') {
+      setupHoverListeners();
+    } else {
+      window.addEventListener('load', setupHoverListeners);
     }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
-      if (serviceSection) {
-        serviceSection.removeEventListener('mouseenter', handleMouseEnter as EventListener);
-        serviceSection.removeEventListener('mouseleave', handleMouseLeave);
-      }
     };
   }, []);
 

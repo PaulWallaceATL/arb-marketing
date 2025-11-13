@@ -104,9 +104,10 @@ export default function Home() {
                 fontSize: 'clamp(2rem, 4vw, 3rem)', 
                 fontWeight: 900, 
                 color: '#000000',
-                letterSpacing: '2px'
+                letterSpacing: '4px',
+                lineHeight: 1.1
               }}>
-                ARB MARKETING
+                ARB<br />MARKETING
               </div>
             </div>
             <h1 
