@@ -428,8 +428,8 @@ export default function Home() {
         <div className="container">
           <div className="row">
             <div className="col-lg-5">
-              <div className="aximo-thumb wow fadeInUpX" data-wow-delay="0s" id="rotatetwo" style={{ marginTop: '-90px' }}>
-                <img src="/assets/img/images/th-2/content-img-1.jpg" alt="Happy attorneys team" />
+              <div className="aximo-thumb wow fadeInUpX" data-wow-delay="0s" id="rotatetwo" style={{ marginTop: '-90px', opacity: 1, visibility: 'visible' }}>
+                <img src="/assets/img/images/th-2/content-img-1.jpg" alt="Happy attorneys team" style={{ opacity: 1, visibility: 'visible', display: 'block', width: '100%', height: 'auto' }} />
               </div>
             </div>
             <div className="col-lg-7">
