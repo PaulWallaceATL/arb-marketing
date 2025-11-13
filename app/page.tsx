@@ -77,9 +77,9 @@ export default function Home() {
             opacity: 1 !important;
           }
 
-          /* Outline button - purple text */
+          /* Outline button - white text on mobile */
           .aximo-hero-btn-wrap .aximo-default-btn-outline .aximo-label-up {
-            color: #9333EA !important;
+            color: #ffffff !important;
             opacity: 1 !important;
           }
         }
