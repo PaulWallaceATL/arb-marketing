@@ -17,7 +17,7 @@ export default function Home() {
     // Set particle count based on screen size
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
-    setParticleCount(mobile ? 40 : 80);
+    setParticleCount(mobile ? 60 : 80); // More lines on mobile
     
     // Trigger card animations after a delay
     setTimeout(() => setShouldAnimateCards(true), 1500);
@@ -33,15 +33,12 @@ export default function Home() {
       {/* All CSS Overrides - Single Style Tag */}
       <style jsx global>{`
         @media (max-width: 768px) {
-          /* Nuclear option - force EVERYTHING visible on mobile */
-          * {
+          /* Force content visible on mobile */
+          body, html, #__next, main, .aximo-all-section {
             opacity: 1 !important;
             visibility: visible !important;
-          }
-
-          body, html, #__next, .aximo-all-section {
-            opacity: 1 !important;
-            visibility: visible !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
           }
 
           /* Hero Section Visibility Fix */
@@ -117,11 +114,11 @@ export default function Home() {
 
           .particles-bg {
             z-index: 1 !important;
-            opacity: 0.6 !important;
+            opacity: 1 !important;
           }
 
           .particles-bg canvas {
-            opacity: 0.6 !important;
+            opacity: 1 !important;
           }
 
           /* Pricing section visible on mobile */
