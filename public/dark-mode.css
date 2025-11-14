@@ -212,19 +212,33 @@
   border-color: #333 !important;
 }
 
-/* Hyperspeed Background - Black with Purple Lines in Dark Mode */
+/* Hyperspeed Background - Pure Black with Purple Lines in Dark Mode */
 .dark-mode .aximo-hero-section2 {
   background-color: #000000 !important;
 }
 
+.dark-mode .aximo-hero-section2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000000 !important;
+  z-index: 0 !important;
+}
+
+.dark-mode .particles-bg,
 .dark-mode .particles-bg canvas,
 .dark-mode .loading-hyperspeed canvas {
+  background-color: #000000 !important;
   filter: none !important;
   opacity: 1 !important;
 }
 
 .dark-mode #app-loading-screen,
-.dark-mode .PageLoader {
+.dark-mode .PageLoader,
+.dark-mode .PageLoader > div {
   background-color: #000000 !important;
 }
 
@@ -234,7 +248,14 @@
 
 /* Make Hire Us button text white in dark mode */
 .dark-mode .aximo-header-btn .aximo-label-up,
-.dark-mode .outline-btn .aximo-label-up {
+.dark-mode .outline-btn .aximo-label-up,
+.dark-mode .header-btn .aximo-label-up,
+.dark-mode .header-btn-l1 .aximo-label-up {
+  color: #ffffff !important;
+}
+
+.dark-mode .aximo-header-btn span,
+.dark-mode .outline-btn span {
   color: #ffffff !important;
 }
 
