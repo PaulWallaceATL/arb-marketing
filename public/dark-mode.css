@@ -204,6 +204,88 @@
   color: #ffffff !important;
 }
 
+/* Icons - Keep Purple or Make White */
+.dark-mode .aximo-iconbox-icon,
+.dark-mode .aximo-iconbox-icon i {
+  color: #C8B6E2 !important;
+}
+
+/* Button Text in Dark Mode */
+.dark-mode .aximo-default-btn .aximo-label-up {
+  color: #ffffff !important;
+}
+
+.dark-mode .aximo-cta-primary-btn .aximo-label-up,
+.dark-mode .aximo-pricing-btn .aximo-label-up {
+  color: #ffffff !important;
+}
+
+/* Service Cards */
+.dark-mode .aximo-iconbox-wrap {
+  background-color: #1a1a1a !important;
+  border-color: #9333EA !important;
+}
+
+.dark-mode .aximo-iconbox-wrap:hover,
+.dark-mode .service-card-hover:hover {
+  background-color: #2a2050 !important;
+}
+
+.dark-mode .aximo-iconbox-data h3,
+.dark-mode .aximo-iconbox-data p {
+  color: #ffffff !important;
+}
+
+/* Accordion/FAQ */
+.dark-mode .process-accordion-item,
+.dark-mode .faq-item {
+  background-color: #1a1a1a !important;
+  border-color: #9333EA !important;
+}
+
+.dark-mode .process-accordion-item:hover,
+.dark-mode .faq-item:hover,
+.dark-mode .process-accordion-item.open {
+  background-color: #2a2050 !important;
+}
+
+.dark-mode .aximo-accordion-header h3,
+.dark-mode .aximo-accordion-body p,
+.dark-mode .faq-item h3,
+.dark-mode .faq-item p {
+  color: #ffffff !important;
+}
+
+.dark-mode .aximo-accordion-icon i {
+  color: #C8B6E2 !important;
+}
+
+/* Section Titles */
+.dark-mode .aximo-section-title h2,
+.dark-mode .aximo-section-title p {
+  color: #ffffff !important;
+}
+
+/* All Headings and Text */
+.dark-mode h1, .dark-mode h2, .dark-mode h3 {
+  color: #ffffff !important;
+}
+
+.dark-mode p, .dark-mode li, .dark-mode span {
+  color: #e0e0e0 !important;
+}
+
+/* Images - Don't invert */
+.dark-mode img {
+  filter: none !important;
+}
+
+/* Loading Screen */
+.dark-mode #app-loading-screen,
+.dark-mode .loading-screen {
+  background-color: #0a0a0a !important;
+}
+
 /* Contact Info Boxes */
 .dark-mode .aximo-contact-info-box {
   background-color: #1a1a1a !important;
