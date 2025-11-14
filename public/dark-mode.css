@@ -188,14 +188,20 @@
   border-color: #333 !important;
 }
 
-/* Keep Purple Elements Purple */
-.dark-mode .particles-bg,
-.dark-mode .loading-hyperspeed {
-  opacity: 1 !important;
+/* Hyperspeed Background - Lighter in Dark Mode */
+.dark-mode .particles-bg canvas,
+.dark-mode .loading-hyperspeed canvas {
+  filter: brightness(1.5) !important;
+  opacity: 0.8 !important;
 }
 
 .dark-mode .custom-cursor {
   background-color: #C8B6E2 !important;
+}
+
+/* Make Hire Us button text white in dark mode */
+.dark-mode .aximo-header-btn .aximo-label-up {
+  color: #ffffff !important;
 }
 
 /* Contact Info Boxes */
