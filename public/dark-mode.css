@@ -290,13 +290,9 @@
   background-color: #C8B6E2 !important;
 }
 
-/* Hire Us button - ONLY change in dark mode */
-.dark-mode .hire-us-header-btn,
-.dark-mode .hire-us-header-btn .aximo-label-up,
-.dark-mode .hire-us-header-btn .hire-us-text,
-.dark-mode .hire-us-header-btn span {
+/* Hire Us button - White ONLY in dark mode */
+.dark-mode .hire-us-header-btn .hire-us-text {
   color: #ffffff !important;
-  border-color: #ffffff !important;
 }
 
 /* Icons - White in Dark Mode - AGGRESSIVE */
