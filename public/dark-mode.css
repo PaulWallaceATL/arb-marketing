@@ -19,12 +19,16 @@
   color: #ffffff !important;
 }
 
-/* ARB MARKETING text specifically - Desktop AND Mobile */
+/* ARB MARKETING text - BLACK in light mode, WHITE in dark mode */
+.aximo-hero-content2 > div > div {
+  color: #000000 !important;
+}
+
 .dark-mode .aximo-hero-content2 > div > div {
   color: #ffffff !important;
 }
 
-/* Mobile-specific hero text fix */
+/* Mobile-specific hero text fix - force white in dark mode */
 @media (max-width: 768px) {
   .dark-mode .aximo-hero-content2 *,
   .dark-mode .aximo-hero-content2 div,
@@ -32,9 +36,18 @@
   .dark-mode .aximo-hero-content2 p {
     color: #ffffff !important;
   }
+  
+  /* Force ARB MARKETING white on mobile dark mode */
+  .dark-mode .aximo-hero-content2 > div > div {
+    color: #ffffff !important;
+  }
 }
 
-/* Hamburger menu - White in Dark Mode */
+/* Hamburger menu - White in Dark Mode, Black in Light Mode */
+.mobile-hamburger span {
+  background-color: #000000;
+}
+
 .dark-mode .mobile-hamburger span {
   background-color: #ffffff !important;
 }
@@ -277,7 +290,12 @@
   background-color: #C8B6E2 !important;
 }
 
-/* Make Hire Us button text white in dark mode - ULTRA AGGRESSIVE */
+/* Hire Us button - Black text in LIGHT mode, White text in DARK mode */
+.hire-us-header-btn .aximo-label-up,
+.hire-us-text {
+  color: #000000 !important;
+}
+
 .dark-mode .hire-us-header-btn {
   color: #ffffff !important;
   border-color: #ffffff !important;
@@ -307,8 +325,12 @@
   filter: brightness(0) invert(1) !important;
 }
 
-/* Mobile-specific icon fix */
+/* Mobile-specific icon fix - White in dark mode, black in light mode */
 @media (max-width: 768px) {
+  .aximo-iconbox-icon2 img {
+    filter: none;
+  }
+  
   .dark-mode .aximo-iconbox-icon2 img {
     filter: brightness(0) invert(1) !important;
   }
@@ -401,9 +423,18 @@
   background-color: #0a0a0a !important;
 }
 
-/* Loading Screen Marketing Text - White in Dark Mode */
+/* Loading Screen Marketing Text - Black in light, White in dark */
+.loading-marketing-text {
+  color: #000000;
+}
+
 .dark-mode .loading-marketing-text {
   color: #ffffff !important;
+}
+
+/* Schedule Free Consultation Button - White border in dark mode */
+.dark-mode .aximo-hero-btn-wrap a:first-child {
+  border: 2px solid #ffffff !important;
 }
 
 /* Contact Info Boxes */
