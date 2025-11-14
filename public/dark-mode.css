@@ -290,9 +290,15 @@
   background-color: #C8B6E2 !important;
 }
 
-/* Hire Us button - White ONLY in dark mode */
-.dark-mode .hire-us-header-btn .hire-us-text {
+/* Hire Us button - White ONLY in dark mode - NUCLEAR OPTION */
+.dark-mode .hire-us-header-btn,
+.dark-mode .hire-us-header-btn *,
+.dark-mode .hire-us-text {
   color: #ffffff !important;
+}
+
+.dark-mode .hire-us-header-btn {
+  border-color: #ffffff !important;
 }
 
 /* Icons - White in Dark Mode - AGGRESSIVE */
