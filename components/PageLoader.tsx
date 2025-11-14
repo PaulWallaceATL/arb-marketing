@@ -70,10 +70,10 @@ export default function PageLoader() {
           }}
         />
         <div
+          className="loading-marketing-text"
           style={{
             fontSize: '24px',
             fontWeight: 600,
-            color: '#000',
             letterSpacing: '4px',
             textTransform: 'uppercase',
             fontFamily: "'Roxborough CF', serif",
