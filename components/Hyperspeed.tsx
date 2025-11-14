@@ -77,12 +77,20 @@ export default function Hyperspeed({
     const rgb = hexToRgb(color);
 
     const animate = () => {
-      // Clear on mobile for better performance, fade on desktop
+      // Check for dark mode
+      const isDarkMode = document.documentElement.classList.contains('dark-mode');
       const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-      if (isMobile) {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      
+      if (isDarkMode) {
+        // Dark mode: use black background
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
       } else {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        // Light mode: use white background
+        if (isMobile) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        } else {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        }
       }
       ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 

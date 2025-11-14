@@ -246,16 +246,17 @@
   background-color: #C8B6E2 !important;
 }
 
-/* Make Hire Us button text white in dark mode */
+/* Make Hire Us button text white in dark mode - AGGRESSIVE */
+.dark-mode .hire-us-header-btn,
+.dark-mode .hire-us-header-btn *,
+.dark-mode .hire-us-text,
 .dark-mode .aximo-header-btn .aximo-label-up,
 .dark-mode .outline-btn .aximo-label-up,
 .dark-mode .header-btn .aximo-label-up,
-.dark-mode .header-btn-l1 .aximo-label-up {
-  color: #ffffff !important;
-}
-
+.dark-mode .header-btn-l1 .aximo-label-up,
 .dark-mode .aximo-header-btn span,
-.dark-mode .outline-btn span {
+.dark-mode .outline-btn span,
+.dark-mode .header-btn span {
   color: #ffffff !important;
 }
 
