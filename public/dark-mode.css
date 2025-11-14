@@ -26,11 +26,21 @@
 
 /* Mobile-specific hero text fix */
 @media (max-width: 768px) {
+  .dark-mode .aximo-hero-content2 *,
   .dark-mode .aximo-hero-content2 div,
   .dark-mode .aximo-hero-content2 h1,
   .dark-mode .aximo-hero-content2 p {
     color: #ffffff !important;
   }
+}
+
+/* Hamburger menu - White in Dark Mode */
+.dark-mode .mobile-hamburger span {
+  background-color: #ffffff !important;
+}
+
+.dark-mode .mobile-hamburger {
+  border-color: #ffffff;
 }
 
 /* Headers and Text */
@@ -62,10 +72,16 @@
   filter: invert(1) brightness(2) !important;
 }
 
-/* Buttons - Keep Black Button Black, Outline Becomes White */
+/* Buttons - Keep Black Button Black with White Border in Dark Mode */
 .dark-mode .aximo-default-btn:not(.aximo-default-btn-outline) {
   background-color: #000000 !important;
   color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* Hero black button - white border */
+.dark-mode .aximo-hero-btn-wrap .aximo-default-btn:not(.aximo-default-btn-outline) {
+  border: 2px solid #ffffff !important;
 }
 
 .dark-mode .aximo-default-btn-outline,
