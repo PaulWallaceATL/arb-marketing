@@ -14,7 +14,13 @@
 }
 
 .dark-mode .aximo-hero-content2 h1,
-.dark-mode .aximo-hero-content2 p {
+.dark-mode .aximo-hero-content2 p,
+.dark-mode .aximo-hero-content2 div {
+  color: #ffffff !important;
+}
+
+/* ARB MARKETING text specifically */
+.dark-mode .aximo-hero-content2 > div > div {
   color: #ffffff !important;
 }
 
@@ -263,11 +269,15 @@
   color: #ffffff !important;
 }
 
-/* Icons - White in Dark Mode */
+/* Icons - White in Dark Mode - AGGRESSIVE */
 .dark-mode .aximo-iconbox-icon,
+.dark-mode .aximo-iconbox-icon *,
 .dark-mode .aximo-iconbox-icon i,
 .dark-mode .aximo-iconbox-icon2,
-.dark-mode .aximo-iconbox-icon2 img {
+.dark-mode .aximo-iconbox-icon2 *,
+.dark-mode .aximo-iconbox-icon2 img,
+.dark-mode .aximo-iconbox-icon2 svg,
+.dark-mode .aximo-iconbox-wrap2 .aximo-iconbox-icon2 img {
   color: #ffffff !important;
   filter: brightness(0) invert(1) !important;
 }
