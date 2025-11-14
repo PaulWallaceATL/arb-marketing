@@ -290,26 +290,13 @@
   background-color: #C8B6E2 !important;
 }
 
-/* Hire Us button - Black text in LIGHT mode, White text in DARK mode */
-.hire-us-header-btn .aximo-label-up,
-.hire-us-text {
-  color: #000000 !important;
-}
-
-.dark-mode .hire-us-header-btn {
+/* Hire Us button - ONLY change in dark mode */
+.dark-mode .hire-us-header-btn,
+.dark-mode .hire-us-header-btn .aximo-label-up,
+.dark-mode .hire-us-header-btn .hire-us-text,
+.dark-mode .hire-us-header-btn span {
   color: #ffffff !important;
   border-color: #ffffff !important;
-}
-
-.dark-mode .hire-us-header-btn *,
-.dark-mode .hire-us-text,
-.dark-mode .hire-us-header-btn .aximo-label-up,
-.dark-mode .hire-us-header-btn span,
-.dark-mode .header-btn-l1 .aximo-label-up,
-.dark-mode .header-btn-l1 span,
-.dark-mode .header-btn .aximo-label-up,
-.dark-mode .header-btn span {
-  color: #ffffff !important;
 }
 
 /* Icons - White in Dark Mode - AGGRESSIVE */

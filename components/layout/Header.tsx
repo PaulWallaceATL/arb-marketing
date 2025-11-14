@@ -264,9 +264,10 @@ export default function Header() {
               <Link 
                 href="/contact" 
                 className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
+                style={{ fontFamily: "'Libre Baskerville', serif" }}
               >
-                <span className="aximo-label-up hire-us-text">Hire Us!</span>
-                <span className="aximo-label-up hire-us-text">Hire Us!</span>
+                <span className="aximo-label-up hire-us-text" style={{ color: '#000' }}>Hire Us!</span>
+                <span className="aximo-label-up hire-us-text" style={{ color: '#000' }}>Hire Us!</span>
               </Link>
             </div>
 
