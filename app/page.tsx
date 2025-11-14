@@ -39,9 +39,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Theme Toggle Button */}
-      <ThemeToggle />
-
       {/* Custom Cursor for Solutions Section */}
       <CustomCursor />
 

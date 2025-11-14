@@ -31,25 +31,22 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       style={{
-        position: 'fixed',
-        bottom: '30px',
-        right: '30px',
-        width: '60px',
-        height: '60px',
+        width: '45px',
+        height: '45px',
         borderRadius: '50%',
         border: '2px solid #9333EA',
         backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
         color: isDark ? '#ffffff' : '#000000',
         cursor: 'pointer',
-        zIndex: 9998,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '24px',
-        boxShadow: '0 4px 12px rgba(147, 51, 234, 0.3)',
+        fontSize: '20px',
+        boxShadow: '0 2px 8px rgba(147, 51, 234, 0.2)',
         transition: 'all 0.3s ease',
       }}
       aria-label="Toggle dark mode"
+      title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
     >
       {isDark ? '☀️' : '🌙'}
     </button>

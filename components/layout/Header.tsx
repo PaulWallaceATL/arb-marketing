@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -258,7 +259,8 @@ export default function Header() {
               </nav>
             </div>
 
-            <div className="header-btn header-btn-l1 ms-auto d-none d-xs-inline-flex">
+            <div className="header-btn header-btn-l1 ms-auto d-none d-xs-inline-flex" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+              <ThemeToggle />
               <Link 
                 href="/contact" 
                 className="aximo-default-btn aximo-header-btn outline-btn" 
