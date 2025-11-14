@@ -19,9 +19,18 @@
   color: #ffffff !important;
 }
 
-/* ARB MARKETING text specifically */
+/* ARB MARKETING text specifically - Desktop AND Mobile */
 .dark-mode .aximo-hero-content2 > div > div {
   color: #ffffff !important;
+}
+
+/* Mobile-specific hero text fix */
+@media (max-width: 768px) {
+  .dark-mode .aximo-hero-content2 div,
+  .dark-mode .aximo-hero-content2 h1,
+  .dark-mode .aximo-hero-content2 p {
+    color: #ffffff !important;
+  }
 }
 
 /* Headers and Text */
@@ -282,6 +291,13 @@
   filter: brightness(0) invert(1) !important;
 }
 
+/* Mobile-specific icon fix */
+@media (max-width: 768px) {
+  .dark-mode .aximo-iconbox-icon2 img {
+    filter: brightness(0) invert(1) !important;
+  }
+}
+
 /* Pricing Card Icons - White */
 .dark-mode .aximo-pricing-header img {
   filter: brightness(0) invert(1) !important;
@@ -367,6 +383,11 @@
 .dark-mode #app-loading-screen,
 .dark-mode .loading-screen {
   background-color: #0a0a0a !important;
+}
+
+/* Loading Screen Marketing Text - White in Dark Mode */
+.dark-mode .loading-marketing-text {
+  color: #ffffff !important;
 }
 
 /* Contact Info Boxes */
