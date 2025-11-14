@@ -78,6 +78,8 @@ export default function RootLayout({
         <link rel="stylesheet" href="/assets/css/greyscale-override.css" />
         {/* Mobile Menu Fix - Must be loaded last */}
         <link rel="stylesheet" href="/assets/css/mobile-menu-fix.css" />
+        {/* Dark Mode Styles */}
+        <link rel="stylesheet" href="/dark-mode.css" />
       </head>
       <body className="light">
         <div id="site-content">

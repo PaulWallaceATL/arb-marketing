@@ -8,6 +8,7 @@ import FadeIn from '@/components/FadeIn';
 import SlideIn from '@/components/SlideIn';
 import PageLoader from '@/components/PageLoader';
 import CustomCursor from '@/components/CustomCursor';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
@@ -38,6 +39,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Theme Toggle Button */}
+      <ThemeToggle />
+
       {/* Custom Cursor for Solutions Section */}
       <CustomCursor />
 
