@@ -41,6 +41,12 @@
   color: #ffffff !important;
 }
 
+/* ARB Logo - Invert to White in Dark Mode */
+.dark-mode .brand-logo img,
+.dark-mode .light-version-logo {
+  filter: invert(1) brightness(2) !important;
+}
+
 /* Buttons - Keep Black Button Black, Outline Becomes White */
 .dark-mode .aximo-default-btn:not(.aximo-default-btn-outline) {
   background-color: #000000 !important;
@@ -130,9 +136,21 @@
   color: #ffffff !important;
 }
 
-.dark-mode .aximo-counter-data2 p,
-.dark-mode .aximo-counter-data2 h2 {
+/* Counter Stats - Keep Purple in Dark Mode */
+.dark-mode .aximo-counter-data2 h2,
+.dark-mode .aximo-counter-data2 h2 span,
+.dark-mode .aximo-counter,
+.dark-mode .aximo-counter-number,
+.dark-mode .aximo-counter-number span {
+  color: #C8B6E2 !important;
+}
+
+.dark-mode .aximo-counter-data2 p {
   color: #ffffff !important;
+}
+
+.dark-mode .aximo-counter-wrap2 {
+  background-color: transparent !important;
 }
 
 /* Footer */
@@ -188,11 +206,20 @@
   border-color: #333 !important;
 }
 
-/* Hyperspeed Background - Lighter in Dark Mode */
+/* Hyperspeed Background - Black with Purple Lines in Dark Mode */
+.dark-mode .aximo-hero-section2 {
+  background-color: #000000 !important;
+}
+
 .dark-mode .particles-bg canvas,
 .dark-mode .loading-hyperspeed canvas {
-  filter: brightness(1.5) !important;
-  opacity: 0.8 !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.dark-mode #app-loading-screen,
+.dark-mode .PageLoader {
+  background-color: #000000 !important;
 }
 
 .dark-mode .custom-cursor {
@@ -200,14 +227,20 @@
 }
 
 /* Make Hire Us button text white in dark mode */
-.dark-mode .aximo-header-btn .aximo-label-up {
+.dark-mode .aximo-header-btn .aximo-label-up,
+.dark-mode .outline-btn .aximo-label-up {
   color: #ffffff !important;
 }
 
-/* Icons - Keep Purple or Make White */
+/* Icons - White in Dark Mode */
 .dark-mode .aximo-iconbox-icon,
 .dark-mode .aximo-iconbox-icon i {
-  color: #C8B6E2 !important;
+  color: #ffffff !important;
+}
+
+/* Pricing Card Icons - White */
+.dark-mode .aximo-pricing-header img {
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Button Text in Dark Mode */
@@ -266,12 +299,18 @@
   color: #ffffff !important;
 }
 
-/* All Headings and Text */
+/* All Headings - White */
 .dark-mode h1, .dark-mode h2, .dark-mode h3 {
   color: #ffffff !important;
 }
 
-.dark-mode p, .dark-mode li, .dark-mode span {
+/* Most Text - Light Gray */
+.dark-mode p, .dark-mode li {
+  color: #e0e0e0 !important;
+}
+
+/* Don't change counter spans - keep purple */
+.dark-mode span:not(.aximo-counter):not(.aximo-counter-number span) {
   color: #e0e0e0 !important;
 }
 
