@@ -1,0 +1,211 @@
+/* Dark Mode Styles - Invert Black/White, Keep Purple */
+.dark-mode {
+  background-color: #0a0a0a !important;
+}
+
+.dark-mode body {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+}
+
+/* Hero Section */
+.dark-mode .aximo-hero-section2 {
+  background-color: #0f0f0f !important;
+}
+
+.dark-mode .aximo-hero-content2 h1,
+.dark-mode .aximo-hero-content2 p {
+  color: #ffffff !important;
+}
+
+/* Headers and Text */
+.dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+  color: #ffffff !important;
+}
+
+.dark-mode p, .dark-mode span, .dark-mode li, .dark-mode a {
+  color: #e0e0e0 !important;
+}
+
+/* Header */
+.dark-mode .site-header {
+  background-color: rgba(15, 15, 15, 0.95) !important;
+  border-bottom: 1px solid #333;
+}
+
+.dark-mode .site-header a {
+  color: #ffffff !important;
+}
+
+.dark-mode .nav-link-item {
+  color: #ffffff !important;
+}
+
+/* Buttons - Keep Black Button Black, Outline Becomes White */
+.dark-mode .aximo-default-btn:not(.aximo-default-btn-outline) {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .aximo-default-btn-outline,
+.dark-mode .aximo-header-btn.outline-btn {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+.dark-mode .aximo-header-btn.outline-btn .aximo-label-up {
+  color: #ffffff !important;
+}
+
+/* Pricing Cards - White becomes Dark */
+.dark-mode .aximo-pricing-wrap {
+  background-color: #1a1a1a !important;
+  border: 1px solid #333 !important;
+}
+
+.dark-mode .aximo-pricing-header h3,
+.dark-mode .aximo-pricing-price h2,
+.dark-mode .aximo-pricing-body li {
+  color: #ffffff !important;
+}
+
+/* Icon Boxes */
+.dark-mode .aximo-iconbox-wrap2 {
+  background-color: #1a1a1a !important;
+  border: 1px solid #333 !important;
+}
+
+.dark-mode .aximo-iconbox-data2 h3,
+.dark-mode .aximo-iconbox-data2 p {
+  color: #ffffff !important;
+}
+
+/* Sections - White becomes Black */
+.dark-mode .section {
+  background-color: #0a0a0a !important;
+}
+
+.dark-mode .aximo-section-padding,
+.dark-mode .aximo-section-padding3 {
+  background-color: #0a0a0a !important;
+}
+
+/* CTA Sections - Keep purple but darker */
+.dark-mode .aximo-cta-section {
+  background: linear-gradient(135deg, #2a1f3d 0%, #1a1a1a 50%, #2a1f3d 100%) !important;
+}
+
+.dark-mode .aximo-cta-section h3,
+.dark-mode .aximo-cta-section p {
+  color: #ffffff !important;
+}
+
+.dark-mode .aximo-cta-referrals {
+  background-color: #4a3a5c !important;
+}
+
+/* Solutions Section - Black becomes White bg */
+.dark-mode .aximo-service-increase-row {
+  background-color: #1a1a1a !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+.dark-mode .aximo-service-increase-row:hover {
+  background-color: #222222 !important;
+}
+
+.dark-mode .aximo-service-increase-title h3,
+.dark-mode .aximo-service-increase-body p {
+  color: #ffffff !important;
+}
+
+/* About Section */
+.dark-mode .aximo-about-section.bg-dark {
+  background-color: #0f0f0f !important;
+}
+
+.dark-mode .aximo-default-content h2,
+.dark-mode .aximo-default-content p {
+  color: #ffffff !important;
+}
+
+.dark-mode .aximo-counter-data2 p,
+.dark-mode .aximo-counter-data2 h2 {
+  color: #ffffff !important;
+}
+
+/* Footer */
+.dark-mode .aximo-footer-section2 {
+  background-color: #0f0f0f !important;
+}
+
+.dark-mode .aximo-footer-textarea p,
+.dark-mode .aximo-footer-menu a,
+.dark-mode .aximo-copywright p {
+  color: #e0e0e0 !important;
+}
+
+.dark-mode .aximo-footer-title p {
+  color: #ffffff !important;
+}
+
+/* Forms */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+.dark-mode input::placeholder {
+  color: #888 !important;
+}
+
+.dark-mode .custom-dropdown-selected {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+.dark-mode .custom-dropdown-options {
+  background-color: #1a1a1a !important;
+  border-color: #333 !important;
+}
+
+.dark-mode .custom-dropdown-option {
+  color: #ffffff !important;
+}
+
+.dark-mode .custom-dropdown-option:hover {
+  background-color: #2a2a2a !important;
+}
+
+.dark-mode .aximo-subscription input {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333 !important;
+}
+
+/* Keep Purple Elements Purple */
+.dark-mode .particles-bg,
+.dark-mode .loading-hyperspeed {
+  opacity: 1 !important;
+}
+
+.dark-mode .custom-cursor {
+  background-color: #C8B6E2 !important;
+}
+
+/* Contact Info Boxes */
+.dark-mode .aximo-contact-info-box {
+  background-color: #1a1a1a !important;
+  border: 1px solid #333 !important;
+}
+
+.dark-mode .aximo-contact-info-data span,
+.dark-mode .aximo-contact-info-data p {
+  color: #ffffff !important;
+}
+
