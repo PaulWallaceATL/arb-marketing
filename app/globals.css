@@ -178,8 +178,18 @@ a.aximo-default-btn {
   .mobile-hamburger {
     display: flex;
   }
+
+  .mobile-controls {
+    display: flex !important;
+  }
   
   .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .mobile-controls {
     display: none !important;
   }
 }

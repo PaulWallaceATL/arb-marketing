@@ -265,8 +265,11 @@
 
 /* Icons - White in Dark Mode */
 .dark-mode .aximo-iconbox-icon,
-.dark-mode .aximo-iconbox-icon i {
+.dark-mode .aximo-iconbox-icon i,
+.dark-mode .aximo-iconbox-icon2,
+.dark-mode .aximo-iconbox-icon2 img {
   color: #ffffff !important;
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Pricing Card Icons - White */

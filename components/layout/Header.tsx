@@ -270,12 +270,15 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Hamburger */}
-            <button className="mobile-hamburger" onClick={() => setMobileOpen(!mobileOpen)}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
+            {/* Mobile Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }} className="mobile-controls">
+              <ThemeToggle />
+              <button className="mobile-hamburger" onClick={() => setMobileOpen(!mobileOpen)}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+            </div>
           </nav>
         </div>
       </header>
