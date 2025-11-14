@@ -138,18 +138,24 @@
 
 /* Counter Stats - Keep Purple in Dark Mode */
 .dark-mode .aximo-counter-data2 h2,
-.dark-mode .aximo-counter-data2 h2 span,
+.dark-mode .aximo-counter-data2 h2 *,
+.dark-mode .aximo-counter-data2 span,
 .dark-mode .aximo-counter,
 .dark-mode .aximo-counter-number,
-.dark-mode .aximo-counter-number span {
+.dark-mode .aximo-counter-number *,
+.dark-mode .aximo-counter-wrap .aximo-counter-number,
+.dark-mode .aximo-counter-wrap .aximo-counter-number *,
+.dark-mode span[data-percentage] {
   color: #C8B6E2 !important;
 }
 
-.dark-mode .aximo-counter-data2 p {
+.dark-mode .aximo-counter-data2 p,
+.dark-mode .aximo-counter-data p {
   color: #ffffff !important;
 }
 
-.dark-mode .aximo-counter-wrap2 {
+.dark-mode .aximo-counter-wrap2,
+.dark-mode .aximo-counter-wrap {
   background-color: transparent !important;
 }
 
