@@ -75,6 +75,19 @@
     box-shadow: none !important;
 }
 
+/* Dark mode override for header button */
+.bg-dark .aximo-header-btn.outline-btn,
+.dark-bg .aximo-header-btn.outline-btn,
+html.dark-mode .aximo-header-btn.outline-btn {
+    background-image: linear-gradient(#0a0a0a, #0a0a0a), var(--gradient-primary) !important;
+    box-shadow: 2px 1000px 1px #0a0a0a inset !important;
+    color: #fff !important;
+}
+
+html.dark-mode .aximo-header-btn.outline-btn .hire-us-text {
+    color: #fff !important;
+}
+
 /* Special case for header "Hire Us" button on light background */
 .bg-light2 .aximo-header-btn.outline-btn {
     background: transparent !important;
@@ -169,6 +182,18 @@
 .bg-dark .aximo-default-content h2,
 .bg-dark .aximo-default-content p {
     color: #fff !important;
+}
+
+/* Add gradient to section titles */
+.aximo-section-title h2,
+.aximo-hero-content2 h1 span,
+.aximo-default-content h2 {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent !important;
+    display: inline-block;
 }
 
 /* Accent colors - lavender as secondary accent */
