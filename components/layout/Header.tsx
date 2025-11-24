@@ -18,7 +18,7 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       if (currentScrollY < 10) {
         setHeaderVisible(true);
       } else if (currentScrollY > lastScrollY) {
@@ -28,7 +28,7 @@ export default function Header() {
         // Scrolling up
         setHeaderVisible(true);
       }
-      
+
       setLastScrollY(currentScrollY);
     };
 
@@ -38,8 +38,8 @@ export default function Header() {
 
   const mobileMenu = mobileOpen ? (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 2147483647, pointerEvents: 'auto' }}>
-      <div 
-        style={{ 
+      <div
+        style={{
           position: 'fixed',
           top: 0,
           left: 0,
@@ -50,7 +50,7 @@ export default function Header() {
         }}
         onClick={() => setMobileOpen(false)}
       />
-      <div 
+      <div
         style={{
           position: 'fixed',
           top: 0,
@@ -74,12 +74,12 @@ export default function Header() {
           alignItems: 'center',
           background: '#fff'
         }}>
-          <img 
+          <img
             src="/assets/img/logo-arb.svg"
-            alt="ARB Marketing" 
-            style={{ maxHeight: '35px' }} 
+            alt="ARB Marketing"
+            style={{ maxHeight: '35px' }}
           />
-          <button 
+          <button
             onClick={() => setMobileOpen(false)}
             style={{
               background: '#f3f4f6',
@@ -103,10 +103,10 @@ export default function Header() {
         {/* Menu Items */}
         <nav style={{ padding: '32px 24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               onClick={() => setMobileOpen(false)}
-              style={{ 
+              style={{
                 fontFamily: "'Roxborough CF', serif",
                 fontSize: '22px',
                 fontWeight: 500,
@@ -122,10 +122,10 @@ export default function Header() {
             >
               Home
             </Link>
-            <Link 
-              href="/about" 
+            <Link
+              href="/about"
               onClick={() => setMobileOpen(false)}
-              style={{ 
+              style={{
                 fontFamily: "'Roxborough CF', serif",
                 fontSize: '22px',
                 fontWeight: 500,
@@ -141,10 +141,10 @@ export default function Header() {
             >
               About
             </Link>
-            <Link 
-              href="/services" 
+            <Link
+              href="/services"
               onClick={() => setMobileOpen(false)}
-              style={{ 
+              style={{
                 fontFamily: "'Roxborough CF', serif",
                 fontSize: '22px',
                 fontWeight: 500,
@@ -160,10 +160,10 @@ export default function Header() {
             >
               Services
             </Link>
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               onClick={() => setMobileOpen(false)}
-              style={{ 
+              style={{
                 fontFamily: "'Roxborough CF', serif",
                 fontSize: '22px',
                 fontWeight: 500,
@@ -182,10 +182,10 @@ export default function Header() {
           </div>
 
           {/* CTA Button */}
-          <Link 
-            href="/contact" 
+          <Link
+            href="/contact"
             onClick={() => setMobileOpen(false)}
-            style={{ 
+            style={{
               fontFamily: "'Libre Baskerville', serif",
               fontSize: '18px',
               fontWeight: 600,
@@ -209,8 +209,8 @@ export default function Header() {
 
   return (
     <>
-      <header 
-        className="site-header site-header--menu-center aximo-header-section aximo-header2" 
+      <header
+        className="site-header site-header--menu-center aximo-header-section aximo-header2"
         id="sticky-menu"
         style={{
           transform: (headerVisible && !mobileOpen) ? 'translateY(0)' : 'translateY(-100%)',
@@ -222,15 +222,15 @@ export default function Header() {
             {/* Brand Logo */}
             <div className="brand-logo">
               <Link href="/">
-                <img 
+                <img
                   src="/assets/img/logo-arb.svg"
-                  alt="ARB Marketing" 
-                  className="light-version-logo" 
-                  style={{ maxHeight: '50px' }} 
+                  alt="ARB Marketing"
+                  className="light-version-logo"
+                  style={{ maxHeight: '50px' }}
                 />
               </Link>
             </div>
-            
+
             {/* Desktop Menu */}
             <div className="menu-block-wrapper desktop-only">
               <nav className="menu-block" id="append-menu-header">
@@ -261,13 +261,13 @@ export default function Header() {
 
             <div className="header-btn header-btn-l1 ms-auto d-none d-xs-inline-flex" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
               <ThemeToggle />
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
                 style={{ fontFamily: "'Libre Baskerville', serif" }}
               >
-                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Hire Us!</span>
-                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Hire Us!</span>
+                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
+                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
               </Link>
             </div>
 

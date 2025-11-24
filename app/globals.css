@@ -182,7 +182,7 @@ a.aximo-default-btn {
   .mobile-controls {
     display: flex !important;
   }
-  
+
   .desktop-only {
     display: none !important;
   }
@@ -211,6 +211,7 @@ a.aximo-default-btn {
 
 /* Mobile-First Responsive Improvements */
 @media (max-width: 768px) {
+
   /* Fix container overflow */
   .container {
     padding-left: 20px !important;
@@ -229,6 +230,7 @@ a.aximo-default-btn {
 
   /* Force mobile visibility */
   @supports (-webkit-touch-callout: none) {
+
     .aximo-hero-content2,
     .aximo-hero-content2 h1,
     .aximo-hero-content2 p,
@@ -238,11 +240,11 @@ a.aximo-default-btn {
       visibility: visible !important;
       display: block !important;
     }
-    
+
     .aximo-hero-btn-wrap {
       display: flex !important;
     }
-    
+
     .aximo-hero-btn-wrap a {
       display: flex !important;
     }
@@ -338,7 +340,8 @@ a.aximo-default-btn {
     margin-right: 0 !important;
   }
 
-  .col-lg-4, .col-md-6 {
+  .col-lg-4,
+  .col-md-6 {
     padding-left: 10px !important;
     padding-right: 10px !important;
     max-width: 100% !important;
@@ -423,6 +426,7 @@ a.aximo-default-btn {
 
   /* Prevent GSAP from hiding mobile elements */
   @media (max-width: 768px) {
+
     .aximo-hero-content2,
     .aximo-hero-content2 *,
     .aximo-hero-btn-wrap,
@@ -725,7 +729,8 @@ a.aximo-default-btn {
   }
 
   /* Touch-friendly spacing */
-  button, a {
+  button,
+  a {
     min-height: 44px !important;
     min-width: 44px !important;
   }
@@ -751,12 +756,12 @@ a.aximo-default-btn {
 }
 
 /* Fix for Hire Us Button in Light Mode */
-body:not(.dark-mode) .hire-us-header-btn.outline-btn {
+html:not(.dark-mode) .hire-us-header-btn.outline-btn {
   background-color: transparent !important;
   border: 2px solid #000000 !important;
   color: #000000 !important;
 }
 
-body:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
+html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
   color: #000000 !important;
 }
