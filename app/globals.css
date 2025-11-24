@@ -749,3 +749,14 @@ a.aximo-default-btn {
     max-width: 100% !important;
   }
 }
+
+/* Fix for Hire Us Button in Light Mode */
+body:not(.dark-mode) .hire-us-header-btn.outline-btn {
+  background-color: transparent !important;
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+}
+
+body:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
+  color: #000000 !important;
+}
