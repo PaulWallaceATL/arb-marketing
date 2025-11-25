@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ReferralForm from '@/components/referral/ReferralForm';
 import { supabase } from '@/lib/supabase/client';
 
-export default function PartnersPage() {
+function PartnersContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [referralCode, setReferralCode] = useState<string | null>(null);
@@ -424,6 +424,35 @@ export default function PartnersPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function PartnersPage() {
+  return (
+    <Suspense fallback={
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            border: '4px solid #f3f3f3',
+            borderTop: '4px solid #667eea',
+            borderRadius: '50%',
+            width: '50px',
+            height: '50px',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 1rem'
+          }}></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    }>
+      <PartnersContent />
+    </Suspense>
   );
 }
 
