@@ -25,10 +25,10 @@ export async function GET(request: NextRequest) {
 
     // Fetch dashboard statistics
     const [
-      { data: totalSubmissions },
-      { data: newSubmissions },
+      { count: totalSubmissions },
+      { count: newSubmissions },
       { data: convertedSubmissions },
-      { data: activePartners },
+      { count: activePartners },
       { data: recentSubmissions },
       { data: partnerPerformance },
     ] = await Promise.all([
@@ -94,15 +94,18 @@ export async function GET(request: NextRequest) {
       return acc;
     }, {}) || {};
 
+    const totalCount = totalSubmissions || 0;
+    const convertedCount = convertedSubmissions?.length || 0;
+    
     return NextResponse.json({
       summary: {
-        totalSubmissions: totalSubmissions || 0,
+        totalSubmissions: totalCount,
         newSubmissions: newSubmissions || 0,
-        convertedSubmissions: convertedSubmissions?.length || 0,
+        convertedSubmissions: convertedCount,
         activePartners: activePartners || 0,
         totalRevenue: totalRevenue.toFixed(2),
-        conversionRate: totalSubmissions 
-          ? ((convertedSubmissions?.length || 0) / totalSubmissions * 100).toFixed(2)
+        conversionRate: totalCount > 0
+          ? ((convertedCount / totalCount) * 100).toFixed(2)
           : '0.00',
       },
       statusCounts,
