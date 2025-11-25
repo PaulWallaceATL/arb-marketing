@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import ReferralForm from '@/components/referral/ReferralForm';
+import EnhancedReferralForm from '@/components/referral/EnhancedReferralForm';
 import { supabase } from '@/lib/supabase/client';
 
 function PartnersContent() {
@@ -70,16 +70,22 @@ function PartnersContent() {
     <div className="partners-page">
       <div className="partners-container">
         <header className="partners-header">
-          <h1>Partner Referral Program</h1>
+          <h1>🏆 Refer & Win Amazing Prizes!</h1>
           <p className="subtitle">
-            Submit a referral and help us grow our network
+            Know someone who needs marketing help? Refer them and compete for cash prizes!
           </p>
           {referralCode && (
             <div className="referral-code-banner">
               <span className="icon">🎯</span>
               <span>
-                You're using referral code: <strong>{referralCode}</strong>
+                Tracking Code: <strong>{referralCode}</strong> | Your referrals are being tracked!
               </span>
+            </div>
+          )}
+          {isAuthenticated && (
+            <div className="points-banner">
+              <span className="icon">⭐</span>
+              <span>Earn points: 10 pts per referral | 25 pts when qualified | 100 pts when they convert!</span>
             </div>
           )}
         </header>
@@ -121,7 +127,7 @@ function PartnersContent() {
 
         {/* Referral Form */}
         <div className="form-section">
-          <ReferralForm
+          <EnhancedReferralForm
             referralCode={referralCode || undefined}
             onSuccess={handleFormSuccess}
           />
@@ -129,38 +135,34 @@ function PartnersContent() {
 
         {/* Benefits Section */}
         <div className="benefits-section">
-          <h2>Why Partner With Us?</h2>
+          <h2>🎁 How to Win</h2>
           <div className="benefits-grid">
             <div className="benefit-card">
+              <div className="benefit-icon">📝</div>
+              <h3>1. Submit Referrals</h3>
+              <p>
+                Fill out the form above with detailed information about someone who needs marketing services.
+              </p>
+            </div>
+            <div className="benefit-card">
+              <div className="benefit-icon">⭐</div>
+              <h3>2. Earn Points</h3>
+              <p>
+                Get 10 points per submission, 25 when qualified, and 100 points when they become a customer!
+              </p>
+            </div>
+            <div className="benefit-card">
+              <div className="benefit-icon">🏆</div>
+              <h3>3. Climb the Leaderboard</h3>
+              <p>
+                Login to track your ranking. The more quality referrals you send, the higher you climb!
+              </p>
+            </div>
+            <div className="benefit-card">
               <div className="benefit-icon">💰</div>
-              <h3>Earn Commission</h3>
+              <h3>4. Win Prizes</h3>
               <p>
-                Receive competitive commissions on every successful referral that
-                converts to a paying customer.
-              </p>
-            </div>
-            <div className="benefit-card">
-              <div className="benefit-icon">📊</div>
-              <h3>Track Performance</h3>
-              <p>
-                Access your dashboard to monitor referrals, conversions, and earnings
-                in real-time.
-              </p>
-            </div>
-            <div className="benefit-card">
-              <div className="benefit-icon">🤝</div>
-              <h3>Dedicated Support</h3>
-              <p>
-                Get support from our partner success team to help you maximize your
-                referral potential.
-              </p>
-            </div>
-            <div className="benefit-card">
-              <div className="benefit-icon">🚀</div>
-              <h3>Easy Process</h3>
-              <p>
-                Simple referral process with no complicated requirements. Just share
-                your unique link.
+                Top referrers win cash prizes! 1st: $5,000, 2nd: $2,500, 3rd: $1,000 plus commissions!
               </p>
             </div>
           </div>
@@ -223,6 +225,24 @@ function PartnersContent() {
         }
 
         .referral-code-banner .icon {
+          font-size: 1.5rem;
+        }
+
+        .points-banner {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 50px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          font-size: 1rem;
+          margin-top: 1rem;
+          font-weight: 600;
+        }
+
+        .points-banner .icon {
           font-size: 1.5rem;
         }
 
