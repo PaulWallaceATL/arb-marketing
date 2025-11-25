@@ -76,7 +76,7 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   // Get client IP for rate limiting
-  const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown';
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
 
   // Apply rate limiting to API routes
   if (pathname.startsWith('/api/')) {
