@@ -3,9 +3,12 @@ import { supabase, isAdmin, logActivity } from '@/lib/supabase/client';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Await params in Next.js 16+
+    const { id } = await params;
+    
     // Get user session
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
@@ -56,7 +59,7 @@ export async function PATCH(
     const { data, error } = await supabase
       .from('referral_submissions')
       .update(updateData)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single();
 
@@ -71,9 +74,9 @@ export async function PATCH(
     // Log the activity
     await logActivity(
       'update_submission',
-      { submission_id: params.id, changes: updateData },
+      { submission_id: id, changes: updateData },
       'referral_submission',
-      params.id
+      id
     );
 
     return NextResponse.json({
@@ -92,9 +95,12 @@ export async function PATCH(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Await params in Next.js 16+
+    const { id } = await params;
+    
     // Get user session
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
@@ -118,7 +124,7 @@ export async function GET(
           referral_code
         )
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) {
