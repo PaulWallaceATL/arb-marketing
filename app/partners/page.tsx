@@ -73,12 +73,11 @@ function PartnersContent() {
         <div className="hero-section">
           <div className="hero-content">
             <div className="hero-badge">
-              <span className="badge-icon">🏆</span>
-              <span className="badge-text">Referral Competition</span>
+              <span className="badge-text">REFERRAL COMPETITION</span>
             </div>
             <h1 className="hero-title">
               Refer & Win<br />
-              <span className="gradient-text">Amazing Prizes</span>
+              <span className="white-text">Amazing Prizes</span>
             </h1>
             <p className="hero-description">
               Know someone who needs marketing help? Refer them to us and compete for cash prizes up to <strong>$5,000</strong>!
@@ -86,7 +85,6 @@ function PartnersContent() {
             
             {referralCode && (
               <div className="referral-code-chip">
-                <span className="chip-icon">🎯</span>
                 <span className="chip-label">Tracking Code:</span>
                 <strong className="chip-code">{referralCode}</strong>
               </div>
@@ -95,7 +93,6 @@ function PartnersContent() {
             {isAuthenticated && (
               <div className="points-info">
                 <div className="point-item">
-                  <span className="point-icon">📝</span>
                   <div className="point-details">
                     <strong>10 pts</strong>
                     <span>per referral</span>
@@ -103,7 +100,6 @@ function PartnersContent() {
                 </div>
                 <div className="point-divider">→</div>
                 <div className="point-item">
-                  <span className="point-icon">✓</span>
                   <div className="point-details">
                     <strong>25 pts</strong>
                     <span>when qualified</span>
@@ -111,7 +107,6 @@ function PartnersContent() {
                 </div>
                 <div className="point-divider">→</div>
                 <div className="point-item">
-                  <span className="point-icon">💰</span>
                   <div className="point-details">
                     <strong>100 pts</strong>
                     <span>when converted</span>
@@ -126,7 +121,7 @@ function PartnersContent() {
         {showLoginPrompt && (
           <div className="login-prompt">
             <div className="login-prompt-content">
-              <h3>✅ Submission Received!</h3>
+              <h3>Submission Received!</h3>
               <p>
                 Your referral has been submitted successfully. Would you like to create
                 an account to track your referrals and access the partner dashboard?
@@ -149,8 +144,7 @@ function PartnersContent() {
         {/* Authentication Status */}
         {!isCheckingAuth && isAuthenticated && (
           <div className="auth-status">
-            <span className="status-icon">✓</span>
-            <span>You are logged in</span>
+            <span>Logged In</span>
             <a href="/partners/dashboard" className="dashboard-link">
               Go to Dashboard →
             </a>
@@ -167,32 +161,32 @@ function PartnersContent() {
 
         {/* Benefits Section */}
         <div className="benefits-section">
-          <h2>🎁 How to Win</h2>
+          <h2>How to Win</h2>
           <div className="benefits-grid">
             <div className="benefit-card">
-              <div className="benefit-icon">📝</div>
-              <h3>1. Submit Referrals</h3>
+              <div className="benefit-number">1</div>
+              <h3>Submit Referrals</h3>
               <p>
                 Fill out the form above with detailed information about someone who needs marketing services.
               </p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">⭐</div>
-              <h3>2. Earn Points</h3>
+              <div className="benefit-number">2</div>
+              <h3>Earn Points</h3>
               <p>
                 Get 10 points per submission, 25 when qualified, and 100 points when they become a customer!
               </p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">🏆</div>
-              <h3>3. Climb the Leaderboard</h3>
+              <div className="benefit-number">3</div>
+              <h3>Climb the Leaderboard</h3>
               <p>
                 Login to track your ranking. The more quality referrals you send, the higher you climb!
               </p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">💰</div>
-              <h3>4. Win Prizes</h3>
+              <div className="benefit-number">4</div>
+              <h3>Win Prizes</h3>
               <p>
                 Top referrers win cash prizes! 1st: $5,000, 2nd: $2,500, 3rd: $1,000 plus commissions!
               </p>
@@ -260,26 +254,21 @@ function PartnersContent() {
         .hero-badge {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
           background: rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(10px);
-          padding: 0.5rem 1.25rem;
+          padding: 0.6rem 1.5rem;
           border-radius: 50px;
           border: 1px solid rgba(255, 255, 255, 0.3);
           margin-bottom: 1.5rem;
           animation: fadeInDown 0.6s ease-out;
         }
 
-        .badge-icon {
-          font-size: 1.25rem;
-        }
-
         .badge-text {
           color: white;
           font-weight: 600;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 1.5px;
         }
 
         .hero-title {
@@ -291,11 +280,9 @@ function PartnersContent() {
           animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
-        .gradient-text {
-          background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+        .white-text {
+          color: white;
+          font-weight: 800;
         }
 
         .hero-description {
@@ -323,13 +310,10 @@ function PartnersContent() {
           animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
-        .chip-icon {
-          font-size: 1.5rem;
-        }
-
         .chip-label {
           color: #666;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
+          font-weight: 500;
         }
 
         .chip-code {
@@ -350,7 +334,7 @@ function PartnersContent() {
         .point-item {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          justify-content: center;
           background: rgba(255, 255, 255, 0.15);
           backdrop-filter: blur(10px);
           padding: 1rem 1.5rem;
@@ -358,15 +342,12 @@ function PartnersContent() {
           border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .point-icon {
-          font-size: 1.75rem;
-        }
-
         .point-details {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           color: white;
+          text-align: center;
         }
 
         .point-details strong {
@@ -410,7 +391,7 @@ function PartnersContent() {
         .auth-status {
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: space-between;
           gap: 1rem;
           padding: 1.25rem 2rem;
           background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
@@ -420,14 +401,11 @@ function PartnersContent() {
           max-width: 600px;
           color: #155724;
           box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
-        }
-
-        .status-icon {
-          font-size: 1.5rem;
+          font-weight: 600;
+          font-size: 1rem;
         }
 
         .dashboard-link {
-          margin-left: auto;
           color: #155724;
           font-weight: 700;
           text-decoration: none;
@@ -435,6 +413,7 @@ function PartnersContent() {
           background: white;
           border-radius: 8px;
           transition: all 0.2s;
+          white-space: nowrap;
         }
 
         .dashboard-link:hover {
@@ -581,24 +560,24 @@ function PartnersContent() {
           transform: scaleX(1);
         }
 
-        .benefit-icon {
-          font-size: 4rem;
-          margin-bottom: 1.5rem;
-          display: inline-block;
-          animation: bounce 2s ease infinite;
+        .benefit-number {
+          width: 60px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          font-weight: 800;
+          color: white;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 50%;
+          margin: 0 auto 1.5rem;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+          transition: transform 0.3s ease;
         }
 
-        .benefit-card:hover .benefit-icon {
-          animation: bounce 0.6s ease;
-        }
-
-        @keyframes bounce {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
+        .benefit-card:hover .benefit-number {
+          transform: scale(1.1) rotate(5deg);
         }
 
         .benefit-card h3 {
@@ -741,8 +720,6 @@ function PartnersContent() {
           }
 
           .referral-code-chip {
-            flex-direction: column;
-            text-align: center;
             padding: 1rem 1.5rem;
           }
 
@@ -831,7 +808,6 @@ function PartnersContent() {
           }
 
           .point-item {
-            gap: 0.5rem;
             padding: 0.75rem 1rem;
           }
 
@@ -843,8 +819,10 @@ function PartnersContent() {
             padding: 1.5rem;
           }
 
-          .benefit-icon {
-            font-size: 3rem;
+          .benefit-number {
+            width: 50px;
+            height: 50px;
+            font-size: 1.75rem;
           }
 
           .benefit-card h3 {
