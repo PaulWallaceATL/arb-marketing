@@ -60,7 +60,7 @@ export function initAnalytics() {
     window.dataLayer!.push(arguments);
   };
   
-  window.gtag('js', new Date());
+  window.gtag('js', new Date() as any);
   window.gtag('config', measurementId, {
     send_page_view: false, // We'll send page views manually
   });
