@@ -69,26 +69,58 @@ function PartnersContent() {
   return (
     <div className="partners-page">
       <div className="partners-container">
-        <header className="partners-header">
-          <h1>🏆 Refer & Win Amazing Prizes!</h1>
-          <p className="subtitle">
-            Know someone who needs marketing help? Refer them and compete for cash prizes!
-          </p>
-          {referralCode && (
-            <div className="referral-code-banner">
-              <span className="icon">🎯</span>
-              <span>
-                Tracking Code: <strong>{referralCode}</strong> | Your referrals are being tracked!
-              </span>
+        {/* Hero Section */}
+        <div className="hero-section">
+          <div className="hero-content">
+            <div className="hero-badge">
+              <span className="badge-icon">🏆</span>
+              <span className="badge-text">Referral Competition</span>
             </div>
-          )}
-          {isAuthenticated && (
-            <div className="points-banner">
-              <span className="icon">⭐</span>
-              <span>Earn points: 10 pts per referral | 25 pts when qualified | 100 pts when they convert!</span>
-            </div>
-          )}
-        </header>
+            <h1 className="hero-title">
+              Refer & Win<br />
+              <span className="gradient-text">Amazing Prizes</span>
+            </h1>
+            <p className="hero-description">
+              Know someone who needs marketing help? Refer them to us and compete for cash prizes up to <strong>$5,000</strong>!
+            </p>
+            
+            {referralCode && (
+              <div className="referral-code-chip">
+                <span className="chip-icon">🎯</span>
+                <span className="chip-label">Tracking Code:</span>
+                <strong className="chip-code">{referralCode}</strong>
+              </div>
+            )}
+            
+            {isAuthenticated && (
+              <div className="points-info">
+                <div className="point-item">
+                  <span className="point-icon">📝</span>
+                  <div className="point-details">
+                    <strong>10 pts</strong>
+                    <span>per referral</span>
+                  </div>
+                </div>
+                <div className="point-divider">→</div>
+                <div className="point-item">
+                  <span className="point-icon">✓</span>
+                  <div className="point-details">
+                    <strong>25 pts</strong>
+                    <span>when qualified</span>
+                  </div>
+                </div>
+                <div className="point-divider">→</div>
+                <div className="point-item">
+                  <span className="point-icon">💰</span>
+                  <div className="point-details">
+                    <strong>100 pts</strong>
+                    <span>when converted</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Login Prompt */}
         {showLoginPrompt && (
@@ -186,64 +218,193 @@ function PartnersContent() {
       <style jsx>{`
         .partners-page {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-          padding: 2rem 1rem;
+          background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+          padding-top: 0;
         }
 
         .partners-container {
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
+          padding: 0;
         }
 
-        .partners-header {
+        /* Hero Section */
+        .hero-section {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 8rem 2rem 4rem;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+          pointer-events: none;
+        }
+
+        .hero-content {
+          max-width: 800px;
+          margin: 0 auto;
           text-align: center;
-          margin-bottom: 3rem;
+          position: relative;
+          z-index: 1;
         }
 
-        .partners-header h1 {
-          font-size: 3rem;
-          color: #333;
-          margin-bottom: 1rem;
+        .hero-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(10px);
+          padding: 0.5rem 1.25rem;
+          border-radius: 50px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          margin-bottom: 1.5rem;
+          animation: fadeInDown 0.6s ease-out;
+        }
+
+        .badge-icon {
+          font-size: 1.25rem;
+        }
+
+        .badge-text {
+          color: white;
+          font-weight: 600;
+          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .hero-title {
+          font-size: 4rem;
+          color: white;
+          margin-bottom: 1.5rem;
+          font-weight: 800;
+          line-height: 1.1;
+          animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .hero-description {
+          font-size: 1.25rem;
+          color: rgba(255, 255, 255, 0.95);
+          margin-bottom: 2rem;
+          line-height: 1.6;
+          animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .hero-description strong {
+          color: #ffd89b;
           font-weight: 700;
         }
 
-        .subtitle {
-          font-size: 1.25rem;
-          color: #666;
-          margin-bottom: 2rem;
-        }
-
-        .referral-code-banner {
+        .referral-code-chip {
           display: inline-flex;
           align-items: center;
           gap: 0.75rem;
           background: white;
           padding: 1rem 2rem;
           border-radius: 50px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-          font-size: 1.1rem;
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+          margin-bottom: 2rem;
+          animation: fadeInUp 0.6s ease-out 0.3s both;
         }
 
-        .referral-code-banner .icon {
+        .chip-icon {
           font-size: 1.5rem;
         }
 
-        .points-banner {
-          display: inline-flex;
+        .chip-label {
+          color: #666;
+          font-size: 0.9rem;
+        }
+
+        .chip-code {
+          color: #667eea;
+          font-size: 1.1rem;
+          font-weight: 700;
+        }
+
+        .points-info {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+          animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .point-item {
+          display: flex;
           align-items: center;
           gap: 0.75rem;
-          background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-          color: white;
-          padding: 1rem 2rem;
-          border-radius: 50px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-          font-size: 1rem;
-          margin-top: 1rem;
-          font-weight: 600;
+          background: rgba(255, 255, 255, 0.15);
+          backdrop-filter: blur(10px);
+          padding: 1rem 1.5rem;
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .points-banner .icon {
+        .point-icon {
+          font-size: 1.75rem;
+        }
+
+        .point-details {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          color: white;
+        }
+
+        .point-details strong {
+          font-size: 1.25rem;
+          font-weight: 700;
+        }
+
+        .point-details span {
+          font-size: 0.85rem;
+          opacity: 0.9;
+        }
+
+        .point-divider {
+          color: white;
           font-size: 1.5rem;
+          opacity: 0.5;
+        }
+
+        @keyframes fadeInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .auth-status {
@@ -251,27 +412,34 @@ function PartnersContent() {
           align-items: center;
           justify-content: center;
           gap: 1rem;
-          padding: 1rem;
-          background: #d4edda;
-          border: 1px solid #c3e6cb;
-          border-radius: 8px;
-          margin-bottom: 2rem;
+          padding: 1.25rem 2rem;
+          background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+          border: 2px solid #28a745;
+          border-radius: 12px;
+          margin: 2rem auto;
+          max-width: 600px;
           color: #155724;
+          box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
         }
 
         .status-icon {
-          font-size: 1.25rem;
+          font-size: 1.5rem;
         }
 
         .dashboard-link {
           margin-left: auto;
           color: #155724;
-          font-weight: 600;
+          font-weight: 700;
           text-decoration: none;
+          padding: 0.5rem 1rem;
+          background: white;
+          border-radius: 8px;
+          transition: all 0.2s;
         }
 
         .dashboard-link:hover {
-          text-decoration: underline;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .login-prompt {
@@ -280,158 +448,332 @@ function PartnersContent() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
           padding: 1rem;
+          animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         .login-prompt-content {
           background: white;
-          padding: 2.5rem;
-          border-radius: 12px;
-          max-width: 500px;
+          padding: 3rem;
+          border-radius: 24px;
+          max-width: 550px;
+          width: 100%;
           text-align: center;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+          animation: slideUp 0.3s ease-out;
+          position: relative;
+        }
+
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .login-prompt-content h3 {
           margin-bottom: 1rem;
           color: #333;
-          font-size: 1.75rem;
+          font-size: 2rem;
+          font-weight: 800;
         }
 
         .login-prompt-content p {
           color: #666;
-          margin-bottom: 2rem;
-          line-height: 1.6;
+          margin-bottom: 2.5rem;
+          line-height: 1.7;
+          font-size: 1.05rem;
         }
 
         .login-prompt-actions {
           display: flex;
           gap: 1rem;
           justify-content: center;
+          flex-wrap: wrap;
         }
 
         .form-section {
-          margin-bottom: 4rem;
+          padding: 4rem 2rem;
+          background: white;
         }
 
         .benefits-section {
-          margin-bottom: 4rem;
+          padding: 5rem 2rem;
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         }
 
         .benefits-section h2 {
           text-align: center;
-          font-size: 2.5rem;
+          font-size: 3rem;
           color: #333;
-          margin-bottom: 3rem;
+          margin-bottom: 1rem;
+          font-weight: 800;
+        }
+
+        .benefits-section h2::after {
+          content: '';
+          display: block;
+          width: 100px;
+          height: 4px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          margin: 1.5rem auto;
+          border-radius: 2px;
         }
 
         .benefits-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 2.5rem;
+          max-width: 1200px;
+          margin: 0 auto;
         }
 
         .benefit-card {
           background: white;
-          padding: 2rem;
-          border-radius: 12px;
+          padding: 2.5rem;
+          border-radius: 20px;
           text-align: center;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-          transition: transform 0.3s;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s ease;
+          border: 2px solid transparent;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .benefit-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          transform: scaleX(0);
+          transition: transform 0.3s ease;
         }
 
         .benefit-card:hover {
-          transform: translateY(-5px);
+          transform: translateY(-8px);
+          box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+          border-color: #667eea;
+        }
+
+        .benefit-card:hover::before {
+          transform: scaleX(1);
         }
 
         .benefit-icon {
-          font-size: 3rem;
-          margin-bottom: 1rem;
+          font-size: 4rem;
+          margin-bottom: 1.5rem;
+          display: inline-block;
+          animation: bounce 2s ease infinite;
+        }
+
+        .benefit-card:hover .benefit-icon {
+          animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
         }
 
         .benefit-card h3 {
           font-size: 1.5rem;
           color: #333;
           margin-bottom: 1rem;
+          font-weight: 700;
         }
 
         .benefit-card p {
           color: #666;
-          line-height: 1.6;
+          line-height: 1.7;
+          font-size: 1rem;
         }
 
         .cta-section {
           text-align: center;
-          padding: 4rem 2rem;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          padding: 5rem 2rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .cta-section::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+          animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
         }
 
         .cta-section h2 {
-          font-size: 2rem;
-          color: #333;
+          font-size: 3rem;
+          color: white;
           margin-bottom: 1rem;
+          font-weight: 800;
+          position: relative;
+          z-index: 1;
         }
 
         .cta-section p {
-          color: #666;
-          margin-bottom: 2rem;
-          font-size: 1.1rem;
+          color: rgba(255, 255, 255, 0.95);
+          margin-bottom: 2.5rem;
+          font-size: 1.2rem;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+          line-height: 1.6;
+          position: relative;
+          z-index: 1;
         }
 
         .btn-primary,
         .btn-cta {
-          padding: 1rem 2rem;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
+          padding: 1.25rem 3rem;
+          background: white;
+          color: #667eea;
           border: none;
-          border-radius: 8px;
+          border-radius: 50px;
           font-size: 1.1rem;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
-          transition: transform 0.2s, box-shadow 0.2s;
+          transition: all 0.3s ease;
+          position: relative;
+          z-index: 1;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          text-transform: uppercase;
+          letter-spacing: 1px;
         }
 
         .btn-primary:hover,
         .btn-cta:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+          transform: translateY(-3px) scale(1.05);
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         .btn-secondary {
-          padding: 1rem 2rem;
-          background: white;
-          color: #667eea;
-          border: 2px solid #667eea;
-          border-radius: 8px;
+          padding: 1rem 2.5rem;
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          border: 2px solid white;
+          border-radius: 50px;
           font-size: 1.1rem;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
-          transition: all 0.2s;
+          transition: all 0.3s;
+          backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-          background: #667eea;
-          color: white;
+          background: white;
+          color: #667eea;
+        }
+
+        @media (max-width: 1024px) {
+          .hero-section {
+            padding: 7rem 2rem 3rem;
+          }
+
+          .hero-title {
+            font-size: 3rem;
+          }
+
+          .points-info {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .point-divider {
+            transform: rotate(90deg);
+            margin: 0.5rem 0;
+          }
         }
 
         @media (max-width: 768px) {
-          .partners-header h1 {
-            font-size: 2rem;
+          .hero-section {
+            padding: 6rem 1.5rem 2.5rem;
           }
 
-          .subtitle {
-            font-size: 1rem;
+          .hero-title {
+            font-size: 2.5rem;
+          }
+
+          .hero-description {
+            font-size: 1.1rem;
+          }
+
+          .referral-code-chip {
+            flex-direction: column;
+            text-align: center;
+            padding: 1rem 1.5rem;
+          }
+
+          .points-info {
+            gap: 0.75rem;
+          }
+
+          .point-item {
+            padding: 0.875rem 1.25rem;
+            width: 100%;
+          }
+
+          .benefits-section h2 {
+            font-size: 2.25rem;
           }
 
           .benefits-grid {
             grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+
+          .benefit-card {
+            padding: 2rem;
+          }
+
+          .cta-section h2 {
+            font-size: 2rem;
+          }
+
+          .cta-section p {
+            font-size: 1.05rem;
           }
 
           .login-prompt-actions {
@@ -440,6 +782,81 @@ function PartnersContent() {
 
           .login-prompt-actions button {
             width: 100%;
+          }
+
+          .btn-primary,
+          .btn-cta {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+          }
+
+          .form-section {
+            padding: 3rem 1rem;
+          }
+
+          .benefits-section {
+            padding: 3rem 1rem;
+          }
+
+          .cta-section {
+            padding: 3rem 1.5rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-section {
+            padding: 5rem 1rem 2rem;
+          }
+
+          .hero-title {
+            font-size: 2rem;
+          }
+
+          .hero-description {
+            font-size: 1rem;
+          }
+
+          .hero-badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+          }
+
+          .referral-code-chip {
+            padding: 0.875rem 1.25rem;
+            font-size: 0.9rem;
+          }
+
+          .chip-code {
+            font-size: 1rem;
+          }
+
+          .point-item {
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+          }
+
+          .point-details strong {
+            font-size: 1.1rem;
+          }
+
+          .benefit-card {
+            padding: 1.5rem;
+          }
+
+          .benefit-icon {
+            font-size: 3rem;
+          }
+
+          .benefit-card h3 {
+            font-size: 1.25rem;
+          }
+
+          .cta-section h2 {
+            font-size: 1.75rem;
+          }
+
+          .login-prompt-content {
+            padding: 2rem 1.5rem;
           }
         }
       `}</style>
