@@ -105,17 +105,22 @@ export default function ServicesPage() {
             </div>
             
             <div className="col-lg-6">
-              <div className="aximo-iconbox-wrap wow fadeInUpX service-card-hover" data-wow-delay="0.5s">
-                <div className="aximo-iconbox-icon" style={{ color: '#B39FD5' }}>
-                  <i className="icon-web"></i>
+              <Link href="/services/legal-websites" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                <div className="aximo-iconbox-wrap wow fadeInUpX service-card-hover" data-wow-delay="0.5s" style={{ cursor: 'pointer' }}>
+                  <div className="aximo-iconbox-icon" style={{ color: '#B39FD5' }}>
+                    <i className="icon-web"></i>
+                  </div>
+                  <div className="aximo-iconbox-data">
+                    <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Legal Website Design & SEO</h3>
+                    <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
+                      Custom legal websites designed to convert visitors into clients. Professional design, lightning-fast performance, and advanced SEO strategies that drive results.
+                    </p>
+                    <div style={{ marginTop: '15px', color: '#9333EA', fontWeight: 600, fontFamily: "'Libre Baskerville', serif" }}>
+                      Learn More →
+                    </div>
+                  </div>
                 </div>
-                <div className="aximo-iconbox-data">
-                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Website Design and SEO</h3>
-                  <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
-                    Professional website design and search engine optimization for personal injury law firms to increase online visibility, attract qualified leads, and convert visitors into clients.
-                  </p>
-                </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
