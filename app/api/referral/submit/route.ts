@@ -34,9 +34,8 @@ export async function POST(request: NextRequest) {
     const is_accounted = !!user;
     
     // Get IP address and user agent for tracking
-    const ip_address = request.headers.get('x-forwarded-for') || 
-                       request.headers.get('x-real-ip') || 
-                       'unknown';
+    const ip_header = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip');
+    const ip_address = ip_header && ip_header !== 'unknown' ? ip_header : null;
     const user_agent = request.headers.get('user-agent') || 'unknown';
 
     // Find partner by referral code OR by logged-in user
