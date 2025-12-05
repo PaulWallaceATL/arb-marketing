@@ -10,18 +10,15 @@ interface EnhancedReferralFormProps {
 
 export default function EnhancedReferralForm({ referralCode, onSuccess }: EnhancedReferralFormProps) {
   const [formData, setFormData] = useState({
-    // Lead (person being referred) information
+    // Referrer information
+    referrer_name: '',
+    referrer_email: '',
+    referrer_phone: '',
+    // Person being referred
     lead_name: '',
     lead_email: '',
     lead_phone: '',
-    lead_company: '',
-    lead_job_title: '',
-    lead_industry: '',
-    lead_company_size: '',
-    lead_budget_range: '',
-    lead_timeline: '',
-    lead_pain_points: '',
-    lead_linkedin_url: '',
+    // Context
     lead_message: '',
   });
   
@@ -71,22 +68,17 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
       if (response.ok) {
         setSubmitStatus({
           type: 'success',
-          message: '🎉 Thank you! Your referral has been submitted successfully. We\'ll reach out to them soon!',
+          message: 'Thank you! Your referral has been submitted successfully. We\'ll reach out to them soon.',
         });
         
         // Reset form
         setFormData({
+          referrer_name: '',
+          referrer_email: '',
+          referrer_phone: '',
           lead_name: '',
           lead_email: '',
           lead_phone: '',
-          lead_company: '',
-          lead_job_title: '',
-          lead_industry: '',
-          lead_company_size: '',
-          lead_budget_range: '',
-          lead_timeline: '',
-          lead_pain_points: '',
-          lead_linkedin_url: '',
           lead_message: '',
         });
 
@@ -113,9 +105,9 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
   return (
     <div className="enhanced-referral-form-container">
       <div className="form-header">
-        <h2>📋 Refer Someone Who Needs Our Services</h2>
+        <h2>Refer Someone Who Needs Our Help</h2>
         <p className="form-description">
-          Know someone who could benefit from our marketing solutions? Tell us about them below!
+          Simple form: tell us who you are, who you’re referring, and why they need help.
         </p>
       </div>
 
@@ -131,14 +123,70 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           </div>
         )}
 
-        {/* Section: Contact Information */}
+        {/* Section: Referrer Information */}
         <div className="form-section">
-          <h3 className="section-title">👤 Contact Information</h3>
+          <h3 className="section-title">Your Information</h3>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="referrer_name" className="form-label">
+                Your Name <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                id="referrer_name"
+                name="referrer_name"
+                value={formData.referrer_name}
+                onChange={handleChange}
+                required
+                className="form-input"
+                placeholder="Your full name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="referrer_email" className="form-label">
+                Your Email <span className="required">*</span>
+              </label>
+              <input
+                type="email"
+                id="referrer_email"
+                name="referrer_email"
+                value={formData.referrer_email}
+                onChange={handleChange}
+                required
+                className="form-input"
+                placeholder="you@example.com"
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="referrer_phone" className="form-label">
+                Your Phone (optional)
+              </label>
+              <input
+                type="tel"
+                id="referrer_phone"
+                name="referrer_phone"
+                value={formData.referrer_phone}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Section: Person Being Referred */}
+        <div className="form-section">
+          <h3 className="section-title">Person You're Referring</h3>
           
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="lead_name" className="form-label">
-                Full Name <span className="required">*</span>
+                Their Name <span className="required">*</span>
               </label>
               <input
                 type="text"
@@ -148,13 +196,13 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 onChange={handleChange}
                 required
                 className="form-input"
-                placeholder="John Smith"
+                placeholder="Full name of the person you're referring"
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="lead_email" className="form-label">
-                Email Address <span className="required">*</span>
+                Their Email <span className="required">*</span>
               </label>
               <input
                 type="email"
@@ -164,7 +212,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 onChange={handleChange}
                 required
                 className="form-input"
-                placeholder="john.smith@company.com"
+                placeholder="their.email@example.com"
               />
             </div>
           </div>
@@ -172,7 +220,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="lead_phone" className="form-label">
-                Phone Number
+                Their Phone (optional)
               </label>
               <input
                 type="tel"
@@ -181,194 +229,34 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 value={formData.lead_phone}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="lead_linkedin_url" className="form-label">
-                LinkedIn Profile
-              </label>
-              <input
-                type="url"
-                id="lead_linkedin_url"
-                name="lead_linkedin_url"
-                value={formData.lead_linkedin_url}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="https://linkedin.com/in/johnsmith"
+                placeholder="+1 (555) 987-6543"
               />
             </div>
           </div>
         </div>
 
-        {/* Section: Company & Role */}
+        {/* Section: Reason */}
         <div className="form-section">
-          <h3 className="section-title">🏢 Company & Role</h3>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="lead_company" className="form-label">
-                Company Name <span className="required">*</span>
-              </label>
-              <input
-                type="text"
-                id="lead_company"
-                name="lead_company"
-                value={formData.lead_company}
-                onChange={handleChange}
-                required
-                className="form-input"
-                placeholder="Acme Corporation"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="lead_job_title" className="form-label">
-                Job Title
-              </label>
-              <input
-                type="text"
-                id="lead_job_title"
-                name="lead_job_title"
-                value={formData.lead_job_title}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="Marketing Director"
-              />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="lead_industry" className="form-label">
-                Industry
-              </label>
-              <select
-                id="lead_industry"
-                name="lead_industry"
-                value={formData.lead_industry}
-                onChange={handleChange}
-                className="form-input"
-              >
-                <option value="">Select industry...</option>
-                <option value="Technology">Technology</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Finance">Finance</option>
-                <option value="Real Estate">Real Estate</option>
-                <option value="Retail">Retail</option>
-                <option value="Manufacturing">Manufacturing</option>
-                <option value="Education">Education</option>
-                <option value="Hospitality">Hospitality</option>
-                <option value="Professional Services">Professional Services</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="lead_company_size" className="form-label">
-                Company Size
-              </label>
-              <select
-                id="lead_company_size"
-                name="lead_company_size"
-                value={formData.lead_company_size}
-                onChange={handleChange}
-                className="form-input"
-              >
-                <option value="">Select size...</option>
-                <option value="1-10">1-10 employees</option>
-                <option value="11-50">11-50 employees</option>
-                <option value="51-200">51-200 employees</option>
-                <option value="201-500">201-500 employees</option>
-                <option value="501-1000">501-1000 employees</option>
-                <option value="1000+">1000+ employees</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Section: Project Details */}
-        <div className="form-section">
-          <h3 className="section-title">💼 Project Details</h3>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label htmlFor="lead_budget_range" className="form-label">
-                Estimated Budget Range
-              </label>
-              <select
-                id="lead_budget_range"
-                name="lead_budget_range"
-                value={formData.lead_budget_range}
-                onChange={handleChange}
-                className="form-input"
-              >
-                <option value="">Select budget...</option>
-                <option value="Under $5k">Under $5,000</option>
-                <option value="$5k-$10k">$5,000 - $10,000</option>
-                <option value="$10k-$25k">$10,000 - $25,000</option>
-                <option value="$25k-$50k">$25,000 - $50,000</option>
-                <option value="$50k-$100k">$50,000 - $100,000</option>
-                <option value="$100k+">$100,000+</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="lead_timeline" className="form-label">
-                Timeline
-              </label>
-              <select
-                id="lead_timeline"
-                name="lead_timeline"
-                value={formData.lead_timeline}
-                onChange={handleChange}
-                className="form-input"
-              >
-                <option value="">Select timeline...</option>
-                <option value="Immediate">Immediate (ASAP)</option>
-                <option value="1-3 months">1-3 months</option>
-                <option value="3-6 months">3-6 months</option>
-                <option value="6+ months">6+ months</option>
-                <option value="Just exploring">Just exploring</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="lead_pain_points" className="form-label">
-              What challenges are they facing?
-            </label>
-            <textarea
-              id="lead_pain_points"
-              name="lead_pain_points"
-              value={formData.lead_pain_points}
-              onChange={handleChange}
-              rows={3}
-              className="form-input"
-              placeholder="e.g., Need to increase lead generation, struggling with brand visibility, looking to launch new product..."
-            />
-          </div>
-
+          <h3 className="section-title">Reason for Referral</h3>
           <div className="form-group">
             <label htmlFor="lead_message" className="form-label">
-              Additional Notes
+              Describe the situation <span className="required">*</span>
             </label>
             <textarea
               id="lead_message"
               name="lead_message"
               value={formData.lead_message}
               onChange={handleChange}
-              rows={3}
+              rows={4}
+              required
               className="form-input"
-              placeholder="Any other relevant information about this referral..."
+              placeholder="Briefly describe the accident or reason for referral. Include any important details we should know."
             />
           </div>
         </div>
 
         {referralCode && (
           <div className="referral-code-display">
-            <span className="icon">🎯</span>
             <small>Tracking code: <strong>{referralCode}</strong></small>
           </div>
         )}
@@ -378,7 +266,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           disabled={isSubmitting}
           className="btn-submit"
         >
-          {isSubmitting ? 'Submitting...' : '🚀 Submit Referral'}
+          {isSubmitting ? 'Submitting...' : 'Submit Referral'}
         </button>
 
         <p className="form-notice">
@@ -402,13 +290,14 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         .form-header h2 {
           font-size: 2rem;
-          color: #333;
+          color: #1a1a1a;
           margin-bottom: 0.75rem;
+          letter-spacing: -0.02em;
         }
 
         .form-description {
           font-size: 1.1rem;
-          color: #666;
+          color: #4a4a4a;
           line-height: 1.6;
         }
 
@@ -430,10 +319,11 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
         }
 
         .section-title {
-          font-size: 1.3rem;
-          color: #333;
-          margin-bottom: 1.5rem;
-          font-weight: 600;
+          font-size: 1.25rem;
+          color: #1a1a1a;
+          margin-bottom: 1.25rem;
+          font-weight: 700;
+          letter-spacing: -0.01em;
         }
 
         .form-row {

@@ -7,17 +7,12 @@ export async function POST(request: NextRequest) {
     
     const {
       referral_code,
+      referrer_name,
+      referrer_email,
+      referrer_phone,
       lead_name,
       lead_email,
       lead_phone,
-      lead_company,
-      lead_job_title,
-      lead_industry,
-      lead_company_size,
-      lead_budget_range,
-      lead_timeline,
-      lead_pain_points,
-      lead_linkedin_url,
       lead_message,
       utm_source,
       utm_medium,
@@ -25,9 +20,9 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!lead_name || !lead_email || !lead_company) {
+    if (!lead_name || !lead_email) {
       return NextResponse.json(
-        { error: 'Name, email, and company are required' },
+        { error: 'Name and email are required' },
         { status: 400 }
       );
     }
@@ -68,16 +63,20 @@ export async function POST(request: NextRequest) {
       partner_id = partner?.id || null;
     }
 
-    // Calculate quality score (0-100)
+    // Combine referrer info into notes so it's stored
+    const combined_message = [
+      lead_message || '',
+      referrer_name || referrer_email || referrer_phone
+        ? `\n\nReferrer Details:\n${referrer_name ? `Name: ${referrer_name}` : ''}${referrer_email ? `\nEmail: ${referrer_email}` : ''}${referrer_phone ? `\nPhone: ${referrer_phone}` : ''}`
+        : '',
+    ].join('');
+
+    // Calculate a simple quality score
     let quality_score = 0;
-    if (lead_phone) quality_score += 10;
-    if (lead_job_title) quality_score += 10;
-    if (lead_industry) quality_score += 10;
-    if (lead_company_size) quality_score += 10;
-    if (lead_budget_range) quality_score += 15;
-    if (lead_timeline) quality_score += 10;
-    if (lead_pain_points && lead_pain_points.length > 20) quality_score += 20;
-    if (lead_linkedin_url) quality_score += 15;
+    if (lead_phone) quality_score += 20;
+    if (referrer_email) quality_score += 10;
+    if (referrer_phone) quality_score += 10;
+    if (combined_message && combined_message.length > 40) quality_score += 20;
 
     // Insert referral submission
     const { data, error } = await supabase
@@ -88,15 +87,15 @@ export async function POST(request: NextRequest) {
         lead_name,
         lead_email,
         lead_phone: lead_phone || null,
-        lead_company,
-        lead_job_title: lead_job_title || null,
-        lead_industry: lead_industry || null,
-        lead_company_size: lead_company_size || null,
-        lead_budget_range: lead_budget_range || null,
-        lead_timeline: lead_timeline || null,
-        lead_pain_points: lead_pain_points || null,
-        lead_linkedin_url: lead_linkedin_url || null,
-        lead_message: lead_message || null,
+        lead_company: null,
+        lead_job_title: null,
+        lead_industry: null,
+        lead_company_size: null,
+        lead_budget_range: null,
+        lead_timeline: null,
+        lead_pain_points: null,
+        lead_linkedin_url: null,
+        lead_message: combined_message || null,
         submission_source: 'web_form',
         ip_address,
         user_agent,

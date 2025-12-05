@@ -107,14 +107,14 @@ export default function ServicesPage() {
             <div className="col-lg-6">
               <Link href="/services/legal-websites" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
                 <div className="aximo-iconbox-wrap wow fadeInUpX service-card-hover" data-wow-delay="0.5s" style={{ cursor: 'pointer' }}>
-                  <div className="aximo-iconbox-icon" style={{ color: '#B39FD5' }}>
-                    <i className="icon-web"></i>
-                  </div>
-                  <div className="aximo-iconbox-data">
+                <div className="aximo-iconbox-icon" style={{ color: '#B39FD5' }}>
+                  <i className="icon-web"></i>
+                </div>
+                <div className="aximo-iconbox-data">
                     <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Legal Website Design & SEO</h3>
-                    <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
+                  <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
                       Custom legal websites designed to convert visitors into clients. Professional design, lightning-fast performance, and advanced SEO strategies that drive results.
-                    </p>
+                  </p>
                     <div style={{ marginTop: '15px', color: '#9333EA', fontWeight: 600, fontFamily: "'Libre Baskerville', serif" }}>
                       Learn More →
                     </div>
