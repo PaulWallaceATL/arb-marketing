@@ -88,7 +88,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
       } else {
         setSubmitStatus({
           type: 'error',
-          message: data.error || 'Failed to submit referral. Please try again.',
+          message: data.error || data.details || 'Failed to submit referral. Please try again.',
         });
       }
     } catch (error) {

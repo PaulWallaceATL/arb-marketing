@@ -78,37 +78,63 @@ export async function POST(request: NextRequest) {
     if (combined_message && combined_message.length > 40) quality_score += 20;
 
     // Insert referral submission
-    const { data, error } = await supabase
-      .from('referral_submissions')
-      .insert({
-        partner_id,
-        referral_code: referral_code || null,
-        lead_name,
-        lead_email,
-        lead_phone: lead_phone || null,
-        lead_company: null,
-        lead_job_title: null,
-        lead_industry: null,
-        lead_company_size: null,
-        lead_budget_range: null,
-        lead_timeline: null,
-        lead_pain_points: null,
-        lead_linkedin_url: null,
-        lead_message: combined_message || null,
-        submission_source: 'web_form',
-        ip_address,
-        user_agent,
-        utm_source: utm_source || null,
-        utm_medium: utm_medium || null,
-        utm_campaign: utm_campaign || null,
-        submitted_by_user_id: user?.id || null,
-        is_authenticated: !!user,
-        is_accounted,
-        quality_score,
+    const baseRecord = {
+      partner_id,
+      referral_code: referral_code || null,
+      lead_name,
+      lead_email,
+      lead_phone: lead_phone || null,
+      lead_company: null,
+      lead_job_title: null,
+      lead_industry: null,
+      lead_company_size: null,
+      lead_budget_range: null,
+      lead_timeline: null,
+      lead_pain_points: null,
+      lead_linkedin_url: null,
+      lead_message: combined_message || null,
+      submission_source: 'web_form',
+      ip_address,
+      user_agent,
+      utm_source: utm_source || null,
+      utm_medium: utm_medium || null,
+      utm_campaign: utm_campaign || null,
+      submitted_by_user_id: user?.id || null,
+      is_authenticated: !!user,
+      is_accounted,
+      quality_score,
+      status: 'new',
+    };
+
+    const insertAttempt = async (record: any) => {
+      return supabase.from('referral_submissions').insert(record).select().single();
+    };
+
+    let { data, error } = await insertAttempt(baseRecord);
+
+    // Fallback if schema migrations not applied (missing columns)
+    if (error && error.message && error.message.includes('column')) {
+      const fallbackRecord = {
+        partner_id: baseRecord.partner_id,
+        referral_code: baseRecord.referral_code,
+        lead_name: baseRecord.lead_name,
+        lead_email: baseRecord.lead_email,
+        lead_phone: baseRecord.lead_phone,
+        lead_message: baseRecord.lead_message,
+        submission_source: baseRecord.submission_source,
+        ip_address: baseRecord.ip_address,
+        user_agent: baseRecord.user_agent,
+        utm_source: baseRecord.utm_source,
+        utm_medium: baseRecord.utm_medium,
+        utm_campaign: baseRecord.utm_campaign,
+        submitted_by_user_id: baseRecord.submitted_by_user_id,
+        is_authenticated: baseRecord.is_authenticated,
         status: 'new',
-      })
-      .select()
-      .single();
+      };
+      const fallback = await insertAttempt(fallbackRecord);
+      data = fallback.data;
+      error = fallback.error;
+    }
 
     if (error) {
       console.error('Supabase insert error:', error);
