@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/partners');
+    router.push('/submission-form');
   };
 
   if (isLoading) {
@@ -95,7 +95,7 @@ export default function DashboardPage() {
           <h1 className="nav-logo">Partner Portal</h1>
           <div className="nav-actions">
             <span className="user-role">{userRole || 'User'}</span>
-            <a href="/partners" className="nav-link">
+            <a href="/submission-form" className="nav-link">
               Referral Form
             </a>
             <button onClick={handleLogout} className="btn-logout">

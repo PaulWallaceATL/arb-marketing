@@ -154,7 +154,7 @@ export const appConfig = {
     partners: [
       { label: 'Partner Login', href: '/partners/login' },
       { label: 'Partner Dashboard', href: '/partners/dashboard' },
-      { label: 'Become a Partner', href: '/partners' },
+      { label: 'Submit Referral', href: '/submission-form' },
     ],
   },
 
