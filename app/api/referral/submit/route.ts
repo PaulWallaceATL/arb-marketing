@@ -47,8 +47,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user session (anon client from cookies)
-    const cookieStore = cookies();
-    const supabaseAnon = createRouteHandlerClient({ cookies: cookieStore });
+    const supabaseAnon = createRouteHandlerClient({ cookies });
     const {
       data: { user },
     } = await supabaseAnon.auth.getUser();
