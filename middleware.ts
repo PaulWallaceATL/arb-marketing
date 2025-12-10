@@ -57,7 +57,6 @@ if (typeof setInterval !== 'undefined') {
  * Define which routes require authentication
  */
 const protectedRoutes = [
-  '/partners/dashboard',
   '/api/referral/submissions',
   '/api/admin',
 ];
