@@ -48,9 +48,13 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
 
       if (data.user) {
         setIsLoggedIn(true);
-        // Immediate redirect to ensure navigation
+        // Immediate redirect to ensure navigation (with hard fallback)
         router.push(redirectTo);
         if (onSuccess) onSuccess();
+        // Hard fallback after a short delay in case client-side routing stalls
+        setTimeout(() => {
+          window.location.href = redirectTo;
+        }, 300);
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred during login');
