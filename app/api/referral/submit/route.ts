@@ -1,8 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Use service role on the server to avoid RLS/anon issues
+const supabase = supabaseUrl && supabaseServiceRoleKey
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    })
+  : null;
 
 export async function POST(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY' },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     
     const {
@@ -107,7 +124,7 @@ export async function POST(request: NextRequest) {
     };
 
     const insertAttempt = async (record: any) => {
-      return supabase.from('referral_submissions').insert(record).select().single();
+      return supabase!.from('referral_submissions').insert(record).select().single();
     };
 
     let { data, error } = await insertAttempt(baseRecord);
@@ -139,7 +156,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Supabase insert error:', error);
       return NextResponse.json(
-        { error: 'Failed to submit referral', details: error.message },
+        { error: 'Failed to submit referral', details: error.message, code: error.code, hint: error.hint },
         { status: 500 }
       );
     }
