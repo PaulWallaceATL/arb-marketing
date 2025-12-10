@@ -5,11 +5,27 @@ import { useRouter } from 'next/navigation';
 import { supabase, getUserRole } from '@/lib/supabase/client';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 
+interface Submission {
+  id: string;
+  lead_name: string;
+  lead_email: string;
+  lead_phone?: string;
+  lead_message?: string;
+  referral_code?: string;
+  status: string;
+  quality_score?: number;
+  created_at: string;
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [subsLoading, setSubsLoading] = useState(false);
+  const [subsError, setSubsError] = useState<string | null>(null);
 
   useEffect(() => {
     checkAuth();
@@ -25,10 +41,29 @@ export default function DashboardPage() {
       }
 
       setIsAuthenticated(true);
+      setUserEmail(session.user.email ?? null);
       
       // Get user role
       const role = await getUserRole(session.user.id);
       setUserRole(role);
+
+      // Fetch user submissions (service role via API)
+      setSubsLoading(true);
+      setSubsError(null);
+      try {
+        const resp = await fetch('/api/referral/my-submissions');
+        if (resp.ok) {
+          const json = await resp.json();
+          setSubmissions(json.submissions || []);
+        } else {
+          const json = await resp.json().catch(() => ({}));
+          setSubsError(json.error || 'Failed to load your referrals');
+        }
+      } catch (err: any) {
+        setSubsError(err?.message || 'Failed to load your referrals');
+      } finally {
+        setSubsLoading(false);
+      }
 
       if (!role) {
         // User doesn't have a role assigned yet
@@ -112,12 +147,64 @@ export default function DashboardPage() {
           <div className="partner-view">
             <h2>Partner Dashboard</h2>
             <p>Welcome to your partner dashboard!</p>
-            <div className="coming-soon">
-              <span className="icon">🚧</span>
-              <p>
-                Partner-specific features coming soon. For now, please contact your
-                administrator for access to submission data.
-              </p>
+
+            <div className="info-grid">
+              <div className="info-card">
+                <div className="info-label">Your Email</div>
+                <div className="info-value">{userEmail || '—'}</div>
+              </div>
+              <div className="info-card">
+                <div className="info-label">Role</div>
+                <div className="info-value">{userRole || 'User'}</div>
+              </div>
+            </div>
+
+            <div className="submissions-card">
+              <div className="submissions-header">
+                <h3>Your Referrals</h3>
+                {subsLoading && <span className="chip">Loading...</span>}
+                {subsError && <span className="chip chip-error">{subsError}</span>}
+              </div>
+
+              {submissions.length === 0 && !subsLoading ? (
+                <div className="empty-state">
+                  <p>No referrals yet. Submit one to see it here.</p>
+                  <a href="/submission-form" className="btn-link">
+                    Go to submission form
+                  </a>
+                </div>
+              ) : (
+                <div className="table-wrapper">
+                  <table className="submissions-table">
+                    <thead>
+                      <tr>
+                        <th>Submitted</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Details</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {submissions.map((s) => (
+                        <tr key={s.id}>
+                          <td>{new Date(s.created_at).toLocaleDateString()}</td>
+                          <td>{s.lead_name}</td>
+                          <td>{s.lead_email}</td>
+                          <td>{s.lead_phone || '—'}</td>
+                          <td>
+                            <span className="status-chip">{s.status}</span>
+                          </td>
+                          <td className="details">
+                            {s.lead_message || '—'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -207,6 +294,128 @@ export default function DashboardPage() {
           font-size: 2rem;
           color: #333;
           margin-bottom: 1rem;
+        }
+
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 1rem;
+          margin: 1.5rem 0 2rem;
+        }
+
+        .info-card {
+          background: white;
+          padding: 1.25rem;
+          border-radius: 10px;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .info-label {
+          font-size: 0.9rem;
+          color: #6b7280;
+          margin-bottom: 0.35rem;
+        }
+
+        .info-value {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #1f2937;
+        }
+
+        .submissions-card {
+          background: white;
+          padding: 1.5rem;
+          border-radius: 12px;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .submissions-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 1rem;
+        }
+
+        .submissions-header h3 {
+          margin: 0;
+          font-size: 1.25rem;
+          color: #1f2937;
+        }
+
+        .chip {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.35rem 0.6rem;
+          border-radius: 999px;
+          background: #eef2ff;
+          color: #4338ca;
+          font-size: 0.85rem;
+          font-weight: 600;
+        }
+
+        .chip-error {
+          background: #fee2e2;
+          color: #b91c1c;
+        }
+
+        .table-wrapper {
+          width: 100%;
+          overflow-x: auto;
+        }
+
+        .submissions-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 0.95rem;
+        }
+
+        .submissions-table th,
+        .submissions-table td {
+          padding: 0.75rem;
+          border-bottom: 1px solid #f1f5f9;
+          text-align: left;
+        }
+
+        .submissions-table th {
+          color: #6b7280;
+          font-weight: 600;
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+        }
+
+        .submissions-table td {
+          color: #111827;
+        }
+
+        .status-chip {
+          display: inline-flex;
+          padding: 0.25rem 0.55rem;
+          border-radius: 999px;
+          background: #e0f2fe;
+          color: #0369a1;
+          font-weight: 600;
+          font-size: 0.85rem;
+        }
+
+        .details {
+          max-width: 320px;
+          white-space: pre-wrap;
+        }
+
+        .empty-state {
+          padding: 1rem 0.5rem;
+          color: #475569;
+        }
+
+        .btn-link {
+          display: inline-block;
+          margin-top: 0.35rem;
+          color: #4f46e5;
+          text-decoration: underline;
+          font-weight: 600;
         }
 
         .coming-soon {
