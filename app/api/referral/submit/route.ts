@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -44,8 +46,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user session if exists (but don't require it)
-    const { data: { user } } = await supabase.auth.getUser();
+    // Get user session (anon client from cookies)
+    const cookieStore = cookies();
+    const supabaseAnon = createRouteHandlerClient({ cookies: cookieStore });
+    const {
+      data: { user },
+    } = await supabaseAnon.auth.getUser();
     
     // Determine if this is an accounted referral (logged in partner)
     const is_accounted = !!user;
