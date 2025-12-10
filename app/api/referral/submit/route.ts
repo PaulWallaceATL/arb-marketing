@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Supabase insert error:', error);
       return NextResponse.json(
-        { error: 'Failed to submit referral', details: error.message, code: error.code, hint: error.hint },
+        { error: 'Failed to submit referral', details: error.message, code: error.code, hint: error.hint, raw: error },
         { status: 500 }
       );
     }
@@ -178,8 +178,9 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Server error:', error);
+    const err = error as any;
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: err?.message, stack: err?.stack },
       { status: 500 }
     );
   }
