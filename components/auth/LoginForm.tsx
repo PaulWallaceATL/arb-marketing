@@ -20,6 +20,7 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -46,12 +47,10 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
       }
 
       if (data.user) {
-        // Skip partner_users update on the client to avoid RLS errors; just route
-        if (onSuccess) {
-          onSuccess();
-        } else {
-          router.push(redirectTo);
-        }
+        setIsLoggedIn(true);
+        // Immediate redirect to ensure navigation
+        router.push(redirectTo);
+        if (onSuccess) onSuccess();
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred during login');
@@ -152,6 +151,12 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
         {error && (
           <div className="alert alert-error" role="alert">
             {error}
+          </div>
+        )}
+
+        {isLoggedIn && (
+          <div className="alert alert-success" role="alert">
+            Logged in. Redirecting to dashboard...
           </div>
         )}
 
