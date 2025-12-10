@@ -46,12 +46,7 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
       }
 
       if (data.user) {
-        // Update last login time
-        await supabase
-          .from('partner_users')
-          .update({ last_login_at: new Date().toISOString() })
-          .eq('user_id', data.user.id);
-
+        // Skip partner_users update on the client to avoid RLS errors; just route
         if (onSuccess) {
           onSuccess();
         } else {
