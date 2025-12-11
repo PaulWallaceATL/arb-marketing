@@ -127,6 +127,7 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-page">
+      <div className="gradient-bg" />
       <nav className="dashboard-nav">
         <div className="nav-content">
           <h1 className="nav-logo">Partner Portal</h1>
@@ -147,8 +148,14 @@ export default function DashboardPage() {
           <AdminDashboard />
         ) : (
           <div className="partner-view">
-            <h2>Partner Dashboard</h2>
-            <p>Welcome to your partner dashboard!</p>
+            <div className="page-heading">
+              <div>
+                <p className="eyebrow">Welcome back</p>
+                <h2>Partner Dashboard</h2>
+                <p className="muted">Track the referrals you’ve shared with us.</p>
+              </div>
+              <a className="cta" href="/submission-form">Submit a referral</a>
+            </div>
 
             <div className="info-grid">
               <div className="info-card">
@@ -221,7 +228,14 @@ export default function DashboardPage() {
       <style jsx>{`
         .dashboard-page {
           min-height: 100vh;
-          background: #f5f7fa;
+          background: radial-gradient(circle at 10% 20%, rgba(102,126,234,0.12), transparent 25%), #f7f8fb;
+          position: relative;
+        }
+        .gradient-bg {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(900px 900px at 80% 0%, rgba(76,29,149,0.08), transparent), radial-gradient(700px 700px at 10% 30%, rgba(99,102,241,0.10), transparent);
+          z-index: 0;
         }
 
         .dashboard-nav {
@@ -296,12 +310,49 @@ export default function DashboardPage() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 3rem 2rem;
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
         }
-
-        .partner-view h2 {
+        .page-heading {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+        .page-heading h2 {
           font-size: 2rem;
-          color: #333;
-          margin-bottom: 1rem;
+          color: #0f172a;
+          margin: 0.25rem 0 0;
+        }
+        .eyebrow {
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-weight: 700;
+          font-size: 12px;
+          color: #6366f1;
+          margin: 0;
+        }
+        .muted {
+          color: #6b7280;
+          margin: 0;
+        }
+        .cta {
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          color: #fff;
+          padding: 0.8rem 1.25rem;
+          border-radius: 10px;
+          font-weight: 700;
+          text-decoration: none;
+          box-shadow: 0 10px 30px rgba(99,102,241,0.25);
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .cta:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 14px 38px rgba(99,102,241,0.3);
         }
 
         .info-grid {
@@ -313,10 +364,10 @@ export default function DashboardPage() {
 
         .info-card {
           background: white;
-          padding: 1.25rem;
-          border-radius: 10px;
-          border: 1px solid #e5e7eb;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          padding: 1.5rem;
+          border-radius: 12px;
+          border: 1px solid rgba(99,102,241,0.08);
+          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
         }
 
         .info-label {
@@ -335,8 +386,8 @@ export default function DashboardPage() {
           background: white;
           padding: 1.5rem;
           border-radius: 12px;
-          border: 1px solid #e5e7eb;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+          border: 1px solid rgba(99,102,241,0.08);
+          box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
         }
 
         .submissions-header {
@@ -376,21 +427,23 @@ export default function DashboardPage() {
 
         .submissions-table th,
         .submissions-table td {
-          padding: 0.75rem;
-          border-bottom: 1px solid #f1f5f9;
+          padding: 0.85rem;
+          border-bottom: 1px solid #eef2f7;
           text-align: left;
+          color: #0f172a;
         }
 
         .submissions-table th {
-          color: #6b7280;
-          font-weight: 600;
+          color: #4b5563;
+          font-weight: 700;
           font-size: 0.85rem;
           text-transform: uppercase;
           letter-spacing: 0.03em;
+          background: #f8fafc;
         }
 
         .submissions-table td {
-          color: #111827;
+          color: #0f172a;
         }
 
         .status-chip {
