@@ -286,7 +286,7 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <Link
+                <a
                   key={u.user_id}
                   href={`/partners/admin/users/${u.user_id}`}
                   className="user-block"
@@ -302,15 +302,11 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <button
+                      <a
                         key={s.id}
+                        href={`/partners/admin/submission/${s.id}`}
                         className="user-submission-row"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          router.push(`/partners/admin/submission/${s.id}`);
-                        }}
-                        type="button"
+                        style={{ textDecoration: 'none', display: 'flex' }}
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -320,10 +316,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </button>
+                      </a>
                     ))}
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
           )}
