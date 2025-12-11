@@ -10,20 +10,20 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 export async function GET(request: NextRequest) {
   if (!supabaseUrl || !supabaseAnonKey) {
     return NextResponse.json(
-      { error: 'Supabase not configured' },
+      { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY' },
       { status: 500 }
     );
   }
 
   if (!supabaseServiceRoleKey) {
     return NextResponse.json(
-      { error: 'Service role key missing on server' },
+      { error: 'Service role key missing on server', details: 'Missing SUPABASE_SERVICE_ROLE_KEY' },
       { status: 500 }
     );
   }
 
   // Auth: get user from session cookie (anon key)
-  const supabaseRoute = createRouteHandlerClient({ cookies });
+  const supabaseRoute = createRouteHandlerClient({ cookies: () => cookies() });
   const {
     data: { user },
     error: userError,
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch submissions', details: error.message },
+      { error: 'Failed to fetch submissions', details: error.message, code: error.code, hint: error.hint },
       { status: 500 }
     );
   }

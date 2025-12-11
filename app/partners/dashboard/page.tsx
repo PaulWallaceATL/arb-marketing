@@ -162,13 +162,19 @@ export default function DashboardPage() {
             <div className="submissions-card">
               <div className="submissions-header">
                 <h3>Your Referrals</h3>
-                {subsLoading && <span className="chip">Loading...</span>}
-                {subsError && <span className="chip chip-error">{subsError}</span>}
+                <span className="chip">
+                  {subsLoading ? 'Loading...' : `${submissions.length} total`}
+                </span>
               </div>
 
               {submissions.length === 0 && !subsLoading ? (
                 <div className="empty-state">
-                  <p>No referrals yet. Submit one to see it here.</p>
+                  <p>No referrals yet.</p>
+                  {subsError && (
+                    <p style={{ color: '#b91c1c', marginTop: '0.35rem' }}>
+                      {subsError}
+                    </p>
+                  )}
                   <a href="/submission-form" className="btn-link">
                     Go to submission form
                   </a>
@@ -353,11 +359,6 @@ export default function DashboardPage() {
           color: #4338ca;
           font-size: 0.85rem;
           font-weight: 600;
-        }
-
-        .chip-error {
-          background: #fee2e2;
-          color: #b91c1c;
         }
 
         .table-wrapper {
