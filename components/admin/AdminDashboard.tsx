@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
 interface DashboardStats {
@@ -32,7 +31,6 @@ interface UserWithSubs {
 }
 
 export default function AdminDashboard() {
-  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [statusCounts, setStatusCounts] = useState<StatusCounts>({});
   const [recentSubmissions, setRecentSubmissions] = useState<ReferralSubmission[]>([]);
@@ -285,11 +283,11 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <button
+                <a
                   key={u.user_id}
-                  type="button"
+                  href={`/partners/admin/users/${u.user_id}`}
                   className="user-block"
-                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
+                  style={{ textDecoration: 'none', display: 'block' }}
                 >
                   <div className="user-block-header">
                     <div>
@@ -301,15 +299,12 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <button
+                      <a
                         key={s.id}
-                        type="button"
+                        href={`/partners/admin/submission/${s.id}`}
                         className="user-submission-row"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          router.push(`/partners/admin/submission/${s.id}`);
-                        }}
+                        style={{ textDecoration: 'none', display: 'flex' }}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -319,10 +314,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </button>
+                      </a>
                     ))}
                   </div>
-                </button>
+                </a>
               ))}
             </div>
           )}
@@ -567,6 +562,7 @@ export default function AdminDashboard() {
           cursor: pointer;
           width: 100%;
           text-align: left;
+          display: block;
         }
 
         .user-block:hover {
