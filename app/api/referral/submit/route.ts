@@ -186,13 +186,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        success: true,
-        message: is_accounted
-          ? 'Referral submitted and points awarded! Check your dashboard.'
-          : 'Referral submitted successfully!',
-        submission_id: data.id,
-        is_accounted,
-        quality_score,
+      success: true,
+      message: is_accounted 
+        ? 'Referral submitted and points awarded! Check your dashboard.' 
+        : 'Referral submitted successfully!',
+      submission_id: data.id,
+      is_accounted,
+      quality_score,
       },
       { status: 200 }
     );

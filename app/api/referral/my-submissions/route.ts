@@ -47,8 +47,17 @@ export async function GET(request: NextRequest) {
   }
 
   if (userError || !user) {
+    // Debug: expose which cookies are present to understand missing session (no values)
+    const cookieKeys = request.cookies.getAll().map((c) => c.name);
+    const hasAuthCookie = cookieKeys.some((name) => name.includes('sb-') && name.includes('-auth-token'));
     return NextResponse.json(
-      { submissions: [], warning: 'Unauthorized', details: userError?.message },
+      {
+        submissions: [],
+        warning: 'Unauthorized',
+        details: userError?.message || 'No user in session',
+        cookieKeys,
+        hasAuthCookie,
+      },
       { status: 200 }
     );
   }
