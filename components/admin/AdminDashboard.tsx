@@ -161,7 +161,11 @@ export default function AdminDashboard() {
   return (
     <div className="admin-dashboard">
       <header className="dashboard-header">
-        <h1>Admin Dashboard</h1>
+        <div>
+          <p className="eyebrow">Admin</p>
+          <h1>Control Center</h1>
+          <p className="muted">Manage submissions, users, and performance at a glance.</p>
+        </div>
         <button onClick={fetchDashboardData} className="btn-refresh">
           Refresh
         </button>
@@ -170,7 +174,9 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">📊</div>
+          <div className="stat-icon-circle">
+            <span className="material-icon">assessment</span>
+          </div>
           <div className="stat-content">
             <h3>Total Submissions</h3>
             <p className="stat-value">{stats?.totalSubmissions || 0}</p>
@@ -178,7 +184,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">🆕</div>
+          <div className="stat-icon-circle">
+            <span className="material-icon">fiber_new</span>
+          </div>
           <div className="stat-content">
             <h3>New (7 days)</h3>
             <p className="stat-value">{stats?.newSubmissions || 0}</p>
@@ -186,7 +194,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon-circle">
+            <span className="material-icon">check_circle</span>
+          </div>
           <div className="stat-content">
             <h3>Conversions</h3>
             <p className="stat-value">{stats?.convertedSubmissions || 0}</p>
@@ -195,7 +205,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">💰</div>
+          <div className="stat-icon-circle">
+            <span className="material-icon">payments</span>
+          </div>
           <div className="stat-content">
             <h3>Total Revenue</h3>
             <p className="stat-value">${stats?.totalRevenue || '0.00'}</p>
@@ -203,7 +215,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">🤝</div>
+          <div className="stat-icon-circle">
+            <span className="material-icon">groups</span>
+          </div>
           <div className="stat-content">
             <h3>Active Partners</h3>
             <p className="stat-value">{stats?.activePartners || 0}</p>
@@ -279,7 +293,11 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <a href={`/partners/admin/users/${u.user_id}`} className="user-block" style={{ textDecoration: 'none' }}>
+                <a
+                  href={`/partners/admin/users/${u.user_id}`}
+                  className="user-block"
+                  style={{ textDecoration: 'none', display: 'block' }}
+                >
                   <div className="user-block-header">
                     <div>
                       <div className="user-email">{u.email || 'No email'}</div>
@@ -290,7 +308,12 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <a key={s.id} href={`/partners/admin/submission/${s.id}`} className="user-submission-row" style={{ textDecoration: 'none' }}>
+                      <a
+                        key={s.id}
+                        href={`/partners/admin/submission/${s.id}`}
+                        className="user-submission-row"
+                        style={{ textDecoration: 'none', display: 'flex' }}
+                      >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
                           <div className="sub-email">{s.lead_email}</div>
@@ -408,55 +431,71 @@ export default function AdminDashboard() {
 
         .stats-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 1.5rem;
-          margin-bottom: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 1.25rem;
+          margin-bottom: 1.5rem;
         }
 
         .stat-card {
-          background: white;
-          padding: 1.5rem;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          background: #ffffff;
+          padding: 1.25rem;
+          border-radius: 10px;
+          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+          border: 1px solid #e5e7eb;
           display: flex;
+          gap: 0.85rem;
           align-items: center;
-          gap: 1rem;
         }
 
-        .stat-icon {
-          font-size: 2.5rem;
+        .stat-icon-circle {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: #eef2ff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #4338ca;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        .material-icon {
+          font-family: 'Material Icons';
+          font-size: 20px;
+          line-height: 1;
         }
 
         .stat-content h3 {
-          font-size: 0.9rem;
-          color: #666;
-          margin-bottom: 0.5rem;
+          font-size: 0.95rem;
+          color: #111827;
+          margin: 0 0 0.15rem;
         }
 
         .stat-value {
-          font-size: 2rem;
+          font-size: 1.4rem;
           font-weight: 700;
-          color: #333;
+          color: #111827;
           margin: 0;
         }
 
         .stat-subtitle {
           font-size: 0.85rem;
-          color: #999;
-          margin-top: 0.25rem;
+          color: #6b7280;
+          margin-top: 0.15rem;
         }
 
         .section-card {
           background: white;
-          padding: 2rem;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          margin-bottom: 2rem;
+          padding: 1.5rem;
+          border-radius: 10px;
+          box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+          margin-bottom: 1.5rem;
+          border: 1px solid #e5e7eb;
         }
 
         .section-card h2 {
-          margin-bottom: 1.5rem;
-          color: #333;
+          margin-bottom: 1rem;
+          color: #111827;
+          font-size: 1.3rem;
         }
 
         .status-grid {
@@ -529,6 +568,12 @@ export default function AdminDashboard() {
           border-radius: 10px;
           padding: 12px;
           background: #f8fafc;
+          transition: transform 0.12s ease, box-shadow 0.12s ease;
+        }
+
+        .user-block:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
         }
 
         .user-block-header {
