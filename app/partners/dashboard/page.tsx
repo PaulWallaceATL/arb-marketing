@@ -46,6 +46,7 @@ export default function DashboardPage() {
       // Fetch user submissions (service role via API)
       setSubsLoading(true);
       setSubsError(null);
+      setSubmissions([]);
       try {
         const resp = await fetch('/api/referral/my-submissions');
         if (resp.ok) {
@@ -58,9 +59,11 @@ export default function DashboardPage() {
         } else {
           const json = await resp.json().catch(() => ({}));
           setSubsError(json.error || 'Failed to load your referrals');
+          setSubmissions([]);
         }
       } catch (err: any) {
         setSubsError(err?.message || 'Failed to load your referrals');
+        setSubmissions([]);
       } finally {
         setSubsLoading(false);
       }

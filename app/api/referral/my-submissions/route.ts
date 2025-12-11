@@ -78,6 +78,7 @@ export async function GET(request: NextRequest) {
 
   let submissions: any[] = [];
   let warning: string | null = null;
+  let debug: any = {};
 
   try {
     const { data, error } = await supabaseService
@@ -109,11 +110,13 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       warning = error.message;
+      debug = { code: error.code, hint: error.hint, message: error.message };
     } else {
       submissions = data || [];
     }
   } catch (err: any) {
     warning = err?.message || 'Failed to fetch submissions';
+    debug = { caught: err?.message };
   }
 
   return NextResponse.json({
@@ -122,6 +125,7 @@ export async function GET(request: NextRequest) {
     submissions,
     role,
     warning,
+    debug,
   }, { status: 200 });
 }
 
