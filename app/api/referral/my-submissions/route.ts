@@ -26,7 +26,9 @@ export async function GET(request: NextRequest) {
   let user = null;
   let userError = null;
   try {
-    const supabaseAnon = createRouteHandlerClient({ cookies });
+    const supabaseAnon = createRouteHandlerClient({
+      cookies: () => cookies(),
+    });
     const res = await supabaseAnon.auth.getUser();
     user = res.data.user;
     userError = res.error;
