@@ -10,15 +10,15 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 export async function GET(request: NextRequest) {
   if (!supabaseUrl || !supabaseAnonKey) {
     return NextResponse.json(
-      { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY' },
-      { status: 500 }
+      { submissions: [], warning: 'Supabase not configured (missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY)' },
+      { status: 200 }
     );
   }
 
   if (!supabaseServiceRoleKey) {
     return NextResponse.json(
-      { error: 'Service role key missing on server', details: 'Missing SUPABASE_SERVICE_ROLE_KEY' },
-      { status: 500 }
+      { submissions: [], warning: 'Service role key missing on server (SUPABASE_SERVICE_ROLE_KEY)' },
+      { status: 200 }
     );
   }
 
@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
 
   if (userError || !user) {
     return NextResponse.json(
-      { error: 'Unauthorized', details: userError?.message },
-      { status: 401 }
+      { submissions: [], warning: 'Unauthorized', details: userError?.message },
+      { status: 200 }
     );
   }
 
@@ -43,56 +43,65 @@ export async function GET(request: NextRequest) {
 
   // Determine partner_id (if any)
   let partnerId: string | null = null;
-  const { data: partnerUser } = await supabaseService
-    .from('partner_users')
-    .select('partner_id')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (partnerUser?.partner_id) {
-    partnerId = partnerUser.partner_id;
+  try {
+    const { data: partnerUser } = await supabaseService
+      .from('partner_users')
+      .select('partner_id')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    if (partnerUser?.partner_id) {
+      partnerId = partnerUser.partner_id;
+    }
+  } catch (err) {
+    // ignore; partnerId stays null
   }
 
-  // Fetch submissions: either submitted_by_user_id or partner_id match
-  const { data, error } = await supabaseService
-    .from('referral_submissions')
-    .select(
-      `
-        id,
-        lead_name,
-        lead_email,
-        lead_phone,
-        lead_message,
-        referral_code,
-        partner_id,
-        submitted_by_user_id,
-        status,
-        quality_score,
-        created_at
-      `
-    )
-    .or(
-      [
-        `submitted_by_user_id.eq.${user.id}`,
-        partnerId ? `partner_id.eq.${partnerId}` : null,
-      ]
-        .filter(Boolean)
-        .join(',')
-    )
-    .order('created_at', { ascending: false });
+  let submissions: any[] = [];
+  let warning: string | null = null;
 
-  if (error) {
-    return NextResponse.json(
-      { error: 'Failed to fetch submissions', details: error.message, code: error.code, hint: error.hint },
-      { status: 500 }
-    );
+  try {
+    const { data, error } = await supabaseService
+      .from('referral_submissions')
+      .select(
+        `
+          id,
+          lead_name,
+          lead_email,
+          lead_phone,
+          lead_message,
+          referral_code,
+          partner_id,
+          submitted_by_user_id,
+          status,
+          quality_score,
+          created_at
+        `
+      )
+      .or(
+        [
+          `submitted_by_user_id.eq.${user.id}`,
+          partnerId ? `partner_id.eq.${partnerId}` : null,
+        ]
+          .filter(Boolean)
+          .join(',')
+      )
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      warning = error.message;
+    } else {
+      submissions = data || [];
+    }
+  } catch (err: any) {
+    warning = err?.message || 'Failed to fetch submissions';
   }
 
   return NextResponse.json({
     user: { id: user.id, email: user.email },
     partnerId,
-    submissions: data || [],
-  });
+    submissions,
+    warning,
+  }, { status: 200 });
 }
 
 

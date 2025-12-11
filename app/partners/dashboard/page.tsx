@@ -171,8 +171,8 @@ export default function DashboardPage() {
                 <div className="empty-state">
                   <p>No referrals yet.</p>
                   {subsError && (
-                    <p style={{ color: '#b91c1c', marginTop: '0.35rem' }}>
-                      {subsError}
+                    <p style={{ color: '#6b7280', marginTop: '0.35rem' }}>
+                      (We couldn’t load your referrals just now.)
                     </p>
                   )}
                   <a href="/submission-form" className="btn-link">
