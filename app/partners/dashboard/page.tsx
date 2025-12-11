@@ -48,7 +48,9 @@ export default function DashboardPage() {
       setSubsError(null);
       setSubmissions([]);
       try {
-        const resp = await fetch('/api/referral/my-submissions');
+        const resp = await fetch('/api/referral/my-submissions', {
+          credentials: 'include',
+        });
         if (resp.ok) {
           const json = await resp.json();
           setSubmissions(json.submissions || []);
