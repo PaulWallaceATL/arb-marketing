@@ -286,18 +286,11 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <div
+                <Link
                   key={u.user_id}
+                  href={`/partners/admin/users/${u.user_id}`}
                   className="user-block"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      router.push(`/partners/admin/users/${u.user_id}`);
-                    }
-                  }}
+                  style={{ textDecoration: 'none', display: 'block' }}
                 >
                   <div className="user-block-header">
                     <div>
@@ -309,12 +302,15 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <Link
+                      <button
                         key={s.id}
-                        href={`/partners/admin/submission/${s.id}`}
+                        type="button"
                         className="user-submission-row"
-                        style={{ textDecoration: 'none', display: 'flex' }}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          router.push(`/partners/admin/submission/${s.id}`);
+                        }}
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -324,10 +320,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
