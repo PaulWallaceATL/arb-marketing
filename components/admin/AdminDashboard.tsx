@@ -572,11 +572,16 @@ export default function AdminDashboard() {
           padding: 12px;
           background: #f8fafc;
           transition: transform 0.12s ease, box-shadow 0.12s ease;
+          cursor: pointer;
         }
 
         .user-block:hover {
           transform: translateY(-2px);
           box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .user-submission-row {
+          cursor: pointer;
         }
 
         .user-block-header {
