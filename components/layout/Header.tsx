@@ -4,15 +4,32 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import ThemeToggle from '@/components/ThemeToggle';
+import { supabase } from '@/lib/supabase/client';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (cancelled) return;
+      setIsAuthed(!!session);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
+      setIsAuthed(!!session);
+    });
+    return () => {
+      cancelled = true;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -261,14 +278,48 @@ export default function Header() {
 
             <div className="header-btn header-btn-l1 ms-auto d-none d-xs-inline-flex" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
               <ThemeToggle />
-              <Link
-                href="/contact"
-                className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
-                style={{ fontFamily: "'Libre Baskerville', serif" }}
-              >
-                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
-                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
-              </Link>
+              {isAuthed ? (
+                <Link
+                  href="/partners/dashboard"
+                  className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
+                  style={{
+                    fontFamily: "'Libre Baskerville', serif",
+                    padding: '10px 16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '50%',
+                      background: '#000',
+                      color: '#fff',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700,
+                      fontSize: '0.9rem',
+                    }}
+                    aria-hidden="true"
+                  >
+                    👤
+                  </span>
+                  <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Dashboard</span>
+                  <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Dashboard</span>
+                </Link>
+              ) : (
+                <Link
+                  href="/contact"
+                  className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
+                  style={{ fontFamily: "'Libre Baskerville', serif" }}
+                >
+                  <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
+                  <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Controls */}
