@@ -270,37 +270,6 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Partner Performance */}
-      {partnerPerformance.length > 0 && (
-        <div className="section-card">
-          <h2>Top Performing Partners</h2>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Partner</th>
-                  <th>Referrals</th>
-                  <th>Conversions</th>
-                  <th>Conv. Rate</th>
-                  <th>Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {partnerPerformance.map((partner, index) => (
-                  <tr key={index}>
-                    <td>{partner.company_name}</td>
-                    <td>{partner.total_referrals}</td>
-                    <td>{partner.total_conversions}</td>
-                    <td>{partner.conversion_rate}%</td>
-                    <td>${partner.total_revenue.toFixed(2)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
       {/* Users and their submissions */}
       <div className="section-card">
         <h2>Users & Submissions</h2>
@@ -310,7 +279,7 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <div key={u.user_id} className="user-block">
+                <a href={`/partners/admin/users/${u.user_id}`} className="user-block" style={{ textDecoration: 'none' }}>
                   <div className="user-block-header">
                     <div>
                       <div className="user-email">{u.email || 'No email'}</div>
@@ -321,7 +290,7 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <div key={s.id} className="user-submission-row">
+                      <a key={s.id} href={`/partners/admin/submission/${s.id}`} className="user-submission-row" style={{ textDecoration: 'none' }}>
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
                           <div className="sub-email">{s.lead_email}</div>
@@ -330,10 +299,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </div>
+                      </a>
                     ))}
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           )}
