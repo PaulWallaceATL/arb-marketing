@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -47,14 +47,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user session (anon client from cookies)
+    // Get user session (anon client from cookies) with explicit cookie adapter
     let user = null;
-    if (supabaseUrl && supabaseAnonKey) {
-      const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    try {
+      const cookieStore = await cookies();
+      const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set() {},
+          remove() {},
+        },
+      });
       const {
         data: { user: u },
       } = await supabaseAnon.auth.getUser();
       user = u;
+    } catch (err) {
+      user = null;
     }
     
     // Determine if this is an accounted referral (logged in partner)

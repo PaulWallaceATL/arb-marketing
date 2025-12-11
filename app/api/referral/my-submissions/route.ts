@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -22,12 +23,27 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Auth: get user from session cookie (anon key)
-  const supabaseRoute = createRouteHandlerClient({ cookies: () => cookies() });
-  const {
-    data: { user },
-    error: userError,
-  } = await supabaseRoute.auth.getUser();
+  // Auth: get user from session cookie (anon key) with explicit cookie adapter
+  let user = null;
+  let userError = null;
+  try {
+    const cookieStore = await cookies();
+    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        },
+        set() {},
+        remove() {},
+      },
+    });
+    const res = await supabaseAnon.auth.getUser();
+    user = res.data.user;
+    userError = res.error;
+  } catch (err: any) {
+    user = null;
+    userError = err;
+  }
 
   if (userError || !user) {
     return NextResponse.json(
