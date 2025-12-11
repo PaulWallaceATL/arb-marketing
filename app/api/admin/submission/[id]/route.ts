@@ -40,7 +40,15 @@ export async function PATCH(
     const hasCookieAuth = !!cookieToken;
 
     const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: {
+        headers: bearerToken
+          ? { Authorization: `Bearer ${bearerToken}` }
+          : undefined,
+      },
     });
     const {
       data: { user },
@@ -169,7 +177,15 @@ export async function GET(
     const hasCookieAuth = !!cookieToken;
 
     const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: {
+        headers: bearerToken
+          ? { Authorization: `Bearer ${bearerToken}` }
+          : undefined,
+      },
     });
     const {
       data: { user },

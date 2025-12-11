@@ -34,7 +34,15 @@ export async function GET(request: NextRequest) {
     const hasCookieAuth = !!cookieToken;
 
     const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+      global: {
+        headers: bearerToken
+          ? { Authorization: `Bearer ${bearerToken}` }
+          : undefined,
+      },
     });
 
     const {
