@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
@@ -285,18 +286,11 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <div
+                <Link
                   key={u.user_id}
+                  href={`/partners/admin/users/${u.user_id}`}
                   className="user-block"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      router.push(`/partners/admin/users/${u.user_id}`);
-                    }
-                  }}
+                  style={{ textDecoration: 'none', display: 'block' }}
                 >
                   <div className="user-block-header">
                     <div>
@@ -308,18 +302,11 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <div
+                      <Link
                         key={s.id}
+                        href={`/partners/admin/submission/${s.id}`}
                         className="user-submission-row"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => router.push(`/partners/admin/submission/${s.id}`)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            router.push(`/partners/admin/submission/${s.id}`);
-                          }
-                        }}
+                        style={{ textDecoration: 'none', display: 'flex' }}
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -329,10 +316,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
