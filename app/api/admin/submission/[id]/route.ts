@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -29,26 +27,21 @@ export async function PATCH(
     // Await params in Next.js 16+
     const { id } = await params;
     
-    // Get user session
-    const hdrs = await headers();
-    const cookieHeader = hdrs.get('cookie') || '';
-    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        get(name: string) {
-          const match = cookieHeader
-            .split(';')
-            .map((c) => c.trim())
-            .find((c) => c.startsWith(`${name}=`));
-          return match ? match.split('=')[1] : null;
-        },
-        set() {},
-        remove() {},
-      },
+    // Auth via bearer token (preferred) or auth cookie fallback
+    const authHeader = request.headers.get('authorization');
+    const bearerToken = authHeader?.toLowerCase().startsWith('bearer ')
+      ? authHeader.slice(7)
+      : null;
+    const cookieTokens = request.cookies.getAll().filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
+    const cookieToken = cookieTokens[0]?.value;
+
+    const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
     });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAnon.auth.getUser();
+    } = await supabaseAnon.auth.getUser(bearerToken || cookieToken);
     
     if (authError || !user) {
       return NextResponse.json(
@@ -152,26 +145,21 @@ export async function GET(
     // Await params in Next.js 16+
     const { id } = await params;
     
-    // Get user session
-    const hdrs = await headers();
-    const cookieHeader = hdrs.get('cookie') || '';
-    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        get(name: string) {
-          const match = cookieHeader
-            .split(';')
-            .map((c) => c.trim())
-            .find((c) => c.startsWith(`${name}=`));
-          return match ? match.split('=')[1] : null;
-        },
-        set() {},
-        remove() {},
-      },
+    // Auth via bearer token (preferred) or auth cookie fallback
+    const authHeader = request.headers.get('authorization');
+    const bearerToken = authHeader?.toLowerCase().startsWith('bearer ')
+      ? authHeader.slice(7)
+      : null;
+    const cookieTokens = request.cookies.getAll().filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
+    const cookieToken = cookieTokens[0]?.value;
+
+    const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
     });
     const {
       data: { user },
       error: authError,
-    } = await supabaseAnon.auth.getUser();
+    } = await supabaseAnon.auth.getUser(bearerToken || cookieToken);
     
     if (authError || !user) {
       return NextResponse.json(

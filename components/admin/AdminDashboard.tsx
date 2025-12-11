@@ -39,7 +39,18 @@ export default function AdminDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('/api/admin/dashboard');
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        setError('No session found. Please log in again.');
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/admin/dashboard', {
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await response.json();
 
       if (response.ok) {
@@ -59,10 +70,18 @@ export default function AdminDashboard() {
 
   const updateSubmissionStatus = async (id: string, status: string) => {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        alert('No session found. Please log in again.');
+        return;
+      }
+
       const response = await fetch(`/api/admin/submission/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ status }),
       });
