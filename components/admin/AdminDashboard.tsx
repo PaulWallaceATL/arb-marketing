@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
@@ -286,11 +285,11 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <Link
+                <button
                   key={u.user_id}
-                  href={`/partners/admin/users/${u.user_id}`}
+                  type="button"
                   className="user-block"
-                  style={{ textDecoration: 'none', display: 'block' }}
+                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
                 >
                   <div className="user-block-header">
                     <div>
@@ -323,7 +322,7 @@ export default function AdminDashboard() {
                       </button>
                     ))}
                   </div>
-                </Link>
+                </button>
               ))}
             </div>
           )}
@@ -566,6 +565,8 @@ export default function AdminDashboard() {
           background: #f8fafc;
           transition: transform 0.12s ease, box-shadow 0.12s ease;
           cursor: pointer;
+          width: 100%;
+          text-align: left;
         }
 
         .user-block:hover {
