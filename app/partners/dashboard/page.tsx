@@ -48,8 +48,10 @@ export default function DashboardPage() {
       setSubsError(null);
       setSubmissions([]);
       try {
+        const token = session.access_token;
         const resp = await fetch('/api/referral/my-submissions', {
           credentials: 'include',
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         });
         if (resp.ok) {
           const json = await resp.json();

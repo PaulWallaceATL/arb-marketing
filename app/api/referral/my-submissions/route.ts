@@ -21,24 +21,23 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Auth: get user from session cookie (anon key) with request/response adapter
+  // Auth: prefer Authorization Bearer token; fallback to cookie lookup
   let user = null;
   let userError = null;
+  const authHeader = request.headers.get('authorization');
+  const bearerToken = authHeader?.toLowerCase().startsWith('bearer ')
+    ? authHeader.slice(7)
+    : null;
+
+  // attempt to find any sb-*-auth-token cookie
+  const cookieTokens = request.cookies.getAll().filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
+  const cookieToken = cookieTokens[0]?.value;
+
   try {
-    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
-        },
-        set() {
-          // no-op on server read flow
-        },
-        remove() {
-          // no-op on server read flow
-        },
-      },
+    const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
     });
-    const res = await supabaseAnon.auth.getUser();
+    const res = await supabaseAnon.auth.getUser(bearerToken || cookieToken);
     user = res.data.user;
     userError = res.error;
   } catch (err: any) {

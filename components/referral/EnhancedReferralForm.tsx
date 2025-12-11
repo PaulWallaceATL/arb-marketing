@@ -49,10 +49,15 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
       const utm_medium = urlParams.get('utm_medium') || undefined;
       const utm_campaign = urlParams.get('utm_campaign') || undefined;
 
+      // Attach auth token if logged in so the referral is tied to the user
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
+
       const response = await fetch('/api/referral/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         },
         body: JSON.stringify({
           ...formData,

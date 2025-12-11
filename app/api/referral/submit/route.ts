@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -48,23 +47,19 @@ export async function POST(request: NextRequest) {
 
     // Get user session using server client with request/response cookies
     let user = null;
+    const authHeader = request.headers.get('authorization');
+    const bearerToken = authHeader?.toLowerCase().startsWith('bearer ')
+      ? authHeader.slice(7)
+      : null;
+    const cookieTokens = request.cookies.getAll().filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
+    const cookieToken = cookieTokens[0]?.value;
     try {
-      const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
-        cookies: {
-          get(name: string) {
-            return request.cookies.get(name)?.value;
-          },
-          set() {
-            // no-op on server read flow
-          },
-          remove() {
-            // no-op on server read flow
-          },
-        },
+      const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
       });
       const {
         data: { user: u },
-      } = await supabaseAnon.auth.getUser();
+      } = await supabaseAnon.auth.getUser(bearerToken || cookieToken);
       user = u;
     } catch (err) {
       user = null;
