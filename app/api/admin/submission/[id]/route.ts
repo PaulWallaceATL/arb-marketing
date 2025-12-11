@@ -30,7 +30,8 @@ export async function PATCH(
     const { id } = await params;
     
     // Get user session
-    const cookieHeader = (await headers()).get('cookie') || '';
+    const hdrs = await headers();
+    const cookieHeader = hdrs.get('cookie') || '';
     const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         get(name: string) {
@@ -152,7 +153,8 @@ export async function GET(
     const { id } = await params;
     
     // Get user session
-    const cookieHeader = (await headers()).get('cookie') || '';
+    const hdrs = await headers();
+    const cookieHeader = hdrs.get('cookie') || '';
     const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         get(name: string) {

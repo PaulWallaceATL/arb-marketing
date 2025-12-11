@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user session
-    const cookieHeader = (await headers()).get('cookie') || '';
+    const hdrs = await headers();
+    const cookieHeader = hdrs.get('cookie') || '';
     const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         get(name: string) {
