@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { headers } from 'next/headers';
-import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -47,24 +47,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user session (anon client from cookies) with explicit cookie adapter
+    // Get user session using auth-helpers with built-in cookie handling
     let user = null;
     try {
-      const hdrs = await headers();
-      const cookieHeader = hdrs.get('cookie') || '';
-      const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
-        cookies: {
-          get(name: string) {
-            const match = cookieHeader
-              .split(';')
-              .map((c) => c.trim())
-              .find((c) => c.startsWith(`${name}=`));
-            return match ? match.split('=')[1] : null;
-          },
-          set() {},
-          remove() {},
-        },
-      });
+      const supabaseAnon = createRouteHandlerClient({ cookies });
       const {
         data: { user: u },
       } = await supabaseAnon.auth.getUser();

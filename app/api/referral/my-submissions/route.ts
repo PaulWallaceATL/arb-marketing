@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -27,21 +26,7 @@ export async function GET(request: NextRequest) {
   let user = null;
   let userError = null;
   try {
-    const hdrs = await headers();
-    const cookieHeader = hdrs.get('cookie') || '';
-    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        get(name: string) {
-          const match = cookieHeader
-            .split(';')
-            .map((c) => c.trim())
-            .find((c) => c.startsWith(`${name}=`));
-          return match ? match.split('=')[1] : null;
-        },
-        set() {},
-        remove() {},
-      },
-    });
+    const supabaseAnon = createRouteHandlerClient({ cookies });
     const res = await supabaseAnon.auth.getUser();
     user = res.data.user;
     userError = res.error;
