@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
@@ -27,12 +27,15 @@ export async function GET(request: NextRequest) {
   let user = null;
   let userError = null;
   try {
-    const cookieStore: any = await cookies();
+    const cookieHeader = (await headers()).get('cookie') || '';
     const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         get(name: string) {
-          const val = cookieStore.get(name)?.value;
-          return val ?? null;
+          const match = cookieHeader
+            .split(';')
+            .map((c) => c.trim())
+            .find((c) => c.startsWith(`${name}=`));
+          return match ? match.split('=')[1] : null;
         },
         set() {},
         remove() {},

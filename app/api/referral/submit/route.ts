@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -50,12 +50,15 @@ export async function POST(request: NextRequest) {
     // Get user session (anon client from cookies) with explicit cookie adapter
     let user = null;
     try {
-      const cookieStore: any = await cookies();
+      const cookieHeader = (await headers()).get('cookie') || '';
       const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
         cookies: {
           get(name: string) {
-            const val = cookieStore.get(name)?.value;
-            return val ?? null;
+            const match = cookieHeader
+              .split(';')
+              .map((c) => c.trim())
+              .find((c) => c.startsWith(`${name}=`));
+            return match ? match.split('=')[1] : null;
           },
           set() {},
           remove() {},
