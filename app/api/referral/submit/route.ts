@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -47,11 +46,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user session using auth-helpers with built-in cookie handling
+    // Get user session using server client with request/response cookies
     let user = null;
     try {
-      const supabaseAnon = createRouteHandlerClient({
-        cookies: () => cookies(),
+      const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value;
+          },
+          set() {
+            // no-op on server read flow
+          },
+          remove() {
+            // no-op on server read flow
+          },
+        },
       });
       const {
         data: { user: u },
@@ -175,15 +184,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      message: is_accounted 
-        ? 'Referral submitted and points awarded! Check your dashboard.' 
-        : 'Referral submitted successfully!',
-      submission_id: data.id,
-      is_accounted,
-      quality_score,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: is_accounted
+          ? 'Referral submitted and points awarded! Check your dashboard.'
+          : 'Referral submitted successfully!',
+        submission_id: data.id,
+        is_accounted,
+        quality_score,
+      },
+      { status: 200 }
+    );
 
   } catch (error) {
     console.error('Server error:', error);
