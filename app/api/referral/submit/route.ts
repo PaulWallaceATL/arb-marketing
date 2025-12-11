@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     // Get user session (anon client from cookies) with explicit cookie adapter
     let user = null;
     try {
-      const cookieStore = await cookies();
+      const cookieStore: any = await cookies();
       const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
         cookies: {
           get(name: string) {
