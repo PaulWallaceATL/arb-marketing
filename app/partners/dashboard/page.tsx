@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase, getUserRole } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 
 interface Submission {
@@ -43,10 +43,6 @@ export default function DashboardPage() {
       setIsAuthenticated(true);
       setUserEmail(session.user.email ?? null);
       
-      // Get user role
-      const role = await getUserRole(session.user.id);
-      setUserRole(role);
-
       // Fetch user submissions (service role via API)
       setSubsLoading(true);
       setSubsError(null);
@@ -55,6 +51,10 @@ export default function DashboardPage() {
         if (resp.ok) {
           const json = await resp.json();
           setSubmissions(json.submissions || []);
+          setUserRole(json.role || 'User');
+          if (json.warning) {
+            setSubsError(json.warning);
+          }
         } else {
           const json = await resp.json().catch(() => ({}));
           setSubsError(json.error || 'Failed to load your referrals');
@@ -63,11 +63,6 @@ export default function DashboardPage() {
         setSubsError(err?.message || 'Failed to load your referrals');
       } finally {
         setSubsLoading(false);
-      }
-
-      if (!role) {
-        // User doesn't have a role assigned yet
-        console.error('User role not found');
       }
     } catch (error) {
       console.error('Auth error:', error);

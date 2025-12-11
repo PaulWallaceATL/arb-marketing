@@ -57,16 +57,20 @@ export async function GET(request: NextRequest) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  // Determine partner_id (if any)
+  // Determine partner_id (if any) and role
   let partnerId: string | null = null;
+  let role: string | null = null;
   try {
     const { data: partnerUser } = await supabaseService
       .from('partner_users')
-      .select('partner_id')
+      .select('partner_id, role')
       .eq('user_id', user.id)
       .maybeSingle();
     if (partnerUser?.partner_id) {
       partnerId = partnerUser.partner_id;
+    }
+    if (partnerUser?.role) {
+      role = partnerUser.role;
     }
   } catch (err) {
     // ignore; partnerId stays null
@@ -116,6 +120,7 @@ export async function GET(request: NextRequest) {
     user: { id: user.id, email: user.email },
     partnerId,
     submissions,
+    role,
     warning,
   }, { status: 200 });
 }
