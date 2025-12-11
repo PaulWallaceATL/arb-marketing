@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Use service role on the server to avoid RLS/anon issues
@@ -15,9 +16,9 @@ const supabase = supabaseUrl && supabaseServiceRoleKey
 
 export async function POST(request: NextRequest) {
   try {
-    if (!supabase) {
+    if (!supabaseUrl || !supabaseAnonKey || !supabase) {
       return NextResponse.json(
-        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY' },
+        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY' },
         { status: 500 }
       );
     }
@@ -47,11 +48,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user session (anon client from cookies)
-    // Wrap cookies in a getter to satisfy auth-helpers context expectations
-    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
-    const {
-      data: { user },
-    } = await supabaseAnon.auth.getUser();
+    let user = null;
+    if (supabaseUrl && supabaseAnonKey) {
+      const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+      const {
+        data: { user: u },
+      } = await supabaseAnon.auth.getUser();
+      user = u;
+    }
     
     // Determine if this is an accounted referral (logged in partner)
     const is_accounted = !!user;

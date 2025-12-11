@@ -1,10 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, isAdmin } from '@/lib/supabase/client';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const supabaseService =
+  supabaseUrl && supabaseServiceRoleKey
+    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      })
+    : null;
 
 export async function GET(request: NextRequest) {
   try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseService) {
+      return NextResponse.json(
+        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY' },
+        { status: 500 }
+      );
+    }
+
     // Get user session
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAnon.auth.getUser();
     
     if (authError || !user) {
       return NextResponse.json(
@@ -14,7 +38,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if user is admin
-    const userIsAdmin = await isAdmin(user.id);
+    const { data: userRole } = await supabaseService
+      .from('partner_users')
+      .select('role')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    const userIsAdmin = userRole?.role === 'admin';
     
     if (!userIsAdmin) {
       return NextResponse.json(
@@ -33,30 +62,30 @@ export async function GET(request: NextRequest) {
       { data: partnerPerformance },
     ] = await Promise.all([
       // Total submissions
-      supabase
+      supabaseService
         .from('referral_submissions')
         .select('id', { count: 'exact', head: true }),
       
       // New submissions (last 7 days)
-      supabase
+      supabaseService
         .from('referral_submissions')
         .select('id', { count: 'exact', head: true })
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
       
       // Converted submissions
-      supabase
+      supabaseService
         .from('referral_submissions')
         .select('id, conversion_value', { count: 'exact' })
         .eq('status', 'converted'),
       
       // Active partners
-      supabase
+      supabaseService
         .from('channel_partners')
         .select('id', { count: 'exact', head: true })
         .eq('status', 'active'),
       
       // Recent submissions (last 10)
-      supabase
+      supabaseService
         .from('referral_submissions')
         .select(`
           *,
@@ -70,7 +99,7 @@ export async function GET(request: NextRequest) {
         .limit(10),
       
       // Partner performance
-      supabase
+      supabaseService
         .from('partner_performance')
         .select('*')
         .eq('status', 'active')
@@ -85,7 +114,7 @@ export async function GET(request: NextRequest) {
     ) || 0;
 
     // Get submissions by status
-    const { data: submissionsByStatus } = await supabase
+    const { data: submissionsByStatus } = await supabaseService
       .from('referral_submissions')
       .select('status');
 

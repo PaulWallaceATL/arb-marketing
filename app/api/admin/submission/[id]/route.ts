@@ -1,16 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, isAdmin, logActivity } from '@/lib/supabase/client';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const supabaseService =
+  supabaseUrl && supabaseServiceRoleKey
+    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      })
+    : null;
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseService) {
+      return NextResponse.json(
+        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY' },
+        { status: 500 }
+      );
+    }
+
     // Await params in Next.js 16+
     const { id } = await params;
     
     // Get user session
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAnon.auth.getUser();
     
     if (authError || !user) {
       return NextResponse.json(
@@ -20,7 +44,12 @@ export async function PATCH(
     }
 
     // Check if user is admin
-    const userIsAdmin = await isAdmin(user.id);
+    const { data: userRole } = await supabaseService
+      .from('partner_users')
+      .select('role')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    const userIsAdmin = userRole?.role === 'admin';
     
     if (!userIsAdmin) {
       return NextResponse.json(
@@ -56,7 +85,7 @@ export async function PATCH(
     }
 
     // Update the submission
-    const { data, error } = await supabase
+    const { data, error } = await supabaseService
       .from('referral_submissions')
       .update(updateData)
       .eq('id', id)
@@ -72,12 +101,13 @@ export async function PATCH(
     }
 
     // Log the activity
-    await logActivity(
-      'update_submission',
-      { submission_id: id, changes: updateData },
-      'referral_submission',
-      id
-    );
+    await supabaseService.from('activity_log').insert({
+      user_id: user.id,
+      action: 'update_submission',
+      entity_type: 'referral_submission',
+      entity_id: id,
+      details: { changes: updateData },
+    });
 
     return NextResponse.json({
       success: true,
@@ -98,11 +128,22 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseService) {
+      return NextResponse.json(
+        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY' },
+        { status: 500 }
+      );
+    }
+
     // Await params in Next.js 16+
     const { id } = await params;
     
     // Get user session
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAnon.auth.getUser();
     
     if (authError || !user) {
       return NextResponse.json(
@@ -112,7 +153,7 @@ export async function GET(
     }
 
     // Fetch the submission
-    const { data, error } = await supabase
+    const { data, error } = await supabaseService
       .from('referral_submissions')
       .select(`
         *,

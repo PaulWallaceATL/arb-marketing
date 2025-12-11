@@ -1,11 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, getUserRole } from '@/lib/supabase/client';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// Service role client for data access
+const supabaseService =
+  supabaseUrl && supabaseServiceRoleKey
+    ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+        auth: { autoRefreshToken: false, persistSession: false },
+      })
+    : null;
 
 export async function GET(request: NextRequest) {
   try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseService) {
+      return NextResponse.json(
+        { error: 'Supabase not configured', details: 'Missing NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY' },
+        { status: 500 }
+      );
+    }
+
     // Get user session
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
+    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    const {
+      data: { user },
+      error: authError,
+    } = await supabaseAnon.auth.getUser();
+
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -14,7 +39,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user role
-    const role = await getUserRole(user.id);
+    let role: string | null = null;
+    const { data: partnerUserRole } = await supabaseService
+      .from('partner_users')
+      .select('role')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    role = partnerUserRole?.role || null;
     
     if (!role) {
       return NextResponse.json(
@@ -29,7 +60,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50');
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    let query = supabase
+    let query = supabaseService
       .from('referral_submissions')
       .select(`
         *,
@@ -50,7 +81,7 @@ export async function GET(request: NextRequest) {
     // If not admin, only show submissions for their partner account
     if (role !== 'admin') {
       // Get partner_id for this user
-      const { data: partnerUser } = await supabase
+      const { data: partnerUser } = await supabaseService
         .from('partner_users')
         .select('partner_id')
         .eq('user_id', user.id)
