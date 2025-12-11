@@ -302,11 +302,15 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <Link
+                      <button
                         key={s.id}
-                        href={`/partners/admin/submission/${s.id}`}
                         className="user-submission-row"
-                        style={{ textDecoration: 'none', display: 'flex' }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          router.push(`/partners/admin/submission/${s.id}`);
+                        }}
+                        type="button"
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -316,7 +320,7 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 </Link>
@@ -571,6 +575,20 @@ export default function AdminDashboard() {
 
         .user-submission-row {
           cursor: pointer;
+          background: #fff;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          text-align: left;
+          transition: transform 0.12s ease, box-shadow 0.12s ease;
+        }
+        .user-submission-row:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
         }
 
         .user-block-header {
