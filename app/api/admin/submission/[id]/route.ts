@@ -32,8 +32,12 @@ export async function PATCH(
     const bearerToken = authHeader?.toLowerCase().startsWith('bearer ')
       ? authHeader.slice(7)
       : null;
-    const cookieTokens = request.cookies.getAll().filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
+    const cookieTokens = request.cookies
+      .getAll()
+      .filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
     const cookieToken = cookieTokens[0]?.value;
+    const hasBearer = !!bearerToken;
+    const hasCookieAuth = !!cookieToken;
 
     const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
       auth: { autoRefreshToken: false, persistSession: false },
@@ -45,7 +49,14 @@ export async function PATCH(
     
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { 
+          error: 'Unauthorized',
+          details: authError?.message || 'No user from token',
+          hasBearer,
+          hasCookieAuth,
+          bearerLength: bearerToken?.length || 0,
+          cookieTokenLength: cookieToken?.length || 0,
+        },
         { status: 401 }
       );
     }
@@ -150,8 +161,12 @@ export async function GET(
     const bearerToken = authHeader?.toLowerCase().startsWith('bearer ')
       ? authHeader.slice(7)
       : null;
-    const cookieTokens = request.cookies.getAll().filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
+    const cookieTokens = request.cookies
+      .getAll()
+      .filter((c) => c.name.includes('sb-') && c.name.includes('-auth-token'));
     const cookieToken = cookieTokens[0]?.value;
+    const hasBearer = !!bearerToken;
+    const hasCookieAuth = !!cookieToken;
 
     const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
       auth: { autoRefreshToken: false, persistSession: false },
@@ -163,7 +178,14 @@ export async function GET(
     
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { 
+          error: 'Unauthorized',
+          details: authError?.message || 'No user from token',
+          hasBearer,
+          hasCookieAuth,
+          bearerLength: bearerToken?.length || 0,
+          cookieTokenLength: cookieToken?.length || 0,
+        },
         { status: 401 }
       );
     }
