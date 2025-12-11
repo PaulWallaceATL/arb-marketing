@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
 interface DashboardStats {
@@ -31,6 +32,7 @@ interface UserWithSubs {
 }
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [statusCounts, setStatusCounts] = useState<StatusCounts>({});
   const [recentSubmissions, setRecentSubmissions] = useState<ReferralSubmission[]>([]);
@@ -288,11 +290,11 @@ export default function AdminDashboard() {
                   className="user-block"
                   role="button"
                   tabIndex={0}
-                  onClick={() => (window.location.href = `/partners/admin/users/${u.user_id}`)}
+                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      window.location.href = `/partners/admin/users/${u.user_id}`;
+                      router.push(`/partners/admin/users/${u.user_id}`);
                     }
                   }}
                 >
@@ -311,11 +313,11 @@ export default function AdminDashboard() {
                         className="user-submission-row"
                         role="button"
                         tabIndex={0}
-                        onClick={() => (window.location.href = `/partners/admin/submission/${s.id}`)}
+                        onClick={() => router.push(`/partners/admin/submission/${s.id}`)}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            window.location.href = `/partners/admin/submission/${s.id}`;
+                            router.push(`/partners/admin/submission/${s.id}`);
                           }
                         }}
                       >
