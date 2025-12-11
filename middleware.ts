@@ -94,6 +94,13 @@ export async function middleware(req: NextRequest) {
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
   const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
 
+  // If hitting admin APIs with a Bearer token, let the route handler perform auth
+  const authHeader = req.headers.get('authorization');
+  const hasBearer = authHeader?.toLowerCase().startsWith('bearer ');
+  if (pathname.startsWith('/api/admin') && hasBearer) {
+    return res;
+  }
+
   if (isProtectedRoute || isAdminRoute) {
     // Create Supabase client
     const supabase = createMiddlewareClient({ req, res });
