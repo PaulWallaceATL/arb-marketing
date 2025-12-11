@@ -286,11 +286,18 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <a
+                <div
                   key={u.user_id}
-                  href={`/partners/admin/users/${u.user_id}`}
                   className="user-block"
-                  style={{ textDecoration: 'none', display: 'block' }}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      router.push(`/partners/admin/users/${u.user_id}`);
+                    }
+                  }}
                 >
                   <div className="user-block-header">
                     <div>
@@ -302,11 +309,12 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <a
+                      <Link
                         key={s.id}
                         href={`/partners/admin/submission/${s.id}`}
                         className="user-submission-row"
                         style={{ textDecoration: 'none', display: 'flex' }}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -316,10 +324,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </a>
+                      </Link>
                     ))}
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           )}
