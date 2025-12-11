@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -30,7 +30,17 @@ export async function PATCH(
     const { id } = await params;
     
     // Get user session
-    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    const cookieStore: any = await cookies();
+    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        get(name: string) {
+          const val = cookieStore.get(name)?.value;
+          return val ?? null;
+        },
+        set() {},
+        remove() {},
+      },
+    });
     const {
       data: { user },
       error: authError,
@@ -139,7 +149,17 @@ export async function GET(
     const { id } = await params;
     
     // Get user session
-    const supabaseAnon = createRouteHandlerClient({ cookies: () => cookies() });
+    const cookieStore: any = await cookies();
+    const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        get(name: string) {
+          const val = cookieStore.get(name)?.value;
+          return val ?? null;
+        },
+        set() {},
+        remove() {},
+      },
+    });
     const {
       data: { user },
       error: authError,

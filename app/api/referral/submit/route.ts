@@ -54,7 +54,8 @@ export async function POST(request: NextRequest) {
       const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
         cookies: {
           get(name: string) {
-            return cookieStore.get(name)?.value;
+            const val = cookieStore.get(name)?.value;
+            return val ?? null;
           },
           set() {},
           remove() {},
@@ -117,11 +118,11 @@ export async function POST(request: NextRequest) {
 
     // Insert referral submission
     const baseRecord = {
-      partner_id,
-      referral_code: referral_code || null,
-      lead_name,
-      lead_email,
-      lead_phone: lead_phone || null,
+        partner_id,
+        referral_code: referral_code || null,
+        lead_name,
+        lead_email,
+        lead_phone: lead_phone || null,
       lead_company: null,
       lead_job_title: null,
       lead_industry: null,
@@ -131,17 +132,17 @@ export async function POST(request: NextRequest) {
       lead_pain_points: null,
       lead_linkedin_url: null,
       lead_message: combined_message || null,
-      submission_source: 'web_form',
-      ip_address,
-      user_agent,
-      utm_source: utm_source || null,
-      utm_medium: utm_medium || null,
-      utm_campaign: utm_campaign || null,
-      submitted_by_user_id: user?.id || null,
-      is_authenticated: !!user,
-      is_accounted,
-      quality_score,
-      status: 'new',
+        submission_source: 'web_form',
+        ip_address,
+        user_agent,
+        utm_source: utm_source || null,
+        utm_medium: utm_medium || null,
+        utm_campaign: utm_campaign || null,
+        submitted_by_user_id: user?.id || null,
+        is_authenticated: !!user,
+        is_accounted,
+        quality_score,
+        status: 'new',
     };
 
     const insertAttempt = async (record: any) => {

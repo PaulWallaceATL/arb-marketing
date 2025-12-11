@@ -31,7 +31,8 @@ export async function GET(request: NextRequest) {
     const supabaseAnon = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
         get(name: string) {
-          return cookieStore.get(name)?.value;
+          const val = cookieStore.get(name)?.value;
+          return val ?? null;
         },
         set() {},
         remove() {},
