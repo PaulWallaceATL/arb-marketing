@@ -64,6 +64,7 @@ const protectedRoutes = [
 const adminRoutes = [
   '/api/admin/dashboard',
   '/api/admin/submission',
+  '/api/admin/users-with-submissions',
 ];
 
 /**

@@ -24,11 +24,18 @@ interface PartnerPerformance {
   total_revenue: number;
 }
 
+interface UserWithSubs {
+  user_id: string;
+  email: string | null;
+  submissions: ReferralSubmission[];
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [statusCounts, setStatusCounts] = useState<StatusCounts>({});
   const [recentSubmissions, setRecentSubmissions] = useState<ReferralSubmission[]>([]);
   const [partnerPerformance, setPartnerPerformance] = useState<PartnerPerformance[]>([]);
+  const [usersWithSubs, setUsersWithSubs] = useState<UserWithSubs[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<ReferralSubmission | null>(null);
@@ -60,6 +67,18 @@ export default function AdminDashboard() {
         setPartnerPerformance(data.partnerPerformance || []);
       } else {
         setError(data.error || 'Failed to fetch dashboard data');
+      }
+
+      // Fetch users and their submissions
+      const usersResp = await fetch('/api/admin/users-with-submissions', {
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const usersJson = await usersResp.json();
+      if (usersResp.ok) {
+        setUsersWithSubs(usersJson.users || []);
+      } else {
+        setError((prev) => prev || usersJson.error || 'Failed to fetch users/submissions');
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
@@ -282,6 +301,45 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      {/* Users and their submissions */}
+      <div className="section-card">
+        <h2>Users & Submissions</h2>
+        <div className="table-container">
+          {usersWithSubs.length === 0 ? (
+            <p style={{ color: '#6b7280' }}>No user submissions found.</p>
+          ) : (
+            <div className="user-list">
+              {usersWithSubs.map((u) => (
+                <div key={u.user_id} className="user-block">
+                  <div className="user-block-header">
+                    <div>
+                      <div className="user-email">{u.email || 'No email'}</div>
+                      <div className="user-id">{u.user_id}</div>
+                    </div>
+                    <span className="pill">{u.submissions.length} submissions</span>
+                  </div>
+                  <div className="user-submissions">
+                    {u.submissions.length === 0 && <p className="muted">No submissions</p>}
+                    {u.submissions.map((s) => (
+                      <div key={s.id} className="user-submission-row">
+                        <div>
+                          <div className="sub-lead">{s.lead_name}</div>
+                          <div className="sub-email">{s.lead_email}</div>
+                        </div>
+                        <div className="sub-meta">
+                          <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
+                          <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Submission Detail Modal */}
       {selectedSubmission && (
         <div className="modal-overlay" onClick={() => setSelectedSubmission(null)}>
@@ -489,6 +547,85 @@ export default function AdminDashboard() {
         .badge-spam {
           background-color: #e2e3e5;
           color: #383d41;
+        }
+
+        .user-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .user-block {
+          border: 1px solid #e5e7eb;
+          border-radius: 10px;
+          padding: 12px;
+          background: #f8fafc;
+        }
+
+        .user-block-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 8px;
+        }
+
+        .user-email {
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        .user-id {
+          font-size: 12px;
+          color: #94a3b8;
+        }
+
+        .pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 4px 10px;
+          background: #eef2ff;
+          color: #4338ca;
+          border-radius: 999px;
+          font-weight: 600;
+          font-size: 12px;
+        }
+
+        .user-submissions {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .user-submission-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          background: #fff;
+        }
+
+        .sub-lead {
+          font-weight: 600;
+          color: #0f172a;
+        }
+
+        .sub-email {
+          font-size: 13px;
+          color: #64748b;
+        }
+
+        .sub-meta {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .sub-date {
+          font-size: 12px;
+          color: #94a3b8;
         }
 
         .table-container {
