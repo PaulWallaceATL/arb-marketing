@@ -174,9 +174,7 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon-circle">
-            <span className="material-icon">assessment</span>
-          </div>
+          <div className="stat-icon-circle">TS</div>
           <div className="stat-content">
             <h3>Total Submissions</h3>
             <p className="stat-value">{stats?.totalSubmissions || 0}</p>
@@ -184,9 +182,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon-circle">
-            <span className="material-icon">fiber_new</span>
-          </div>
+          <div className="stat-icon-circle">N7</div>
           <div className="stat-content">
             <h3>New (7 days)</h3>
             <p className="stat-value">{stats?.newSubmissions || 0}</p>
@@ -194,9 +190,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon-circle">
-            <span className="material-icon">check_circle</span>
-          </div>
+          <div className="stat-icon-circle">CNV</div>
           <div className="stat-content">
             <h3>Conversions</h3>
             <p className="stat-value">{stats?.convertedSubmissions || 0}</p>
@@ -205,9 +199,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon-circle">
-            <span className="material-icon">payments</span>
-          </div>
+          <div className="stat-icon-circle">REV</div>
           <div className="stat-content">
             <h3>Total Revenue</h3>
             <p className="stat-value">${stats?.totalRevenue || '0.00'}</p>
@@ -215,9 +207,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon-circle">
-            <span className="material-icon">groups</span>
-          </div>
+          <div className="stat-icon-circle">PRT</div>
           <div className="stat-content">
             <h3>Active Partners</h3>
             <p className="stat-value">{stats?.activePartners || 0}</p>
@@ -293,10 +283,18 @@ export default function AdminDashboard() {
           ) : (
             <div className="user-list">
               {usersWithSubs.map((u) => (
-                <a
-                  href={`/partners/admin/users/${u.user_id}`}
+                <div
+                  key={u.user_id}
                   className="user-block"
-                  style={{ textDecoration: 'none', display: 'block' }}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => (window.location.href = `/partners/admin/users/${u.user_id}`)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      window.location.href = `/partners/admin/users/${u.user_id}`;
+                    }
+                  }}
                 >
                   <div className="user-block-header">
                     <div>
@@ -308,11 +306,18 @@ export default function AdminDashboard() {
                   <div className="user-submissions">
                     {u.submissions.length === 0 && <p className="muted">No submissions</p>}
                     {u.submissions.map((s) => (
-                      <a
+                      <div
                         key={s.id}
-                        href={`/partners/admin/submission/${s.id}`}
                         className="user-submission-row"
-                        style={{ textDecoration: 'none', display: 'flex' }}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => (window.location.href = `/partners/admin/submission/${s.id}`)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            window.location.href = `/partners/admin/submission/${s.id}`;
+                          }
+                        }}
                       >
                         <div>
                           <div className="sub-lead">{s.lead_name}</div>
@@ -322,10 +327,10 @@ export default function AdminDashboard() {
                           <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
                           <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
                         </div>
-                      </a>
+                      </div>
                     ))}
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           )}
@@ -448,8 +453,8 @@ export default function AdminDashboard() {
         }
 
         .stat-icon-circle {
-          width: 38px;
-          height: 38px;
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
           background: #eef2ff;
           display: flex;
@@ -457,11 +462,9 @@ export default function AdminDashboard() {
           justify-content: center;
           color: #4338ca;
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-        }
-        .material-icon {
-          font-family: 'Material Icons';
-          font-size: 20px;
-          line-height: 1;
+          font-weight: 700;
+          font-size: 11px;
+          letter-spacing: 0.5px;
         }
 
         .stat-content h3 {
