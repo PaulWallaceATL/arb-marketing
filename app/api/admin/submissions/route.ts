@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Award points: +1 for any referral, +2 extra if approved at creation
+    // Award points: +1 for any referral, +2 extra if approved at creation (ensure row exists)
     if (user_id) {
       const { data: pointsRow } = await supabaseService
         .from('partner_users')
@@ -162,10 +162,10 @@ export async function POST(request: NextRequest) {
         .maybeSingle();
       const currentPoints = pointsRow?.points ?? 0;
       const bonusForApproved = normalizedStatus === 'approved' ? 2 : 0;
+      const nextPoints = currentPoints + 1 + bonusForApproved;
       await supabaseService
         .from('partner_users')
-        .update({ points: currentPoints + 1 + bonusForApproved })
-        .eq('user_id', user_id);
+        .upsert({ user_id, points: nextPoints }, { onConflict: 'user_id' });
     }
 
     await supabaseService.from('activity_log').insert({

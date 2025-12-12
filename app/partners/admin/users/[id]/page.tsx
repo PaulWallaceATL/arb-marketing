@@ -599,7 +599,7 @@ export default function AdminUserDetailPage() {
 
       <style jsx>{`
         .page-shell {
-          padding: 32px 16px 48px;
+          padding: 104px 16px 64px;
           background: #f8fafc;
           min-height: 100vh;
         }

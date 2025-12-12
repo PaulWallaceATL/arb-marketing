@@ -193,7 +193,7 @@ export async function PATCH(
       );
     }
 
-    // Award points if status transitions to approved from a non-approved state
+    // Award points if status transitions to approved from a non-approved state (ensure row exists)
     if (
       submittedByUserId &&
       previousStatus !== 'approved' &&
@@ -207,8 +207,7 @@ export async function PATCH(
       const currentPoints = pointsRow?.points ?? 0;
       await supabaseService
         .from('partner_users')
-        .update({ points: currentPoints + 2 })
-        .eq('user_id', submittedByUserId);
+        .upsert({ user_id: submittedByUserId, points: currentPoints + 2 }, { onConflict: 'user_id' });
     }
 
     // Log the activity

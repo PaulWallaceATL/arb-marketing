@@ -179,7 +179,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Award 1 point for any submission by an authenticated user
+    // Award 1 point for any submission by an authenticated user (ensure row exists)
     if (user?.id) {
       const { data: currentPointsRow } = await supabase
         .from('partner_users')
@@ -190,8 +190,7 @@ export async function POST(request: NextRequest) {
       const currentPoints = currentPointsRow?.points ?? 0;
       await supabase
         .from('partner_users')
-        .update({ points: currentPoints + 1 })
-        .eq('user_id', user.id);
+        .upsert({ user_id: user.id, points: currentPoints + 1 }, { onConflict: 'user_id' });
     }
 
     return NextResponse.json(
