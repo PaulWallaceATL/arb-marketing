@@ -437,7 +437,7 @@ export default function AdminDashboard() {
         <div className="metrics-grid">
           <div className="metric-card">
             <div className="metric-icon">
-              <span>📊</span>
+              <span className="metric-dot" />
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.totalSubmissions || 0}</div>
@@ -448,7 +448,7 @@ export default function AdminDashboard() {
 
           <div className="metric-card">
             <div className="metric-icon">
-              <span>🆕</span>
+              <span className="metric-dot" />
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.newSubmissions || 0}</div>
@@ -459,7 +459,7 @@ export default function AdminDashboard() {
 
           <div className="metric-card highlight">
             <div className="metric-icon">
-              <span>💰</span>
+              <span className="metric-dot" />
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.convertedSubmissions || 0}</div>
@@ -470,7 +470,7 @@ export default function AdminDashboard() {
 
           <div className="metric-card">
             <div className="metric-icon">
-              <span>💵</span>
+              <span className="metric-dot" />
             </div>
             <div className="metric-content">
               <div className="metric-value">${stats?.totalRevenue || '0.00'}</div>
@@ -481,7 +481,7 @@ export default function AdminDashboard() {
 
           <div className="metric-card">
             <div className="metric-icon">
-              <span>👥</span>
+              <span className="metric-dot" />
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.activePartners || 0}</div>
@@ -931,6 +931,15 @@ export default function AdminDashboard() {
           background: #4f46e5;
           opacity: 0.15;
           box-shadow: 0 0 0 6px rgba(79,70,229,0.08);
+        }
+
+        .metric-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 999px;
+          background: #4f46e5;
+          display: inline-block;
+          box-shadow: 0 0 0 4px rgba(79,70,229,0.1);
         }
 
         .metric-card.highlight .metric-icon {
@@ -1394,10 +1403,12 @@ export default function AdminDashboard() {
 
         .raffles-section {
           margin-top: 1.25rem;
+          padding: 1.25rem 1.5rem;
         }
 
         .section-header.raffles-header {
           margin-bottom: 1rem;
+          align-items: flex-end;
         }
 
         .raffle-layout {
