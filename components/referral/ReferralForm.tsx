@@ -58,7 +58,7 @@ export default function ReferralForm({ referralCode, onSuccess }: ReferralFormPr
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (response.ok) {
         setSubmitStatus({
@@ -79,9 +79,14 @@ export default function ReferralForm({ referralCode, onSuccess }: ReferralFormPr
           onSuccess();
         }
       } else {
+        console.error('Referral submit failed', data);
         setSubmitStatus({
           type: 'error',
-          message: data.error || 'Failed to submit referral. Please try again.',
+          message:
+            data.error ||
+            data.details ||
+            data.code ||
+            'Failed to submit referral. Please try again.',
         });
       }
     } catch (error) {

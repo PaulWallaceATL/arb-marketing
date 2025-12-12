@@ -91,13 +91,6 @@ export default function RootLayout({
         {/* JavaScript Files */}
         <Script src="/assets/js/jquery-3.6.0.min.js" strategy="beforeInteractive" />
         <Script src="/assets/js/bootstrap.bundle.min.js" strategy="beforeInteractive" />
-        <Script src="/assets/js/vendors/menu.js" strategy="lazyOnload" />
-        <Script src="/assets/js/swiper-bundle.min.js" strategy="lazyOnload" />
-        <Script src="/assets/js/vendors/counterup.js" strategy="lazyOnload" />
-        <Script src="/assets/js/wow.min.js" strategy="lazyOnload" />
-        <Script src="/assets/js/aos.js" strategy="lazyOnload" />
-        <Script src="/assets/js/app.js" strategy="lazyOnload" />
-        <Script src="/assets/js/main.js" strategy="lazyOnload" />
         
         {/* Initialize WOW.js, AOS, and Custom Cursor */}
         <Script id="init-animations-and-cursor" strategy="lazyOnload">
