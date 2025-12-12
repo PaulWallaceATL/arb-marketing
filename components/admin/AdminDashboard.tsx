@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
@@ -571,29 +572,17 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="user-card-actions">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      router.push(`/partners/admin/users/${u.user_id}`);
-                    }}
-                    className="btn-secondary"
-                  >
+                  <Link href={`/partners/admin/users/${u.user_id}`} className="btn-secondary" onClick={(e) => e.stopPropagation()}>
                     Manage
-                  </button>
-                  <button
-                    type="button"
+                  </Link>
+                  <Link
+                    href={`/partners/admin/users/${u.user_id}`}
                     className="btn-icon"
                     title="View Profile"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      router.push(`/partners/admin/users/${u.user_id}`);
-                    }}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     👁️
-                  </button>
+                  </Link>
                 </div>
 
                 {u.submissions.length > 0 && (
