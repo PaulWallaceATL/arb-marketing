@@ -11,6 +11,7 @@ export default function AdminSubmissionDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submission, setSubmission] = useState<any | null>(null);
+  const [statusSaving, setStatusSaving] = useState<string | null>(null);
 
   useEffect(() => {
     if (submissionId) {
@@ -45,6 +46,42 @@ export default function AdminSubmissionDetailPage() {
       setError(err?.message || 'Failed to load submission');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateStatus = async (status: 'pending' | 'approved' | 'denied') => {
+    if (!submissionId) return;
+    setStatusSaving(status);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        setError('No session found.');
+        setStatusSaving(null);
+        return;
+      }
+
+      const resp = await fetch(`/api/admin/submission/${submissionId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      const json = await resp.json();
+      if (!resp.ok) {
+        setError(json.error || 'Failed to update status');
+      } else {
+        setError(null);
+        await fetchSubmission();
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Failed to update status');
+    } finally {
+      setStatusSaving(null);
     }
   };
 
@@ -113,6 +150,18 @@ export default function AdminSubmissionDetailPage() {
                     <strong>{submission.channel_partners?.company_name || 'Direct'}</strong>
                   </div>
                 </div>
+                <div className="status-actions">
+                  {(['pending', 'approved', 'denied'] as const).map((s) => (
+                    <button
+                      key={s}
+                      className={`status-btn ${submission.status === s ? 'active' : ''}`}
+                      onClick={() => updateStatus(s)}
+                      disabled={submission.status === s || statusSaving === s || loading}
+                    >
+                      {statusSaving === s ? 'Updating...' : s}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -121,7 +170,7 @@ export default function AdminSubmissionDetailPage() {
 
       <style jsx>{`
         .page-shell {
-          padding: 32px 16px 48px;
+          padding: 96px 16px 64px;
           background: #f8fafc;
           min-height: 100vh;
         }
@@ -196,6 +245,41 @@ export default function AdminSubmissionDetailPage() {
           border: 1px solid #e2e8f0;
           border-radius: 12px;
           padding: 16px;
+        }
+
+        .status-actions {
+          display: flex;
+          gap: 10px;
+          margin-top: 14px;
+          flex-wrap: wrap;
+        }
+
+        .status-btn {
+          padding: 10px 14px;
+          border-radius: 10px;
+          border: 1px solid #e2e8f0;
+          background: white;
+          font-weight: 600;
+          text-transform: capitalize;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .status-btn:hover:not(:disabled) {
+          border-color: #6366f1;
+          color: #6366f1;
+          box-shadow: 0 4px 14px rgba(99, 102, 241, 0.16);
+        }
+
+        .status-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .status-btn.active {
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          color: white;
+          border-color: transparent;
         }
 
         .detail-title {

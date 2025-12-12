@@ -993,6 +993,9 @@ export default function AdminDashboard() {
           border: 1px solid #e2e8f0;
           transition: background-color 0.2s ease;
           cursor: pointer;
+          pointer-events: auto;
+          position: relative;
+          z-index: 1;
         }
 
         .activity-item:hover {
