@@ -174,7 +174,13 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Supabase insert error:', error);
       return NextResponse.json(
-        { error: 'Failed to submit referral', details: error.message, code: error.code, hint: error.hint, raw: error },
+        {
+          error: 'Failed to submit referral',
+          details: error.message,
+          code: (error as any)?.code,
+          hint: (error as any)?.hint,
+          raw: error,
+        },
         { status: 500 }
       );
     }
