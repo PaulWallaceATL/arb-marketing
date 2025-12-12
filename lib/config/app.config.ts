@@ -60,8 +60,8 @@ export const appConfig = {
     {
       id: 'starter',
       name: 'Starter Package',
-      price: 2500,
-      period: 'month',
+      price: null,
+      period: null,
       features: [
         'Monthly content calendars',
         '5 reel/content deliverables',
@@ -73,8 +73,8 @@ export const appConfig = {
     {
       id: 'growth',
       name: 'Growth Package',
-      price: 5000,
-      period: 'month',
+      price: null,
+      period: null,
       features: [
         'Full social media management',
         '7-10 reels/content delivered',
@@ -84,10 +84,10 @@ export const appConfig = {
       ],
     },
     {
-      id: 'custom',
-      name: 'Custom Campaign',
+      id: 'expansion',
+      name: 'Expansion Package',
       price: null,
-      period: 'consultation',
+      period: null,
       features: [
         'Free initial consultation',
         'Content series production',

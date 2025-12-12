@@ -240,9 +240,6 @@ export default function Home() {
                   <img src="/assets/img/icons/th-4-service-icon-1.svg" alt="" style={{ width: '80px', height: '80px' }} />
                   <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Starter Package</h3>
                 </div>
-                <div className="aximo-pricing-price">
-                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>$2,500<span style={{ fontSize: '18px', fontWeight: 400, fontFamily: "'Roxborough CF', serif" }}>/month</span></h2>
-                </div>
                 <div className="aximo-pricing-body">
                   <ul>
                     <li>
@@ -271,9 +268,6 @@ export default function Home() {
                   <img src="/assets/img/icons/th-4-service-icon-2.svg" alt="" style={{ width: '80px', height: '80px' }} />
                   <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Growth Package</h3>
                 </div>
-                <div className="aximo-pricing-price">
-                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>$5,000<span style={{ fontSize: '18px', fontWeight: 400, fontFamily: "'Roxborough CF', serif" }}>/month</span></h2>
-                </div>
                 <div className="aximo-pricing-body">
                   <ul>
                     <li>
@@ -300,10 +294,7 @@ export default function Home() {
               <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.3s" style={{ opacity: 1, visibility: 'visible' }}>
                 <div className="aximo-pricing-header">
                   <img src="/assets/img/icons/th-1-service-icon-3.svg" alt="" style={{ width: '80px', height: '80px' }} />
-                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Custom Campaign</h3>
-                </div>
-                <div className="aximo-pricing-price">
-                  <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>By Consultation</h2>
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Expansion Package</h3>
                 </div>
                 <div className="aximo-pricing-body">
                   <ul>

@@ -82,7 +82,7 @@ export default function ServicesPage() {
                   <i className="icon-web"></i>
                 </div>
                 <div className="aximo-iconbox-data">
-                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Custom Campaigns</h3>
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Expansion Campaigns</h3>
                   <p style={{ fontFamily: "'Libre Baskerville', serif" }}>
                     Comprehensive multi-channel marketing campaigns including video production, TV/streaming commercials, and radio advertisements designed to grow your practice.
                   </p>
@@ -121,6 +121,74 @@ export default function ServicesPage() {
                   </div>
                 </div>
               </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="section aximo-section-padding3" style={{ paddingTop: '30px' }}>
+        <div className="container">
+          <div className="aximo-section-title center">
+            <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>Packages that Fit Your Growth Stage</h2>
+            <p style={{ fontFamily: "'Libre Baskerville', serif", maxWidth: '800px', margin: '20px auto 0' }}>
+              Choose the right mix of deliverables for where your firm is today—every package is value-led and tailored after a short discovery.
+            </p>
+          </div>
+
+          <div className="row" style={{ marginTop: '30px' }}>
+            <div className="col-lg-4 col-md-6">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.1s">
+                <div className="aximo-pricing-header">
+                  <img src="/assets/img/icons/th-4-service-icon-1.svg" alt="" style={{ width: '80px', height: '80px' }} />
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Starter Package</h3>
+                </div>
+                <div className="aximo-pricing-body">
+                  <ul>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Monthly content calendars</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />5 reel/content deliverables</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Strategic content planning</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Social media optimization</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Performance tracking</li>
+                  </ul>
+                </div>
+                <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Talk with us</Link>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.2s">
+                <div className="aximo-pricing-header">
+                  <img src="/assets/img/icons/th-4-service-icon-2.svg" alt="" style={{ width: '80px', height: '80px' }} />
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Growth Package</h3>
+                </div>
+                <div className="aximo-pricing-body">
+                  <ul>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Full social media management</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />7-10 reels/content delivered</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Professional editing & planning</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Strategic marketing consulting</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />ROI optimization strategies</li>
+                  </ul>
+                </div>
+                <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Talk with us</Link>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6">
+              <div className="aximo-pricing-wrap wow fadeInUpX" data-wow-delay="0.3s">
+                <div className="aximo-pricing-header">
+                  <img src="/assets/img/icons/th-1-service-icon-3.svg" alt="" style={{ width: '80px', height: '80px' }} />
+                  <h3 style={{ fontFamily: "'Roxborough CF', serif" }}>Expansion Package</h3>
+                </div>
+                <div className="aximo-pricing-body">
+                  <ul>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Free initial consultation</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Content series production</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Photo/video shoots</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />TV & streaming commercials</li>
+                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Radio & multi-channel ads</li>
+                  </ul>
+                </div>
+                <Link href="/contact" className="aximo-default-btn aximo-pricing-btn">Talk with us</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -313,7 +381,7 @@ export default function ServicesPage() {
               <div className="faq-item">
                 <h3>What's the investment for your services?</h3>
                 <p>
-                  Our packages start at $2,500/month for content marketing and go up to $5,000/month for comprehensive growth packages. Custom campaigns and lead referrals are priced based on your specific needs and case types.
+                  We tailor investment to the scope of work after a quick discovery. Starter, Growth, and Expansion packages are customized to your goals, deliverables, and timelines—let’s align on the best fit together.
                 </p>
               </div>
             </div>
