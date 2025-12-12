@@ -156,18 +156,20 @@ export default function AdminDashboard() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        credentials: 'include',
         body: JSON.stringify({ status }),
       });
 
+      const payload = await response.json().catch(() => ({}));
       if (response.ok) {
-        // Refresh dashboard data
         fetchDashboardData();
         setSelectedSubmission(null);
       } else {
-        const data = await response.json();
-        alert(data.error || 'Failed to update submission');
+        console.error('Update submission failed', payload);
+        alert(payload.error || payload.details || `Failed to update submission (status ${response.status})`);
       }
     } catch (err: any) {
+      console.error('Update submission error', err);
       alert(err.message || 'An error occurred');
     }
   };

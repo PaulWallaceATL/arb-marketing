@@ -188,7 +188,7 @@ export async function PATCH(
     if (error) {
       console.error('Supabase error:', error);
       return NextResponse.json(
-        { error: 'Failed to update submission' },
+        { error: 'Failed to update submission', details: error.message, code: error.code, hint: error.hint },
         { status: 500 }
       );
     }
