@@ -408,7 +408,7 @@ export async function DELETE(
     if (error) {
       console.error('Supabase error:', error);
       return NextResponse.json(
-        { error: 'Failed to delete submission', details: error.message },
+        { error: 'Failed to delete submission', details: error.message, code: error.code, hint: error.hint },
         { status: 500 }
       );
     }

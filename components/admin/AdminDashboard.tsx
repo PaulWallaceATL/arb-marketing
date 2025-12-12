@@ -190,12 +190,12 @@ export default function AdminDashboard() {
         },
       });
 
+      const payload = await response.json().catch(() => ({}));
       if (response.ok) {
         fetchDashboardData();
       } else {
-        const data = await response.json().catch(() => ({}));
-        console.error('Delete submission failed', data);
-        alert(data.error || 'Failed to delete submission');
+        console.error('Delete submission failed', payload);
+        alert(payload.error || payload.details || `Failed to delete submission (status ${response.status})`);
       }
     } catch (err: any) {
       console.error('Delete submission error', err);
