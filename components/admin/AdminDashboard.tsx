@@ -608,10 +608,10 @@ export default function AdminDashboard() {
                     e.stopPropagation();
                     router.push(`/partners/admin/submission/${submission.id}`);
                   }}
-                  className="btn-icon"
+                  className="btn-chip neutral"
                   title="View Details"
                 >
-                  👁️
+                  View
                 </button>
               </div>
             </div>
@@ -1207,6 +1207,11 @@ export default function AdminDashboard() {
           color: #b91c1c;
           background: #fff1f2;
         }
+        .btn-chip.neutral {
+          border-color: #e2e8f0;
+          color: #0f172a;
+          background: #f8fafc;
+        }
         .btn-chip:hover {
           filter: brightness(0.98);
         }
@@ -1377,6 +1382,14 @@ export default function AdminDashboard() {
         .raffles-header .muted.small {
           margin: 0.25rem 0 0;
           font-size: 0.9rem;
+        }
+
+        .raffles-section {
+          margin-top: 1.25rem;
+        }
+
+        .section-header.raffles-header {
+          margin-bottom: 1rem;
         }
 
         .raffle-layout {
