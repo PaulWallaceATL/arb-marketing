@@ -5,14 +5,20 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
-// Icons for status badges
+// Minimal indicator for status (no emojis)
 const StatusIcon = ({ status }: { status: string }) => {
-  const icons = {
-    pending: '⏳',
-    approved: '✅',
-    denied: '🚫'
+  const colors: Record<string, string> = {
+    pending: '#d97706',
+    approved: '#16a34a',
+    denied: '#dc2626',
   };
-  return <span>{icons[status as keyof typeof icons] || '❓'}</span>;
+  return (
+    <span
+      aria-hidden="true"
+      className="status-dot"
+      style={{ backgroundColor: colors[status] || '#94a3b8' }}
+    />
+  );
 };
 
 interface DashboardStats {
@@ -166,6 +172,34 @@ export default function AdminDashboard() {
     }
   };
 
+  const deleteSubmission = async (id: string) => {
+    if (!confirm('Delete this submission?')) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        alert('No session found. Please log in again.');
+        return;
+      }
+
+      const response = await fetch(`/api/admin/submission/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        fetchDashboardData();
+      } else {
+        const data = await response.json().catch(() => ({}));
+        alert(data.error || 'Failed to delete submission');
+      }
+    } catch (err: any) {
+      alert(err.message || 'An error occurred');
+    }
+  };
+
   const createRaffle = async (e: React.FormEvent) => {
     e.preventDefault();
     setRaffleLoading(true);
@@ -273,8 +307,11 @@ export default function AdminDashboard() {
 
       {/* Raffles */}
       <div className="raffles-section card">
-        <div className="section-header">
-          <h2 className="section-title">Raffles</h2>
+        <div className="section-header raffles-header">
+          <div>
+            <h2 className="section-title">Raffles</h2>
+            <p className="muted small">Create raffles, set entry cost, and track entries.</p>
+          </div>
           <div className="raffle-actions">
             <span className="raffle-count">{raffles.length} active</span>
             <button
@@ -519,10 +556,10 @@ export default function AdminDashboard() {
                   </span>
                 </div>
                 <div className="activity-meta">
-                  <span className="activity-date">{formatDate(submission.created_at)}</span>
-                  <span className="activity-source">
-                    {submission.channel_partners?.company_name || 'Direct'}
+                  <span className="breadcrumb">
+                    {submission.status} • {submission.channel_partners?.company_name || 'Direct'}
                   </span>
+                  <span className="activity-date">{formatDate(submission.created_at)}</span>
                 </div>
               </div>
               <div className="activity-status">
@@ -532,6 +569,39 @@ export default function AdminDashboard() {
                 </span>
               </div>
               <div className="activity-actions">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    updateSubmissionStatus(submission.id, 'approved');
+                  }}
+                  className="btn-chip approve"
+                  title="Approve"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    updateSubmissionStatus(submission.id, 'denied');
+                  }}
+                  className="btn-chip deny"
+                  title="Deny"
+                >
+                  Deny
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    deleteSubmission(submission.id);
+                  }}
+                  className="btn-chip danger"
+                  title="Delete"
+                >
+                  Delete
+                </button>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -1045,6 +1115,11 @@ export default function AdminDashboard() {
           gap: 0.25rem;
         }
 
+        .breadcrumb {
+          font-size: 0.82rem;
+          color: #475569;
+        }
+
         .activity-date {
           font-size: 0.75rem;
           color: #94a3b8;
@@ -1090,6 +1165,7 @@ export default function AdminDashboard() {
         .activity-actions {
           display: flex;
           gap: 0.5rem;
+          flex-wrap: wrap;
         }
 
         .btn-icon {
@@ -1104,6 +1180,42 @@ export default function AdminDashboard() {
 
         .btn-icon:hover {
           background: #e2e8f0;
+        }
+
+        .btn-chip {
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 0.35rem 0.65rem;
+          font-size: 0.85rem;
+          font-weight: 700;
+          background: #f8fafc;
+          cursor: pointer;
+          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        .btn-chip.approve {
+          border-color: #bbf7d0;
+          color: #15803d;
+          background: #ecfdf3;
+        }
+        .btn-chip.deny {
+          border-color: #fde68a;
+          color: #b45309;
+          background: #fffbeb;
+        }
+        .btn-chip.danger {
+          border-color: #fecdd3;
+          color: #b91c1c;
+          background: #fff1f2;
+        }
+        .btn-chip:hover {
+          filter: brightness(0.98);
+        }
+
+        .status-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          display: inline-block;
         }
 
         /* Users Section */
@@ -1262,6 +1374,11 @@ export default function AdminDashboard() {
           gap: 0.75rem;
         }
 
+        .raffles-header .muted.small {
+          margin: 0.25rem 0 0;
+          font-size: 0.9rem;
+        }
+
         .raffle-layout {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1274,6 +1391,9 @@ export default function AdminDashboard() {
           border-radius: 12px;
           padding: 1.5rem;
           box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
         }
 
         .raffle-list {
