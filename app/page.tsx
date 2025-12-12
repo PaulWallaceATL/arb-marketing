@@ -84,6 +84,17 @@ export default function Home() {
             opacity: 1 !important;
           }
         }
+
+        /* Ensure hero clears the header height */
+        .aximo-hero-section2 {
+          padding-top: 120px;
+        }
+
+        @media (max-width: 768px) {
+          .aximo-hero-section2 {
+            padding-top: 95px;
+          }
+        }
       `}</style>
 
       {/* Main Content */}
