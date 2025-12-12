@@ -33,6 +33,8 @@ export default function AdminUserDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userPoints, setUserPoints] = useState<number>(0);
+  const [pointsInput, setPointsInput] = useState<number>(0);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [newReferral, setNewReferral] = useState({
     lead_name: '',
@@ -84,6 +86,7 @@ export default function AdminUserDetailPage() {
       }
 
       setUserEmail(json.user?.email || null);
+      setUserPoints(json.user?.points ?? 0);
       setSubmissions(json.submissions || []);
       setError(null);
     } catch (err: any) {
@@ -248,11 +251,41 @@ export default function AdminUserDetailPage() {
 
   const summary = useMemo(() => {
     const total = submissions.length;
-    const converted = submissions.filter((s) => s.status === 'converted').length;
-    const contacted = submissions.filter((s) => s.status === 'contacted').length;
-    const qualified = submissions.filter((s) => s.status === 'qualified').length;
-    return { total, converted, contacted, qualified };
+    const approved = submissions.filter((s) => s.status === 'approved').length;
+    const pending = submissions.filter((s) => s.status === 'pending').length;
+    const denied = submissions.filter((s) => s.status === 'denied').length;
+    return { total, approved, pending, denied };
   }, [submissions]);
+
+  const adjustPoints = async (delta: number) => {
+    if (!userId) return;
+    try {
+      const token = await getToken();
+      if (!token) {
+        setError('No session found.');
+        return;
+      }
+      const resp = await fetch(`/api/admin/user/${userId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ delta }),
+      });
+      const json = await resp.json();
+      if (!resp.ok) {
+        setError(json.error || 'Failed to update points');
+        return;
+      }
+      setUserPoints(json.points);
+      setPointsInput(0);
+      setError(null);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to update points');
+    }
+  };
 
   if (!userId) {
     return <div className="page-shell"><p>Missing user id.</p></div>;
@@ -295,16 +328,46 @@ export default function AdminUserDetailPage() {
                 <span className="stat-label">Total referrals</span>
               </div>
               <div className="stat-chip">
-                <span className="stat-value">{summary.converted}</span>
-                <span className="stat-label">Converted</span>
+                <span className="stat-value">{summary.approved}</span>
+                <span className="stat-label">Approved</span>
               </div>
               <div className="stat-chip">
-                <span className="stat-value">{summary.qualified}</span>
-                <span className="stat-label">Qualified</span>
+                <span className="stat-value">{summary.pending}</span>
+                <span className="stat-label">Pending</span>
               </div>
               <div className="stat-chip">
-                <span className="stat-value">{summary.contacted}</span>
-                <span className="stat-label">Contacted</span>
+                <span className="stat-value">{summary.denied}</span>
+                <span className="stat-label">Denied</span>
+              </div>
+            </div>
+            <div className="points-panel">
+              <div>
+                <p className="eyebrow">Points</p>
+                <h3 className="points-value">{userPoints}</h3>
+              </div>
+              <div className="points-actions">
+                <input
+                  type="number"
+                  value={pointsInput}
+                  onChange={(e) => setPointsInput(Number(e.target.value))}
+                  placeholder="Amount"
+                />
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => adjustPoints(pointsInput)}
+                  disabled={!pointsInput}
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary danger-outline"
+                  onClick={() => adjustPoints(pointsInput * -1)}
+                  disabled={!pointsInput}
+                >
+                  Remove
+                </button>
               </div>
             </div>
           </motion.div>
@@ -592,6 +655,12 @@ export default function AdminUserDetailPage() {
           cursor: pointer;
         }
 
+        .btn-secondary.danger-outline {
+          color: #b91c1c;
+          border-color: #fca5a5;
+          background: #fff1f2;
+        }
+
         .grid.two-col {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -646,6 +715,47 @@ export default function AdminUserDetailPage() {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
           gap: 10px;
+        }
+
+        .points-panel {
+          margin-top: 14px;
+          padding: 14px;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          background: #f8fafc;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .points-value {
+          margin: 4px 0 0 0;
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: #0f172a;
+        }
+
+        .points-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .points-actions input {
+          width: 120px;
+          padding: 10px 12px;
+          border-radius: 10px;
+          border: 1px solid #d7dce4;
+          background: white;
+        }
+
+        .points-actions input:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
         }
 
         .stat-chip {

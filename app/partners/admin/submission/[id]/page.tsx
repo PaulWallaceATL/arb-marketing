@@ -12,6 +12,7 @@ export default function AdminSubmissionDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [submission, setSubmission] = useState<any | null>(null);
   const [statusSaving, setStatusSaving] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (submissionId) {
@@ -85,6 +86,37 @@ export default function AdminSubmissionDetailPage() {
     }
   };
 
+  const deleteSubmission = async () => {
+    if (!submissionId) return;
+    if (!confirm('Delete this submission?')) return;
+    setDeleting(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        setError('No session found.');
+        setDeleting(false);
+        return;
+      }
+      const resp = await fetch(`/api/admin/submission/${submissionId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const json = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        setError(json.error || 'Failed to delete submission');
+      } else {
+        setError(null);
+        window.location.href = '/partners/dashboard';
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Failed to delete submission');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (!submissionId) {
     return <div className="page-shell"><p>Missing submission id.</p></div>;
   }
@@ -103,7 +135,12 @@ export default function AdminSubmissionDetailPage() {
             <h1 className="page-title">Lead Overview</h1>
             <p className="muted">Full context and current status for this referral.</p>
           </div>
-          <a href="/partners/dashboard" className="btn-secondary">← Back to dashboard</a>
+          <div className="hero-actions">
+            <a href="/partners/dashboard" className="btn-secondary">← Back to dashboard</a>
+            <button className="btn-danger" onClick={deleteSubmission} disabled={deleting}>
+              {deleting ? 'Deleting...' : 'Delete submission'}
+            </button>
+          </div>
         </motion.div>
 
         <motion.div
@@ -195,6 +232,13 @@ export default function AdminSubmissionDetailPage() {
           box-shadow: 0 8px 30px rgba(0,0,0,0.06);
         }
 
+        .hero-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
         .page-title {
           margin: 4px 0;
           font-size: 2rem;
@@ -223,6 +267,16 @@ export default function AdminSubmissionDetailPage() {
           padding: 10px 14px;
           border-radius: 10px;
           font-weight: 600;
+          cursor: pointer;
+        }
+
+        .btn-danger {
+          background: #fee2e2;
+          color: #b91c1c;
+          border: 1px solid #fecaca;
+          padding: 10px 14px;
+          border-radius: 10px;
+          font-weight: 700;
           cursor: pointer;
         }
 

@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       lead_phone,
       lead_company,
       lead_message,
-      status = 'new',
+      status = 'pending',
       referral_code,
       partner_id,
       admin_notes,
@@ -108,8 +108,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const allowedStatuses = ['new', 'contacted', 'qualified', 'converted', 'lost', 'spam'];
-    const normalizedStatus = allowedStatuses.includes(status) ? status : 'new';
+    const allowedStatuses = ['pending', 'approved', 'denied'];
+    const normalizedStatus = allowedStatuses.includes(status) ? status : 'pending';
 
     const newSubmission = {
       partner_id: partner_id || null,
@@ -151,6 +151,21 @@ export async function POST(request: NextRequest) {
         { error: 'Failed to create submission', details: error.message },
         { status: 500 }
       );
+    }
+
+    // Award points: +1 for any referral, +2 extra if approved at creation
+    if (user_id) {
+      const { data: pointsRow } = await supabaseService
+        .from('partner_users')
+        .select('points')
+        .eq('user_id', user_id)
+        .maybeSingle();
+      const currentPoints = pointsRow?.points ?? 0;
+      const bonusForApproved = normalizedStatus === 'approved' ? 2 : 0;
+      await supabaseService
+        .from('partner_users')
+        .update({ points: currentPoints + 1 + bonusForApproved })
+        .eq('user_id', user_id);
     }
 
     await supabaseService.from('activity_log').insert({
