@@ -50,6 +50,7 @@ interface Raffle {
   status: string;
   entry_count?: number;
   created_at?: string;
+  image_url?: string | null;
 }
 
 export default function AdminDashboard() {
@@ -65,6 +66,7 @@ export default function AdminDashboard() {
     description: '',
     entry_cost_points: 1,
     max_entries: 10,
+    image_url: '',
   });
   const [raffleLoading, setRaffleLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -189,7 +191,7 @@ export default function AdminDashboard() {
       } else {
         // refresh raffles
         setRaffles((prev) => [json.raffle, ...prev]);
-        setRaffleForm({ name: '', description: '', entry_cost_points: 1, max_entries: 10 });
+        setRaffleForm({ name: '', description: '', entry_cost_points: 1, max_entries: 10, image_url: '' });
       }
     } catch (err: any) {
       alert(err?.message || 'Failed to create raffle');
@@ -262,7 +264,13 @@ export default function AdminDashboard() {
 
         <div className="raffle-layout">
           <div className="raffle-form">
-            <h3>Create Raffle</h3>
+            <div className="raffle-form-header">
+              <div>
+                <p className="eyebrow">Admin Panel</p>
+                <h3>Create Raffle</h3>
+                <p className="muted">Set entry cost, limit, and optional cover image.</p>
+              </div>
+            </div>
             <form className="form-grid" onSubmit={createRaffle}>
               <label>
                 Name
@@ -292,12 +300,20 @@ export default function AdminDashboard() {
                   onChange={(e) => setRaffleForm((p) => ({ ...p, max_entries: Number(e.target.value) || 1 }))}
                 />
               </label>
+              <label>
+                Image URL (optional)
+                <input
+                  placeholder="https://..."
+                  value={raffleForm.image_url}
+                  onChange={(e) => setRaffleForm((p) => ({ ...p, image_url: e.target.value }))}
+                />
+              </label>
               <label className="full-row">
                 Description
                 <textarea
                   value={raffleForm.description}
                   onChange={(e) => setRaffleForm((p) => ({ ...p, description: e.target.value }))}
-                  rows={2}
+                  rows={3}
                 />
               </label>
               <div className="form-actions full-row">
@@ -319,7 +335,7 @@ export default function AdminDashboard() {
             {raffles.map((r) => (
               <div key={r.id} className="raffle-card">
                 <div className="raffle-card-header">
-                  <div>
+                  <div className="raffle-card-title">
                     <h4>{r.name}</h4>
                     {r.description && <p className="muted">{r.description}</p>}
                   </div>
@@ -327,6 +343,11 @@ export default function AdminDashboard() {
                     {r.status}
                   </span>
                 </div>
+                {r.image_url && (
+                  <div className="raffle-image">
+                    <img src={r.image_url} alt={r.name} />
+                  </div>
+                )}
                 <div className="raffle-meta">
                   <div>
                     <strong>{r.entry_cost_points}</strong>
@@ -508,7 +529,19 @@ export default function AdminDashboard() {
         ) : (
           <div className="users-grid">
             {usersWithSubs.map((u) => (
-              <div key={u.user_id} className="user-card">
+              <div
+                key={u.user_id}
+                className="user-card"
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    router.push(`/partners/admin/users/${u.user_id}`);
+                  }
+                }}
+              >
                 <div className="user-card-header">
                   <div className="user-avatar">
                     <span>{(u.email || u.user_id).charAt(0).toUpperCase()}</span>
@@ -1215,6 +1248,21 @@ export default function AdminDashboard() {
         .raffle-meta span {
           font-size: 0.85rem;
           color: #64748b;
+        }
+
+        .raffle-image {
+          margin: 0.5rem 0 0.75rem 0;
+          overflow: hidden;
+          border-radius: 10px;
+          border: 1px solid #e2e8f0;
+          background: #f8fafc;
+        }
+
+        .raffle-image img {
+          width: 100%;
+          height: auto;
+          display: block;
+          object-fit: cover;
         }
 
         /* Empty States */

@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, description, entry_cost_points, max_entries } = body || {};
+    const { name, description, entry_cost_points, max_entries, image_url } = body || {};
 
     if (!name || !entry_cost_points || !max_entries) {
       return NextResponse.json({ error: 'name, entry_cost_points, max_entries are required' }, { status: 400 });
@@ -131,6 +131,7 @@ export async function POST(request: NextRequest) {
         description: description || null,
         entry_cost_points,
         max_entries,
+        image_url: image_url || null,
         created_by: user.id,
       })
       .select()

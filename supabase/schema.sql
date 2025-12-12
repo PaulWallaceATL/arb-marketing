@@ -355,10 +355,13 @@ CREATE TABLE IF NOT EXISTS public.raffles (
     entry_cost_points INTEGER NOT NULL CHECK (entry_cost_points > 0),
     max_entries INTEGER NOT NULL CHECK (max_entries > 0),
     status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active','closed')),
+    image_url TEXT,
     created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+ALTER TABLE public.raffles ADD COLUMN IF NOT EXISTS image_url TEXT;
 
 CREATE TABLE IF NOT EXISTS public.raffle_entries (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
