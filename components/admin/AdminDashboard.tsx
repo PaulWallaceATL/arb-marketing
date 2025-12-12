@@ -69,6 +69,7 @@ export default function AdminDashboard() {
     image_url: '',
   });
   const [raffleLoading, setRaffleLoading] = useState(false);
+  const [showRaffleForm, setShowRaffleForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<ReferralSubmission | null>(null);
@@ -259,70 +260,81 @@ export default function AdminDashboard() {
       <div className="raffles-section card">
         <div className="section-header">
           <h2 className="section-title">Raffles</h2>
-          <span className="raffle-count">{raffles.length} active</span>
+          <div className="raffle-actions">
+            <span className="raffle-count">{raffles.length} active</span>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => setShowRaffleForm((prev) => !prev)}
+            >
+              {showRaffleForm ? 'Close' : 'New raffle'}
+            </button>
+          </div>
         </div>
 
         <div className="raffle-layout">
-          <div className="raffle-form">
-            <div className="raffle-form-header">
-              <div>
-                <p className="eyebrow">Admin Panel</p>
-                <h3>Create Raffle</h3>
-                <p className="muted">Set entry cost, limit, and optional cover image.</p>
+          {showRaffleForm && (
+            <div className="raffle-form">
+              <div className="raffle-form-header">
+                <div>
+                  <p className="eyebrow">Admin Panel</p>
+                  <h3>Create Raffle</h3>
+                  <p className="muted">Set entry cost, limit, and optional cover image.</p>
+                </div>
               </div>
+              <form className="form-grid" onSubmit={createRaffle}>
+                <label>
+                  Name
+                  <input
+                    required
+                    value={raffleForm.name}
+                    onChange={(e) => setRaffleForm((p) => ({ ...p, name: e.target.value }))}
+                  />
+                </label>
+                <label>
+                  Entry cost (points)
+                  <input
+                    type="number"
+                    min={1}
+                    required
+                    value={raffleForm.entry_cost_points}
+                    onChange={(e) => setRaffleForm((p) => ({ ...p, entry_cost_points: Number(e.target.value) || 1 }))}
+                  />
+                </label>
+                <label>
+                  Max entries
+                  <input
+                    type="number"
+                    min={1}
+                    required
+                    value={raffleForm.max_entries}
+                    onChange={(e) => setRaffleForm((p) => ({ ...p, max_entries: Number(e.target.value) || 1 }))}
+                  />
+                </label>
+                <label>
+                  Image URL (optional)
+                  <input
+                    placeholder="https://..."
+                    value={raffleForm.image_url}
+                    onChange={(e) => setRaffleForm((p) => ({ ...p, image_url: e.target.value }))}
+                  />
+                </label>
+                <label className="full-row">
+                  Description
+                  <textarea
+                    value={raffleForm.description}
+                    onChange={(e) => setRaffleForm((p) => ({ ...p, description: e.target.value }))}
+                    rows={3}
+                  />
+                </label>
+                <div className="form-actions full-row">
+                  <button className="btn-primary" type="submit" disabled={raffleLoading}>
+                    {raffleLoading ? 'Creating...' : 'Create raffle'}
+                  </button>
+                </div>
+              </form>
             </div>
-            <form className="form-grid" onSubmit={createRaffle}>
-              <label>
-                Name
-                <input
-                  required
-                  value={raffleForm.name}
-                  onChange={(e) => setRaffleForm((p) => ({ ...p, name: e.target.value }))}
-                />
-              </label>
-              <label>
-                Entry cost (points)
-                <input
-                  type="number"
-                  min={1}
-                  required
-                  value={raffleForm.entry_cost_points}
-                  onChange={(e) => setRaffleForm((p) => ({ ...p, entry_cost_points: Number(e.target.value) || 1 }))}
-                />
-              </label>
-              <label>
-                Max entries
-                <input
-                  type="number"
-                  min={1}
-                  required
-                  value={raffleForm.max_entries}
-                  onChange={(e) => setRaffleForm((p) => ({ ...p, max_entries: Number(e.target.value) || 1 }))}
-                />
-              </label>
-              <label>
-                Image URL (optional)
-                <input
-                  placeholder="https://..."
-                  value={raffleForm.image_url}
-                  onChange={(e) => setRaffleForm((p) => ({ ...p, image_url: e.target.value }))}
-                />
-              </label>
-              <label className="full-row">
-                Description
-                <textarea
-                  value={raffleForm.description}
-                  onChange={(e) => setRaffleForm((p) => ({ ...p, description: e.target.value }))}
-                  rows={3}
-                />
-              </label>
-              <div className="form-actions full-row">
-                <button className="btn-primary" type="submit" disabled={raffleLoading}>
-                  {raffleLoading ? 'Creating...' : 'Create raffle'}
-                </button>
-              </div>
-            </form>
-          </div>
+          )}
 
           <div className="raffle-list">
             {raffles.length === 0 && (
@@ -1204,6 +1216,12 @@ export default function AdminDashboard() {
         /* Raffles */
         .raffles-section {
           margin-top: 1rem;
+        }
+
+        .raffle-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
         }
 
         .raffle-layout {
