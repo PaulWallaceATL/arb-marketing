@@ -479,9 +479,21 @@ export default function AdminDashboard() {
           <h2 className="section-title">Recent Submissions</h2>
           <button className="btn-link">View All</button>
         </div>
-        <div className="activity-list">
+          <div className="activity-list">
           {recentSubmissions.slice(0, 5).map((submission: any) => (
-            <div key={submission.id} className="activity-item">
+            <div
+              key={submission.id}
+              className="activity-item clickable"
+              role="button"
+              tabIndex={0}
+              onClick={() => router.push(`/partners/admin/submission/${submission.id}`)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  router.push(`/partners/admin/submission/${submission.id}`);
+                }
+              }}
+            >
               <div className="activity-avatar">
                 <span>{submission.lead_name.charAt(0).toUpperCase()}</span>
               </div>
@@ -507,7 +519,11 @@ export default function AdminDashboard() {
               </div>
               <div className="activity-actions">
                 <button
-                  onClick={() => router.push(`/partners/admin/submission/${submission.id}`)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    router.push(`/partners/admin/submission/${submission.id}`);
+                  }}
                   className="btn-icon"
                   title="View Details"
                 >
@@ -962,6 +978,7 @@ export default function AdminDashboard() {
           border-radius: 8px;
           border: 1px solid #e2e8f0;
           transition: background-color 0.2s ease;
+          cursor: pointer;
         }
 
         .activity-item:hover {
