@@ -32,6 +32,23 @@ export default function DashboardPage() {
     checkAuth();
   }, []);
 
+  const checkAdminRole = async (token: string | null) => {
+    if (!token) return false;
+    try {
+      const resp = await fetch('/api/admin/dashboard', {
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (resp.ok) {
+        setUserRole('admin');
+        return true;
+      }
+    } catch {
+      // ignore
+    }
+    return false;
+  };
+
   const checkAuth = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -44,12 +61,15 @@ export default function DashboardPage() {
       setIsAuthenticated(true);
       setUserEmail(session.user.email ?? null);
       
+      // Quick admin check (if admin, force admin view)
+      const token = session.access_token;
+      const isAdmin = await checkAdminRole(token);
+
       // Fetch user submissions (service role via API)
       setSubsLoading(true);
       setSubsError(null);
       setSubmissions([]);
       try {
-        const token = session.access_token;
         const resp = await fetch('/api/referral/my-submissions', {
           credentials: 'include',
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
@@ -57,7 +77,11 @@ export default function DashboardPage() {
         if (resp.ok) {
           const json = await resp.json();
           setSubmissions(json.submissions || []);
-          setUserRole(json.role || 'User');
+          if (isAdmin) {
+            setUserRole('admin');
+          } else {
+            setUserRole(json.role || 'User');
+          }
           if (typeof json.points === 'number') {
             setUserPoints(json.points);
           }
