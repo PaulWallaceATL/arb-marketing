@@ -572,17 +572,29 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="user-card-actions">
-                  <Link href={`/partners/admin/users/${u.user_id}`} className="btn-secondary" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      router.push(`/partners/admin/users/${u.user_id}`);
+                    }}
+                  >
                     Manage
-                  </Link>
-                  <Link
-                    href={`/partners/admin/users/${u.user_id}`}
+                  </button>
+                  <button
+                    type="button"
                     className="btn-icon"
                     title="View Profile"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      router.push(`/partners/admin/users/${u.user_id}`);
+                    }}
                   >
                     👁️
-                  </Link>
+                  </button>
                 </div>
 
                 {u.submissions.length > 0 && (
@@ -1082,6 +1094,8 @@ export default function AdminDashboard() {
           padding: 1.5rem;
           border: 1px solid #e2e8f0;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
+          position: relative;
+          pointer-events: auto;
         }
 
         .user-card:hover {
@@ -1148,6 +1162,7 @@ export default function AdminDashboard() {
           display: flex;
           gap: 0.75rem;
           margin-bottom: 1rem;
+          pointer-events: auto;
         }
 
         .user-recent-submissions h4 {
