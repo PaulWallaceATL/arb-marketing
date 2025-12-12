@@ -49,7 +49,7 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
       if (data.user) {
         setIsLoggedIn(true);
         // Immediate redirect to ensure navigation (with hard fallback)
-        router.push(redirectTo);
+          router.push(redirectTo);
         if (onSuccess) onSuccess();
         // Hard fallback after a short delay in case client-side routing stalls
         setTimeout(() => {

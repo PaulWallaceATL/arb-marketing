@@ -311,14 +311,14 @@ export default function Header() {
                   <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Dashboard</span>
                 </Link>
               ) : (
-                <Link
-                  href="/contact"
-                  className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
-                  style={{ fontFamily: "'Libre Baskerville', serif" }}
-                >
-                  <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
-                  <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
-                </Link>
+              <Link
+                href="/contact"
+                className="aximo-default-btn aximo-header-btn outline-btn hire-us-header-btn"
+                style={{ fontFamily: "'Libre Baskerville', serif" }}
+              >
+                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
+                <span className="aximo-label-up hire-us-text" style={{ color: '#000000' }}>Grow With Us</span>
+              </Link>
               )}
             </div>
 

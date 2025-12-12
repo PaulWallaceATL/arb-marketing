@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       data: { user },
       error: authError,
     } = await supabaseAnon.auth.getUser();
-
+    
     if (authError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
