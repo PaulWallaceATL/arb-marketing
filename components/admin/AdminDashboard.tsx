@@ -560,12 +560,26 @@ export default function AdminDashboard() {
 
                 <div className="user-card-actions">
                   <button
-                    onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      router.push(`/partners/admin/users/${u.user_id}`);
+                    }}
                     className="btn-secondary"
                   >
                     Manage
                   </button>
-                  <button className="btn-icon" title="View Profile">
+                  <button
+                    type="button"
+                    className="btn-icon"
+                    title="View Profile"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      router.push(`/partners/admin/users/${u.user_id}`);
+                    }}
+                  >
                     👁️
                   </button>
                 </div>
