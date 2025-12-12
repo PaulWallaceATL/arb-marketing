@@ -114,20 +114,26 @@ export async function PATCH(
       is_authenticated,
     } = body || {};
 
+    // Get existing submission for status transitions/points
+    const { data: existingSubmission, error: existingErr } = await supabaseService
+      .from('referral_submissions')
+      .select('id,status,submitted_by_user_id')
+      .eq('id', id)
+      .maybeSingle();
+
+    if (existingErr || !existingSubmission) {
+      return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+    }
+
+    const previousStatus = existingSubmission.status;
+    const submittedByUserId = existingSubmission.submitted_by_user_id;
+
     // Build update object
     const updateData: any = {};
 
-    const allowedStatuses = ['new', 'contacted', 'qualified', 'converted', 'lost', 'spam'];
+    const allowedStatuses = ['pending', 'approved', 'denied'];
     if (status !== undefined) {
-      updateData.status = allowedStatuses.includes(status) ? status : 'new';
-
-      // Set timestamps based on status
-      if (status === 'contacted') {
-        updateData.contacted_at = new Date().toISOString();
-      }
-      if (status === 'converted') {
-        updateData.converted_at = new Date().toISOString();
-      }
+      updateData.status = allowedStatuses.includes(status) ? status : 'pending';
     }
 
     if (admin_notes !== undefined) {
@@ -185,6 +191,24 @@ export async function PATCH(
         { error: 'Failed to update submission' },
         { status: 500 }
       );
+    }
+
+    // Award points if status transitions to approved from a non-approved state
+    if (
+      submittedByUserId &&
+      previousStatus !== 'approved' &&
+      updateData.status === 'approved'
+    ) {
+      const { data: pointsRow } = await supabaseService
+        .from('partner_users')
+        .select('points')
+        .eq('user_id', submittedByUserId)
+        .maybeSingle();
+      const currentPoints = pointsRow?.points ?? 0;
+      await supabaseService
+        .from('partner_users')
+        .update({ points: currentPoints + 2 })
+        .eq('user_id', submittedByUserId);
     }
 
     // Log the activity

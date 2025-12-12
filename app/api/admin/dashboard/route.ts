@@ -82,8 +82,8 @@ export async function GET(request: NextRequest) {
     // Fetch dashboard statistics
     const [
       { count: totalSubmissions },
-      { count: newSubmissions },
-      { data: convertedSubmissions },
+      { count: recentSubmissionsCount },
+      { data: approvedSubmissions },
       { count: activePartners },
       { data: recentSubmissions },
       { data: partnerPerformance },
@@ -93,17 +93,17 @@ export async function GET(request: NextRequest) {
         .from('referral_submissions')
         .select('id', { count: 'exact', head: true }),
       
-      // New submissions (last 7 days)
+      // Recent submissions (last 7 days)
       supabaseService
         .from('referral_submissions')
         .select('id', { count: 'exact', head: true })
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
       
-      // Converted submissions
+      // Approved submissions
       supabaseService
         .from('referral_submissions')
         .select('id, conversion_value', { count: 'exact' })
-        .eq('status', 'converted'),
+        .eq('status', 'approved'),
       
       // Active partners
       supabaseService
@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Calculate total revenue
-    const totalRevenue = convertedSubmissions?.reduce(
+    const totalRevenue = approvedSubmissions?.reduce(
       (sum, sub: any) => sum + (parseFloat(sub.conversion_value) || 0),
       0
     ) || 0;
@@ -151,17 +151,17 @@ export async function GET(request: NextRequest) {
     }, {}) || {};
 
     const totalCount = totalSubmissions || 0;
-    const convertedCount = convertedSubmissions?.length || 0;
+    const approvedCount = approvedSubmissions?.length || 0;
     
     return NextResponse.json({
       summary: {
         totalSubmissions: totalCount,
-        newSubmissions: newSubmissions || 0,
-        convertedSubmissions: convertedCount,
+        newSubmissions: recentSubmissionsCount || 0,
+        convertedSubmissions: approvedCount, // renamed to maintain frontend shape; represents approved
         activePartners: activePartners || 0,
         totalRevenue: totalRevenue.toFixed(2),
         conversionRate: totalCount > 0
-          ? ((convertedCount / totalCount) * 100).toFixed(2)
+          ? ((approvedCount / totalCount) * 100).toFixed(2)
           : '0.00',
       },
       statusCounts,

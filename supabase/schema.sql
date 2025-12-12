@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS public.referral_submissions (
     utm_campaign VARCHAR(100),
     
     -- Status Tracking
-    status VARCHAR(50) DEFAULT 'new' CHECK (status IN ('new', 'contacted', 'qualified', 'converted', 'lost', 'spam')),
+    status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'denied')),
     conversion_value DECIMAL(12,2),
     
     -- Authentication Status
@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS public.partner_users (
     user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE UNIQUE NOT NULL,
     partner_id UUID REFERENCES public.channel_partners(id) ON DELETE CASCADE,
     role VARCHAR(50) DEFAULT 'partner' CHECK (role IN ('admin', 'partner', 'viewer')),
+    points INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     last_login_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -96,23 +97,23 @@ CREATE TABLE IF NOT EXISTS public.activity_log (
 );
 
 -- =====================================================
--- 5. INDEXES FOR PERFORMANCE
+-- 5. INDEXES FOR PERFORMANCE (idempotent)
 -- =====================================================
-CREATE INDEX idx_channel_partners_email ON public.channel_partners(email);
-CREATE INDEX idx_channel_partners_referral_code ON public.channel_partners(referral_code);
-CREATE INDEX idx_channel_partners_status ON public.channel_partners(status);
+CREATE INDEX IF NOT EXISTS idx_channel_partners_email ON public.channel_partners(email);
+CREATE INDEX IF NOT EXISTS idx_channel_partners_referral_code ON public.channel_partners(referral_code);
+CREATE INDEX IF NOT EXISTS idx_channel_partners_status ON public.channel_partners(status);
 
-CREATE INDEX idx_referral_submissions_partner_id ON public.referral_submissions(partner_id);
-CREATE INDEX idx_referral_submissions_referral_code ON public.referral_submissions(referral_code);
-CREATE INDEX idx_referral_submissions_status ON public.referral_submissions(status);
-CREATE INDEX idx_referral_submissions_created_at ON public.referral_submissions(created_at DESC);
-CREATE INDEX idx_referral_submissions_lead_email ON public.referral_submissions(lead_email);
+CREATE INDEX IF NOT EXISTS idx_referral_submissions_partner_id ON public.referral_submissions(partner_id);
+CREATE INDEX IF NOT EXISTS idx_referral_submissions_referral_code ON public.referral_submissions(referral_code);
+CREATE INDEX IF NOT EXISTS idx_referral_submissions_status ON public.referral_submissions(status);
+CREATE INDEX IF NOT EXISTS idx_referral_submissions_created_at ON public.referral_submissions(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_referral_submissions_lead_email ON public.referral_submissions(lead_email);
 
-CREATE INDEX idx_partner_users_user_id ON public.partner_users(user_id);
-CREATE INDEX idx_partner_users_partner_id ON public.partner_users(partner_id);
+CREATE INDEX IF NOT EXISTS idx_partner_users_user_id ON public.partner_users(user_id);
+CREATE INDEX IF NOT EXISTS idx_partner_users_partner_id ON public.partner_users(partner_id);
 
-CREATE INDEX idx_activity_log_user_id ON public.activity_log(user_id);
-CREATE INDEX idx_activity_log_created_at ON public.activity_log(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_activity_log_user_id ON public.activity_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_activity_log_created_at ON public.activity_log(created_at DESC);
 
 -- =====================================================
 -- 6. UPDATED_AT TRIGGER FUNCTION
@@ -125,16 +126,28 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Apply triggers
-CREATE TRIGGER update_channel_partners_updated_at
-    BEFORE UPDATE ON public.channel_partners
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+-- Apply triggers (idempotent)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger WHERE tgname = 'update_channel_partners_updated_at'
+    ) THEN
+        CREATE TRIGGER update_channel_partners_updated_at
+            BEFORE UPDATE ON public.channel_partners
+            FOR EACH ROW
+            EXECUTE FUNCTION update_updated_at_column();
+    END IF;
 
-CREATE TRIGGER update_referral_submissions_updated_at
-    BEFORE UPDATE ON public.referral_submissions
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger WHERE tgname = 'update_referral_submissions_updated_at'
+    ) THEN
+        CREATE TRIGGER update_referral_submissions_updated_at
+            BEFORE UPDATE ON public.referral_submissions
+            FOR EACH ROW
+            EXECUTE FUNCTION update_updated_at_column();
+    END IF;
+END;
+$$;
 
 -- =====================================================
 -- 7. ROW LEVEL SECURITY POLICIES
@@ -147,96 +160,123 @@ ALTER TABLE public.partner_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.activity_log ENABLE ROW LEVEL SECURITY;
 
 -- Channel Partners Policies
-CREATE POLICY "Admins can view all partners"
-    ON public.channel_partners FOR SELECT
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.partner_users
-            WHERE user_id = auth.uid() AND role = 'admin'
-        )
-    );
+DO $$
+BEGIN
+    -- Channel partners policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'channel_partners' AND policyname = 'Admins can view all partners') THEN
+        CREATE POLICY "Admins can view all partners"
+            ON public.channel_partners FOR SELECT
+            TO authenticated
+            USING (
+                EXISTS (
+                    SELECT 1 FROM public.partner_users
+                    WHERE user_id = auth.uid() AND role = 'admin'
+                )
+            );
+    END IF;
 
-CREATE POLICY "Partners can view their own data"
-    ON public.channel_partners FOR SELECT
-    TO authenticated
-    USING (
-        id IN (
-            SELECT partner_id FROM public.partner_users
-            WHERE user_id = auth.uid()
-        )
-    );
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'channel_partners' AND policyname = 'Partners can view their own data') THEN
+        CREATE POLICY "Partners can view their own data"
+            ON public.channel_partners FOR SELECT
+            TO authenticated
+            USING (
+                id IN (
+                    SELECT partner_id FROM public.partner_users
+                    WHERE user_id = auth.uid()
+                )
+            );
+    END IF;
 
-CREATE POLICY "Anyone can insert partner applications"
-    ON public.channel_partners FOR INSERT
-    WITH CHECK (true);
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'channel_partners' AND policyname = 'Anyone can insert partner applications') THEN
+        CREATE POLICY "Anyone can insert partner applications"
+            ON public.channel_partners FOR INSERT
+            WITH CHECK (true);
+    END IF;
 
--- Referral Submissions Policies
-CREATE POLICY "Anyone can submit referrals"
-    ON public.referral_submissions FOR INSERT
-    WITH CHECK (true);
+    -- Referral submissions policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'referral_submissions' AND policyname = 'Anyone can submit referrals') THEN
+        CREATE POLICY "Anyone can submit referrals"
+            ON public.referral_submissions FOR INSERT
+            WITH CHECK (true);
+    END IF;
 
-CREATE POLICY "Admins can view all submissions"
-    ON public.referral_submissions FOR SELECT
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.partner_users
-            WHERE user_id = auth.uid() AND role = 'admin'
-        )
-    );
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'referral_submissions' AND policyname = 'Admins can view all submissions') THEN
+        CREATE POLICY "Admins can view all submissions"
+            ON public.referral_submissions FOR SELECT
+            TO authenticated
+            USING (
+                EXISTS (
+                    SELECT 1 FROM public.partner_users
+                    WHERE user_id = auth.uid() AND role = 'admin'
+                )
+            );
+    END IF;
 
-CREATE POLICY "Partners can view their own submissions"
-    ON public.referral_submissions FOR SELECT
-    TO authenticated
-    USING (
-        partner_id IN (
-            SELECT partner_id FROM public.partner_users
-            WHERE user_id = auth.uid()
-        )
-    );
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'referral_submissions' AND policyname = 'Partners can view their own submissions') THEN
+        CREATE POLICY "Partners can view their own submissions"
+            ON public.referral_submissions FOR SELECT
+            TO authenticated
+            USING (
+                partner_id IN (
+                    SELECT partner_id FROM public.partner_users
+                    WHERE user_id = auth.uid()
+                )
+            );
+    END IF;
 
-CREATE POLICY "Admins can update submissions"
-    ON public.referral_submissions FOR UPDATE
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.partner_users
-            WHERE user_id = auth.uid() AND role = 'admin'
-        )
-    );
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'referral_submissions' AND policyname = 'Admins can update submissions') THEN
+        CREATE POLICY "Admins can update submissions"
+            ON public.referral_submissions FOR UPDATE
+            TO authenticated
+            USING (
+                EXISTS (
+                    SELECT 1 FROM public.partner_users
+                    WHERE user_id = auth.uid() AND role = 'admin'
+                )
+            );
+    END IF;
 
--- Partner Users Policies
-CREATE POLICY "Users can view their own partner user record"
-    ON public.partner_users FOR SELECT
-    TO authenticated
-    USING (user_id = auth.uid());
+    -- Partner users policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'partner_users' AND policyname = 'Users can view their own partner user record') THEN
+        CREATE POLICY "Users can view their own partner user record"
+            ON public.partner_users FOR SELECT
+            TO authenticated
+            USING (user_id = auth.uid());
+    END IF;
 
-CREATE POLICY "Admins can view all partner users"
-    ON public.partner_users FOR SELECT
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.partner_users
-            WHERE user_id = auth.uid() AND role = 'admin'
-        )
-    );
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'partner_users' AND policyname = 'Admins can view all partner users') THEN
+        CREATE POLICY "Admins can view all partner users"
+            ON public.partner_users FOR SELECT
+            TO authenticated
+            USING (
+                EXISTS (
+                    SELECT 1 FROM public.partner_users
+                    WHERE user_id = auth.uid() AND role = 'admin'
+                )
+            );
+    END IF;
 
--- Activity Log Policies
-CREATE POLICY "Users can view their own activity"
-    ON public.activity_log FOR SELECT
-    TO authenticated
-    USING (user_id = auth.uid());
+    -- Activity log policies
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'activity_log' AND policyname = 'Users can view their own activity') THEN
+        CREATE POLICY "Users can view their own activity"
+            ON public.activity_log FOR SELECT
+            TO authenticated
+            USING (user_id = auth.uid());
+    END IF;
 
-CREATE POLICY "Admins can view all activity"
-    ON public.activity_log FOR SELECT
-    TO authenticated
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.partner_users
-            WHERE user_id = auth.uid() AND role = 'admin'
-        )
-    );
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname = 'public' AND tablename = 'activity_log' AND policyname = 'Admins can view all activity') THEN
+        CREATE POLICY "Admins can view all activity"
+            ON public.activity_log FOR SELECT
+            TO authenticated
+            USING (
+                EXISTS (
+                    SELECT 1 FROM public.partner_users
+                    WHERE user_id = auth.uid() AND role = 'admin'
+                )
+            );
+    END IF;
+END;
+$$;
 
 -- =====================================================
 -- 8. FUNCTIONS FOR BUSINESS LOGIC
@@ -285,10 +325,18 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_partner_stats_trigger
-    AFTER INSERT OR UPDATE ON public.referral_submissions
-    FOR EACH ROW
-    EXECUTE FUNCTION update_partner_stats();
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger WHERE tgname = 'update_partner_stats_trigger'
+    ) THEN
+        CREATE TRIGGER update_partner_stats_trigger
+            AFTER INSERT OR UPDATE ON public.referral_submissions
+            FOR EACH ROW
+            EXECUTE FUNCTION update_partner_stats();
+    END IF;
+END;
+$$;
 
 -- =====================================================
 -- 9. SEED DATA (Optional - for testing)
@@ -296,6 +344,33 @@ CREATE TRIGGER update_partner_stats_trigger
 
 -- Insert a test admin user (you'll need to create this user in Supabase Auth first)
 -- Example: INSERT INTO public.partner_users (user_id, role) VALUES ('your-admin-user-id', 'admin');
+
+-- =====================================================
+-- RAFFLES & ENTRIES
+-- =====================================================
+CREATE TABLE IF NOT EXISTS public.raffles (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    entry_cost_points INTEGER NOT NULL CHECK (entry_cost_points > 0),
+    max_entries INTEGER NOT NULL CHECK (max_entries > 0),
+    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active','closed')),
+    created_by UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.raffle_entries (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    raffle_id UUID REFERENCES public.raffles(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    points_spent INTEGER NOT NULL CHECK (points_spent > 0),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE (raffle_id, user_id, id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_raffle_entries_raffle_id ON public.raffle_entries(raffle_id);
+CREATE INDEX IF NOT EXISTS idx_raffle_entries_user_id ON public.raffle_entries(user_id);
 
 -- Insert a test channel partner
 INSERT INTO public.channel_partners (

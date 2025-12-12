@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
         is_authenticated: !!user,
         is_accounted,
         quality_score,
-        status: 'new',
+        status: 'pending',
     };
 
     const insertAttempt = async (record: any) => {
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
         utm_campaign: baseRecord.utm_campaign,
         submitted_by_user_id: baseRecord.submitted_by_user_id,
         is_authenticated: baseRecord.is_authenticated,
-        status: 'new',
+        status: 'pending',
       };
       const fallback = await insertAttempt(fallbackRecord);
       data = fallback.data;
@@ -179,15 +179,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Award 1 point for any submission by an authenticated user
+    if (user?.id) {
+      const { data: currentPointsRow } = await supabase
+        .from('partner_users')
+        .select('points')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      const currentPoints = currentPointsRow?.points ?? 0;
+      await supabase
+        .from('partner_users')
+        .update({ points: currentPoints + 1 })
+        .eq('user_id', user.id);
+    }
+
     return NextResponse.json(
       {
-      success: true,
-      message: is_accounted 
-        ? 'Referral submitted and points awarded! Check your dashboard.' 
-        : 'Referral submitted successfully!',
-      submission_id: data.id,
-      is_accounted,
-      quality_score,
+        success: true,
+        message: is_accounted 
+          ? 'Referral submitted! Status set to pending. 1 point awarded.' 
+          : 'Referral submitted successfully! Status set to pending.',
+        submission_id: data.id,
+        is_accounted,
+        quality_score,
       },
       { status: 200 }
     );

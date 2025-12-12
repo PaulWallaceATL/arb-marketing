@@ -4,6 +4,16 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase, ReferralSubmission } from '@/lib/supabase/client';
 
+// Icons for status badges
+const StatusIcon = ({ status }: { status: string }) => {
+  const icons = {
+    pending: '⏳',
+    approved: '✅',
+    denied: '🚫'
+  };
+  return <span>{icons[status as keyof typeof icons] || '❓'}</span>;
+};
+
 interface DashboardStats {
   totalSubmissions: number;
   newSubmissions: number;
@@ -31,6 +41,17 @@ interface UserWithSubs {
   submissions: ReferralSubmission[];
 }
 
+interface Raffle {
+  id: string;
+  name: string;
+  description: string | null;
+  entry_cost_points: number;
+  max_entries: number;
+  status: string;
+  entry_count?: number;
+  created_at?: string;
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -38,9 +59,18 @@ export default function AdminDashboard() {
   const [recentSubmissions, setRecentSubmissions] = useState<ReferralSubmission[]>([]);
   const [partnerPerformance, setPartnerPerformance] = useState<PartnerPerformance[]>([]);
   const [usersWithSubs, setUsersWithSubs] = useState<UserWithSubs[]>([]);
+  const [raffles, setRaffles] = useState<Raffle[]>([]);
+  const [raffleForm, setRaffleForm] = useState({
+    name: '',
+    description: '',
+    entry_cost_points: 1,
+    max_entries: 10,
+  });
+  const [raffleLoading, setRaffleLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<ReferralSubmission | null>(null);
+
 
   useEffect(() => {
     fetchDashboardData();
@@ -82,6 +112,18 @@ export default function AdminDashboard() {
       } else {
         setError((prev) => prev || usersJson.error || 'Failed to fetch users/submissions');
       }
+
+      // Fetch raffles
+      const rafflesResp = await fetch('/api/admin/raffles', {
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const rafflesJson = await rafflesResp.json();
+      if (rafflesResp.ok) {
+        setRaffles(rafflesJson.raffles || []);
+      } else {
+        setError((prev) => prev || rafflesJson.error || 'Failed to fetch raffles');
+      }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -120,6 +162,42 @@ export default function AdminDashboard() {
     }
   };
 
+  const createRaffle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRaffleLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        alert('No session found. Please log in again.');
+        setRaffleLoading(false);
+        return;
+      }
+
+      const resp = await fetch('/api/admin/raffles', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(raffleForm),
+      });
+      const json = await resp.json();
+      if (!resp.ok) {
+        alert(json.error || 'Failed to create raffle');
+      } else {
+        // refresh raffles
+        setRaffles((prev) => [json.raffle, ...prev]);
+        setRaffleForm({ name: '', description: '', entry_cost_points: 1, max_entries: 10 });
+      }
+    } catch (err: any) {
+      alert(err?.message || 'Failed to create raffle');
+    } finally {
+      setRaffleLoading(false);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -132,12 +210,9 @@ export default function AdminDashboard() {
 
   const getStatusBadgeClass = (status: string) => {
     const classes: { [key: string]: string } = {
-      new: 'badge-new',
-      contacted: 'badge-contacted',
-      qualified: 'badge-qualified',
-      converted: 'badge-converted',
-      lost: 'badge-lost',
-      spam: 'badge-spam',
+      pending: 'badge-pending',
+      approved: 'badge-approved',
+      denied: 'badge-denied',
     };
     return classes[status] || 'badge-default';
   };
@@ -162,178 +237,334 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-dashboard">
-      <header className="dashboard-header">
-        <div>
-          <p className="eyebrow">Admin</p>
-          <h1>Control Center</h1>
-          <p className="muted">Manage submissions, users, and performance at a glance.</p>
-        </div>
-        <button onClick={fetchDashboardData} className="btn-refresh">
-          Refresh
-        </button>
-      </header>
-
-      {/* Stats Grid */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon-circle">TS</div>
-          <div className="stat-content">
-            <h3>Total Submissions</h3>
-            <p className="stat-value">{stats?.totalSubmissions || 0}</p>
+      {/* Header */}
+      <div className="admin-header">
+        <div className="header-content">
+          <div className="header-text">
+            <div className="header-badge">Admin Panel</div>
+            <h1 className="header-title">Referral Management</h1>
+            <p className="header-subtitle">Monitor and manage your referral pipeline</p>
           </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon-circle">N7</div>
-          <div className="stat-content">
-            <h3>New (7 days)</h3>
-            <p className="stat-value">{stats?.newSubmissions || 0}</p>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon-circle">CNV</div>
-          <div className="stat-content">
-            <h3>Conversions</h3>
-            <p className="stat-value">{stats?.convertedSubmissions || 0}</p>
-            <p className="stat-subtitle">{stats?.conversionRate || 0}% rate</p>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon-circle">REV</div>
-          <div className="stat-content">
-            <h3>Total Revenue</h3>
-            <p className="stat-value">${stats?.totalRevenue || '0.00'}</p>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon-circle">PRT</div>
-          <div className="stat-content">
-            <h3>Active Partners</h3>
-            <p className="stat-value">{stats?.activePartners || 0}</p>
+          <div className="header-actions">
+            <button onClick={fetchDashboardData} className="btn-secondary">
+              <span>🔄</span> Refresh
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Status Breakdown */}
-      <div className="section-card">
-        <h2>Status Breakdown</h2>
-        <div className="status-grid">
-          {Object.entries(statusCounts).map(([status, count]) => (
-            <div key={status} className="status-item">
-              <span className={`badge ${getStatusBadgeClass(status)}`}>
-                {status}
-              </span>
-              <span className="status-count">{count}</span>
-            </div>
-          ))}
+      {/* Raffles */}
+      <div className="raffles-section card">
+        <div className="section-header">
+          <h2 className="section-title">Raffles</h2>
+          <span className="raffle-count">{raffles.length} active</span>
         </div>
-      </div>
 
-      {/* Recent Submissions */}
-      <div className="section-card">
-        <h2>Recent Submissions</h2>
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Lead Name</th>
-                <th>Email</th>
-                <th>Company</th>
-                <th>Partner</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentSubmissions.map((submission: any) => (
-                <tr key={submission.id}>
-                  <td>{formatDate(submission.created_at)}</td>
-                  <td>{submission.lead_name}</td>
-                  <td>{submission.lead_email}</td>
-                  <td>{submission.lead_company || 'N/A'}</td>
-                  <td>{submission.channel_partners?.company_name || 'Direct'}</td>
-                  <td>
-                    <span className={`badge ${getStatusBadgeClass(submission.status)}`}>
-                      {submission.status}
-                    </span>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => setSelectedSubmission(submission)}
-                      className="btn-action"
-                    >
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <div className="raffle-layout">
+          <div className="raffle-form">
+            <h3>Create Raffle</h3>
+            <form className="form-grid" onSubmit={createRaffle}>
+              <label>
+                Name
+                <input
+                  required
+                  value={raffleForm.name}
+                  onChange={(e) => setRaffleForm((p) => ({ ...p, name: e.target.value }))}
+                />
+              </label>
+              <label>
+                Entry cost (points)
+                <input
+                  type="number"
+                  min={1}
+                  required
+                  value={raffleForm.entry_cost_points}
+                  onChange={(e) => setRaffleForm((p) => ({ ...p, entry_cost_points: Number(e.target.value) || 1 }))}
+                />
+              </label>
+              <label>
+                Max entries
+                <input
+                  type="number"
+                  min={1}
+                  required
+                  value={raffleForm.max_entries}
+                  onChange={(e) => setRaffleForm((p) => ({ ...p, max_entries: Number(e.target.value) || 1 }))}
+                />
+              </label>
+              <label className="full-row">
+                Description
+                <textarea
+                  value={raffleForm.description}
+                  onChange={(e) => setRaffleForm((p) => ({ ...p, description: e.target.value }))}
+                  rows={2}
+                />
+              </label>
+              <div className="form-actions full-row">
+                <button className="btn-primary" type="submit" disabled={raffleLoading}>
+                  {raffleLoading ? 'Creating...' : 'Create raffle'}
+                </button>
+              </div>
+            </form>
+          </div>
 
-      {/* Users and their submissions */}
-      <div className="section-card">
-        <h2>Users & Submissions</h2>
-        <div className="table-container">
-          {usersWithSubs.length === 0 ? (
-            <p style={{ color: '#6b7280' }}>No user submissions found.</p>
-          ) : (
-            <div className="user-list">
-              {usersWithSubs.map((u) => (
-                <div
-                  key={u.user_id}
-                  className="user-block"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      router.push(`/partners/admin/users/${u.user_id}`);
-                    }
-                  }}
-                >
-                  <div className="user-block-header">
-                    <div>
-                      <div className="user-email">{u.email || 'No email'}</div>
-                      <div className="user-id">{u.user_id}</div>
-                    </div>
-                    <span className="pill">{u.submissions.length} submissions</span>
+          <div className="raffle-list">
+            {raffles.length === 0 && (
+              <div className="empty-state">
+                <div className="empty-icon">🎟️</div>
+                <h4>No raffles yet</h4>
+                <p>Create a raffle to start accepting entries.</p>
+              </div>
+            )}
+            {raffles.map((r) => (
+              <div key={r.id} className="raffle-card">
+                <div className="raffle-card-header">
+                  <div>
+                    <h4>{r.name}</h4>
+                    {r.description && <p className="muted">{r.description}</p>}
                   </div>
-                  <div className="user-submissions">
-                    {u.submissions.length === 0 && <p className="muted">No submissions</p>}
-                    {u.submissions.map((s) => (
-                      <button
-                        key={s.id}
-                        type="button"
-                        className="user-submission-row"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          router.push(`/partners/admin/submission/${s.id}`);
-                        }}
-                      >
-                        <div>
-                          <div className="sub-lead">{s.lead_name}</div>
-                          <div className="sub-email">{s.lead_email}</div>
-                        </div>
-                        <div className="sub-meta">
-                          <span className={`badge ${getStatusBadgeClass(s.status)}`}>{s.status}</span>
-                          <span className="sub-date">{new Date(s.created_at).toLocaleDateString()}</span>
-                        </div>
-                      </button>
-                    ))}
+                  <span className={`status-badge ${r.status === 'active' ? 'badge-approved' : 'badge-pending'}`}>
+                    {r.status}
+                  </span>
+                </div>
+                <div className="raffle-meta">
+                  <div>
+                    <strong>{r.entry_cost_points}</strong>
+                    <span>Points per entry</span>
+                  </div>
+                  <div>
+                    <strong>{r.max_entries}</strong>
+                    <span>Max entries</span>
+                  </div>
+                  <div>
+                    <strong>{r.entry_count ?? 0}</strong>
+                    <span>Entries used</span>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Key Metrics */}
+      <div className="metrics-section">
+        <h2 className="section-title">Key Metrics</h2>
+        <div className="metrics-grid">
+          <div className="metric-card">
+            <div className="metric-icon">
+              <span>📊</span>
+            </div>
+            <div className="metric-content">
+              <div className="metric-value">{stats?.totalSubmissions || 0}</div>
+              <div className="metric-label">Total Submissions</div>
+              <div className="metric-trend">All time</div>
+            </div>
+          </div>
+
+          <div className="metric-card">
+            <div className="metric-icon">
+              <span>🆕</span>
+            </div>
+            <div className="metric-content">
+              <div className="metric-value">{stats?.newSubmissions || 0}</div>
+              <div className="metric-label">New This Week</div>
+              <div className="metric-trend">Last 7 days</div>
+            </div>
+          </div>
+
+          <div className="metric-card highlight">
+            <div className="metric-icon">
+              <span>💰</span>
+            </div>
+            <div className="metric-content">
+              <div className="metric-value">{stats?.convertedSubmissions || 0}</div>
+              <div className="metric-label">Conversions</div>
+              <div className="metric-trend">{stats?.conversionRate || 0}% success rate</div>
+            </div>
+          </div>
+
+          <div className="metric-card">
+            <div className="metric-icon">
+              <span>💵</span>
+            </div>
+            <div className="metric-content">
+              <div className="metric-value">${stats?.totalRevenue || '0.00'}</div>
+              <div className="metric-label">Revenue</div>
+              <div className="metric-trend">Total generated</div>
+            </div>
+          </div>
+
+          <div className="metric-card">
+            <div className="metric-icon">
+              <span>👥</span>
+            </div>
+            <div className="metric-content">
+              <div className="metric-value">{stats?.activePartners || 0}</div>
+              <div className="metric-label">Active Partners</div>
+              <div className="metric-trend">Currently active</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Status Overview */}
+      <div className="status-section">
+        <h2 className="section-title">Pipeline Status</h2>
+        <div className="status-overview">
+          <div className="status-chart">
+            {Object.entries(statusCounts).map(([status, count]) => {
+              const percentage = stats?.totalSubmissions ?
+                Math.round((count / stats.totalSubmissions) * 100) : 0;
+              return (
+                <div key={status} className="status-bar">
+                  <div className="status-info">
+                    <div className="status-header">
+                      <StatusIcon status={status} />
+                      <span className="status-name">{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+                    </div>
+                    <span className="status-count">{count}</span>
+                  </div>
+                  <div className="progress-bar">
+                    <div
+                      className={`progress-fill ${getStatusBadgeClass(status)}`}
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                  <span className="status-percentage">{percentage}%</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="activity-section">
+        <div className="section-header">
+          <h2 className="section-title">Recent Submissions</h2>
+          <button className="btn-link">View All</button>
+        </div>
+        <div className="activity-list">
+          {recentSubmissions.slice(0, 5).map((submission: any) => (
+            <div key={submission.id} className="activity-item">
+              <div className="activity-avatar">
+                <span>{submission.lead_name.charAt(0).toUpperCase()}</span>
+              </div>
+              <div className="activity-content">
+                <div className="activity-primary">
+                  <span className="activity-name">{submission.lead_name}</span>
+                  <span className="activity-company">
+                    {submission.lead_company || 'No company'}
+                  </span>
+                </div>
+                <div className="activity-meta">
+                  <span className="activity-date">{formatDate(submission.created_at)}</span>
+                  <span className="activity-source">
+                    {submission.channel_partners?.company_name || 'Direct'}
+                  </span>
+                </div>
+              </div>
+              <div className="activity-status">
+                <span className={`status-badge ${getStatusBadgeClass(submission.status)}`}>
+                  <StatusIcon status={submission.status} />
+                  {submission.status}
+                </span>
+              </div>
+              <div className="activity-actions">
+                <button
+                  onClick={() => router.push(`/partners/admin/submission/${submission.id}`)}
+                  className="btn-icon"
+                  title="View Details"
+                >
+                  👁️
+                </button>
+              </div>
+            </div>
+          ))}
+          {recentSubmissions.length === 0 && (
+            <div className="empty-state">
+              <div className="empty-icon">📋</div>
+              <h3>No recent submissions</h3>
+              <p>Submissions will appear here as they come in.</p>
             </div>
           )}
         </div>
+      </div>
+
+      {/* User Management */}
+      <div className="users-section">
+        <div className="section-header">
+          <h2 className="section-title">Partner Management</h2>
+          <button className="btn-primary">Add Partner</button>
+        </div>
+
+        {usersWithSubs.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">👥</div>
+            <h3>No partners yet</h3>
+            <p>Partners will appear here as they sign up and submit referrals.</p>
+          </div>
+        ) : (
+          <div className="users-grid">
+            {usersWithSubs.map((u) => (
+              <div key={u.user_id} className="user-card">
+                <div className="user-card-header">
+                  <div className="user-avatar">
+                    <span>{(u.email || u.user_id).charAt(0).toUpperCase()}</span>
+                  </div>
+                  <div className="user-info">
+                    <h3 className="user-name">{u.email || 'No email'}</h3>
+                    <p className="user-id">{u.user_id.slice(0, 8)}...</p>
+                  </div>
+                  <div className="user-stats">
+                    <div className="stat">
+                      <span className="stat-number">{u.submissions.length}</span>
+                      <span className="stat-label">Referrals</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="user-card-actions">
+                  <button
+                    onClick={() => router.push(`/partners/admin/users/${u.user_id}`)}
+                    className="btn-secondary"
+                  >
+                    Manage
+                  </button>
+                  <button className="btn-icon" title="View Profile">
+                    👁️
+                  </button>
+                </div>
+
+                {u.submissions.length > 0 && (
+                  <div className="user-recent-submissions">
+                    <h4>Recent Referrals</h4>
+                    <div className="submission-previews">
+                      {u.submissions.slice(0, 3).map((s) => (
+                        <div
+                          key={s.id}
+                          className="submission-preview"
+                          onClick={() => router.push(`/partners/admin/submission/${s.id}`)}
+                        >
+                          <div className="preview-info">
+                            <span className="preview-name">{s.lead_name}</span>
+                            <span className={`preview-status ${getStatusBadgeClass(s.status)}`}>
+                              {s.status}
+                            </span>
+                          </div>
+                          <span className="preview-date">
+                            {new Date(s.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Submission Detail Modal */}
@@ -379,20 +610,16 @@ export default function AdminDashboard() {
               <div className="detail-group">
                 <label>Change Status:</label>
                 <div className="status-buttons">
-                  {['new', 'contacted', 'qualified', 'converted', 'lost', 'spam'].map(
-                    (status) => (
-                      <button
-                        key={status}
-                        onClick={() =>
-                          updateSubmissionStatus(selectedSubmission.id, status)
-                        }
-                        className={`btn-status ${getStatusBadgeClass(status)}`}
-                        disabled={selectedSubmission.status === status}
-                      >
-                        {status}
-                      </button>
-                    )
-                  )}
+                  {['pending', 'approved', 'denied'].map((status) => (
+                    <button
+                      key={status}
+                      onClick={() => updateSubmissionStatus(selectedSubmission.id, status)}
+                      className={`btn-status ${getStatusBadgeClass(status)}`}
+                      disabled={selectedSubmission.status === status}
+                    >
+                      {status}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -402,359 +629,707 @@ export default function AdminDashboard() {
 
       <style jsx>{`
         .admin-dashboard {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
           padding: 2rem;
           max-width: 1400px;
           margin: 0 auto;
         }
 
-        .dashboard-header {
+        /* Header */
+        .admin-header {
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+        }
+
+        .header-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 2rem;
+          gap: 2rem;
         }
 
-        .dashboard-header h1 {
-          font-size: 2rem;
-          color: #333;
+        .header-text {
+          flex: 1;
         }
 
-        .btn-refresh {
-          padding: 0.75rem 1.5rem;
-          background-color: #667eea;
+        .header-badge {
+          display: inline-block;
+          background: linear-gradient(135deg, #667eea, #764ba2);
           color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-size: 0.875rem;
           font-weight: 600;
+          margin-bottom: 0.5rem;
         }
 
-        .btn-refresh:hover {
-          background-color: #5568d3;
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-          gap: 1.25rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-          background: #ffffff;
-          padding: 1.25rem;
-          border-radius: 10px;
-          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-          border: 1px solid #e5e7eb;
-          display: flex;
-          gap: 0.85rem;
-          align-items: center;
-        }
-
-        .stat-icon-circle {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          background: #eef2ff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #4338ca;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+        .header-title {
+          font-size: 2.5rem;
           font-weight: 700;
-          font-size: 11px;
-          letter-spacing: 0.5px;
+          color: #1e293b;
+          margin: 0 0 0.5rem 0;
         }
 
-        .stat-content h3 {
-          font-size: 0.95rem;
-          color: #111827;
-          margin: 0 0 0.15rem;
-        }
-
-        .stat-value {
-          font-size: 1.4rem;
-          font-weight: 700;
-          color: #111827;
+        .header-subtitle {
+          font-size: 1.125rem;
+          color: #64748b;
           margin: 0;
         }
 
-        .stat-subtitle {
-          font-size: 0.85rem;
-          color: #6b7280;
-          margin-top: 0.15rem;
-        }
-
-        .section-card {
-          background: white;
-          padding: 1.5rem;
-          border-radius: 10px;
-          box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
-          margin-bottom: 1.5rem;
-          border: 1px solid #e5e7eb;
-        }
-
-        .section-card h2 {
-          margin-bottom: 1rem;
-          color: #111827;
-          font-size: 1.3rem;
-        }
-
-        .status-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        .header-actions {
+          display: flex;
           gap: 1rem;
         }
 
-        .status-item {
+        /* Section Styles */
+        .section-title {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #1e293b;
+          margin: 0 0 1.5rem 0;
+        }
+
+        .section-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0.75rem;
-          background: #f8f9fa;
-          border-radius: 6px;
+          margin-bottom: 1.5rem;
+        }
+
+        .section-header .section-title {
+          margin: 0;
+        }
+
+        .btn-link {
+          background: none;
+          border: none;
+          color: #667eea;
+          font-weight: 600;
+          cursor: pointer;
+          text-decoration: underline;
+          font-size: 0.875rem;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+          margin-bottom: 2rem;
+        }
+
+        .metrics-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1.5rem;
+        }
+
+        .metric-card {
+          background: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .metric-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .metric-card.highlight {
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          color: white;
+          border: none;
+        }
+
+        .metric-card.highlight .metric-label,
+        .metric-card.highlight .metric-trend {
+          color: rgba(255, 255, 255, 0.9);
+        }
+
+        .metric-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 12px;
+          background: #f1f5f9;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+        }
+
+        .metric-card.highlight .metric-icon {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .metric-content {
+          flex: 1;
+        }
+
+        .metric-value {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin: 0 0 0.25rem 0;
+        }
+
+        .metric-card.highlight .metric-value {
+          color: white;
+        }
+
+        .metric-label {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #64748b;
+          margin: 0 0 0.25rem 0;
+        }
+
+        .metric-trend {
+          font-size: 0.75rem;
+          color: #94a3b8;
+        }
+
+        /* Status Section */
+        .status-section {
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+        }
+
+        .status-overview {
+          margin-top: 1rem;
+        }
+
+        .status-chart {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .status-bar {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          background: #f8fafc;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .status-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex: 1;
+          margin-right: 1rem;
+        }
+
+        .status-header {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .status-name {
+          font-weight: 600;
+          color: #1e293b;
         }
 
         .status-count {
           font-weight: 700;
-          font-size: 1.25rem;
+          font-size: 1.125rem;
+          color: #1e293b;
         }
 
-        .badge {
-          display: inline-block;
-          padding: 0.25rem 0.75rem;
-          border-radius: 12px;
-          font-size: 0.85rem;
+        .progress-bar {
+          flex: 1;
+          height: 8px;
+          background: #e2e8f0;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+
+        .progress-fill {
+          height: 100%;
+          border-radius: 4px;
+          transition: width 0.3s ease;
+        }
+
+        .progress-fill.badge-pending { background: #f59e0b; }
+        .progress-fill.badge-approved { background: #16a34a; }
+        .progress-fill.badge-denied { background: #ef4444; }
+
+        .status-percentage {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #64748b;
+          min-width: 3rem;
+          text-align: right;
+        }
+
+        /* Activity Section */
+        .activity-section {
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+        }
+
+        .activity-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .activity-item {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          background: #f8fafc;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          transition: background-color 0.2s ease;
+        }
+
+        .activity-item:hover {
+          background: #f1f5f9;
+        }
+
+        .activity-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+          font-size: 1rem;
+        }
+
+        .activity-content {
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .activity-primary {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+
+        .activity-name {
+          font-weight: 600;
+          color: #1e293b;
+        }
+
+        .activity-company {
+          font-size: 0.875rem;
+          color: #64748b;
+        }
+
+        .activity-meta {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 0.25rem;
+        }
+
+        .activity-date {
+          font-size: 0.75rem;
+          color: #94a3b8;
+        }
+
+        .activity-source {
+          font-size: 0.75rem;
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .activity-status {
+          display: flex;
+          align-items: center;
+        }
+
+        .status-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.375rem 0.75rem;
+          border-radius: 20px;
+          font-size: 0.75rem;
           font-weight: 600;
           text-transform: capitalize;
         }
 
-        .badge-new {
-          background-color: #cce5ff;
-          color: #004085;
+        .status-badge.badge-pending {
+          background: #fef3c7;
+          color: #d97706;
         }
 
-        .badge-contacted {
-          background-color: #fff3cd;
-          color: #856404;
+        .status-badge.badge-approved {
+          background: #d1fae5;
+          color: #059669;
         }
 
-        .badge-qualified {
-          background-color: #d1ecf1;
-          color: #0c5460;
+        .status-badge.badge-denied {
+          background: #fee2e2;
+          color: #dc2626;
         }
 
-        .badge-converted {
-          background-color: #d4edda;
-          color: #155724;
+        .activity-actions {
+          display: flex;
+          gap: 0.5rem;
         }
 
-        .badge-lost {
-          background-color: #f8d7da;
-          color: #721c24;
+        .btn-icon {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 6px;
+          font-size: 1rem;
+          transition: background-color 0.2s ease;
         }
 
-        .badge-spam {
-          background-color: #e2e3e5;
-          color: #383d41;
+        .btn-icon:hover {
+          background: #e2e8f0;
         }
 
-        .user-list {
+        /* Users Section */
+        .users-section {
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e2e8f0;
+        }
+
+        .users-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: 1.5rem;
+        }
+
+        .user-card {
+          background: #f8fafc;
+          border-radius: 12px;
+          padding: 1.5rem;
+          border: 1px solid #e2e8f0;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .user-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .user-card-header {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+          font-size: 1.125rem;
+        }
+
+        .user-info {
+          flex: 1;
+        }
+
+        .user-name {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #1e293b;
+          margin: 0 0 0.25rem 0;
+        }
+
+        .user-id {
+          font-size: 0.875rem;
+          color: #64748b;
+          margin: 0;
+          font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .user-stats {
+          text-align: center;
+        }
+
+        .stat .stat-number {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #1e293b;
+          display: block;
+        }
+
+        .stat .stat-label {
+          font-size: 0.75rem;
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .user-card-actions {
+          display: flex;
+          gap: 0.75rem;
+          margin-bottom: 1rem;
+        }
+
+        .user-recent-submissions h4 {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #374151;
+          margin: 0 0 0.75rem 0;
+        }
+
+        .submission-previews {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .submission-preview {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem;
+          background: white;
+          border-radius: 6px;
+          border: 1px solid #e2e8f0;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+
+        .submission-preview:hover {
+          background: #f8fafc;
+        }
+
+        .preview-info {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .preview-name {
+          font-weight: 500;
+          color: #1e293b;
+        }
+
+        .preview-status {
+          padding: 0.25rem 0.5rem;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          font-weight: 500;
+        }
+
+        .preview-date {
+          font-size: 0.75rem;
+          color: #94a3b8;
+        }
+
+        /* Raffles */
+        .raffles-section {
+          margin-top: 1rem;
+        }
+
+        .raffle-layout {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 1.25rem;
+        }
+
+        .raffle-form {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 1.25rem;
+        }
+
+        .raffle-list {
           display: flex;
           flex-direction: column;
           gap: 12px;
         }
 
-        .user-block {
-          border: 1px solid #e5e7eb;
-          border-radius: 10px;
-          padding: 12px;
-          background: #f8fafc;
-          transition: transform 0.12s ease, box-shadow 0.12s ease;
-          cursor: pointer;
-          width: 100%;
-          text-align: left;
-          display: block;
+        .raffle-card {
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 1rem;
+          background: white;
         }
 
-        .user-block:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
-        }
-
-        .user-submission-row {
-          cursor: pointer;
-          background: #fff;
-          border: 1px solid #e5e7eb;
-          border-radius: 8px;
-          padding: 10px;
+        .raffle-card-header {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          width: 100%;
-          text-align: left;
-          transition: transform 0.12s ease, box-shadow 0.12s ease;
-        }
-        .user-submission-row:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-        }
-
-        .user-block-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 8px;
-        }
-
-        .user-email {
-          font-weight: 700;
-          color: #0f172a;
-        }
-
-        .user-id {
-          font-size: 12px;
-          color: #94a3b8;
-        }
-
-        .pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          padding: 4px 10px;
-          background: #eef2ff;
-          color: #4338ca;
-          border-radius: 999px;
-          font-weight: 600;
-          font-size: 12px;
-        }
-
-        .user-submissions {
-          display: flex;
-          flex-direction: column;
+          align-items: flex-start;
           gap: 8px;
+          margin-bottom: 10px;
         }
 
-        .user-submission-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+        .raffle-meta {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 0.75rem;
+        }
+
+        .raffle-meta div {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
           padding: 10px;
-          border: 1px solid #e5e7eb;
-          border-radius: 8px;
-          background: #fff;
         }
 
-        .sub-lead {
-          font-weight: 600;
+        .raffle-meta strong {
+          display: block;
+          font-size: 1.1rem;
           color: #0f172a;
         }
 
-        .sub-email {
-          font-size: 13px;
+        .raffle-meta span {
+          font-size: 0.85rem;
           color: #64748b;
         }
 
-        .sub-meta {
-          display: flex;
-          align-items: center;
-          gap: 8px;
+        /* Empty States */
+        .empty-state {
+          text-align: center;
+          padding: 3rem 2rem;
+          color: #64748b;
         }
 
-        .sub-date {
-          font-size: 12px;
-          color: #94a3b8;
+        .empty-icon {
+          font-size: 3rem;
+          margin-bottom: 1rem;
         }
 
-        .table-container {
-          overflow-x: auto;
-        }
-
-        .data-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        .data-table th,
-        .data-table td {
-          padding: 0.75rem;
-          text-align: left;
-          border-bottom: 1px solid #e0e0e0;
-        }
-
-        .data-table th {
-          background-color: #f8f9fa;
+        .empty-state h3 {
+          font-size: 1.25rem;
           font-weight: 600;
-          color: #333;
+          color: #1e293b;
+          margin: 0 0 0.5rem 0;
         }
 
-        .data-table tr:hover {
-          background-color: #f8f9fa;
+        .empty-state p {
+          margin: 0;
         }
 
-        .btn-action {
-          padding: 0.5rem 1rem;
-          background-color: #667eea;
+        /* Buttons */
+        .btn-primary {
+          background: linear-gradient(135deg, #667eea, #764ba2);
           color: white;
           border: none;
-          border-radius: 4px;
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 600;
           cursor: pointer;
-          font-size: 0.85rem;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .btn-action:hover {
-          background-color: #5568d3;
+        .btn-primary:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
+        .btn-secondary {
+          background: #f1f5f9;
+          color: #475569;
+          border: 1px solid #cbd5e1;
+          padding: 0.75rem 1.5rem;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+          background: #e2e8f0;
+        }
+
+        /* Modal Styles */
         .modal-overlay {
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
+          background: rgba(0, 0, 0, 0.5);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
+          backdrop-filter: blur(4px);
         }
 
         .modal-content {
           background: white;
-          border-radius: 12px;
+          border-radius: 16px;
           max-width: 600px;
           width: 90%;
           max-height: 90vh;
           overflow-y: auto;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
         }
 
         .modal-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1.5rem;
-          border-bottom: 1px solid #e0e0e0;
+          padding: 2rem;
+          border-bottom: 1px solid #e2e8f0;
         }
 
         .modal-header h2 {
           margin: 0;
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #1e293b;
         }
 
         .btn-close {
           background: none;
           border: none;
-          font-size: 2rem;
+          font-size: 1.5rem;
           cursor: pointer;
-          color: #999;
-          line-height: 1;
+          color: #94a3b8;
+          padding: 0.5rem;
+          border-radius: 6px;
+          transition: background-color 0.2s ease;
         }
 
         .btn-close:hover {
-          color: #333;
+          background: #f1f5f9;
+          color: #475569;
         }
 
         .modal-body {
-          padding: 1.5rem;
+          padding: 2rem;
         }
 
         .detail-group {
@@ -764,13 +1339,15 @@ export default function AdminDashboard() {
         .detail-group label {
           display: block;
           font-weight: 600;
-          color: #333;
+          color: #374151;
           margin-bottom: 0.5rem;
+          font-size: 0.875rem;
         }
 
         .detail-group p {
           margin: 0;
-          color: #666;
+          color: #64748b;
+          line-height: 1.5;
         }
 
         .status-buttons {
@@ -784,13 +1361,15 @@ export default function AdminDashboard() {
           border: 2px solid currentColor;
           border-radius: 6px;
           cursor: pointer;
-          font-size: 0.85rem;
+          font-size: 0.875rem;
           font-weight: 600;
           text-transform: capitalize;
+          transition: all 0.2s ease;
         }
 
         .btn-status:hover:not(:disabled) {
-          opacity: 0.8;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .btn-status:disabled {
@@ -798,52 +1377,86 @@ export default function AdminDashboard() {
           cursor: not-allowed;
         }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .admin-dashboard {
+            padding: 1rem;
+          }
+
+          .admin-header {
+            padding: 1.5rem;
+          }
+
+          .header-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 1.5rem;
+          }
+
+          .header-title {
+            font-size: 2rem;
+          }
+
+          .metrics-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .users-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .activity-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+          }
+
+          .activity-content {
+            width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+          }
+
+          .user-card-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.75rem;
+          }
+
+          .user-card-actions {
+            justify-content: center;
+          }
+        }
+
+        /* Loading States */
         .dashboard-loading,
         .dashboard-error {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          min-height: 50vh;
-          gap: 1rem;
+          min-height: 60vh;
+          gap: 1.5rem;
         }
 
         .spinner {
-          border: 4px solid #f3f3f3;
+          border: 4px solid #f1f5f9;
           border-top: 4px solid #667eea;
           border-radius: 50%;
-          width: 50px;
-          height: 50px;
+          width: 60px;
+          height: 60px;
           animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
-          .admin-dashboard {
-            padding: 1rem;
-          }
-
-          .stats-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .dashboard-header {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: flex-start;
-          }
-
-          .data-table {
-            font-size: 0.85rem;
-          }
+        .dashboard-error h2 {
+          color: #ef4444;
+          margin: 0;
         }
       `}</style>
     </div>

@@ -22,6 +22,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [userPoints, setUserPoints] = useState<number | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [subsLoading, setSubsLoading] = useState(false);
@@ -57,6 +58,9 @@ export default function DashboardPage() {
           const json = await resp.json();
           setSubmissions(json.submissions || []);
           setUserRole(json.role || 'User');
+          if (typeof json.points === 'number') {
+            setUserPoints(json.points);
+          }
           if (json.warning) {
             setSubsError(json.warning);
           }
@@ -125,6 +129,8 @@ export default function DashboardPage() {
     return null; // Will redirect
   }
 
+  console.log('Dashboard rendering with userRole:', userRole);
+
   return (
     <div className="dashboard-page">
       <div className="gradient-bg" />
@@ -133,6 +139,9 @@ export default function DashboardPage() {
           <h1 className="nav-logo">Partner Portal</h1>
           <div className="nav-actions">
             <span className="user-role">{userRole || 'User'}</span>
+            {typeof userPoints === 'number' && (
+              <span className="user-points">Points: {userPoints}</span>
+            )}
             <a href="/submission-form" className="nav-link">
               Referral Form
             </a>
@@ -265,7 +274,7 @@ export default function DashboardPage() {
         .nav-actions {
           display: flex;
           align-items: center;
-          gap: 1.5rem;
+          gap: 1rem;
         }
 
         .user-role {
@@ -276,6 +285,16 @@ export default function DashboardPage() {
           font-size: 0.85rem;
           font-weight: 600;
           text-transform: capitalize;
+        }
+
+        .user-points {
+          padding: 0.4rem 0.9rem;
+          background: #f1f5f9;
+          color: #0f172a;
+          border: 1px solid #e2e8f0;
+          border-radius: 999px;
+          font-size: 0.85rem;
+          font-weight: 600;
         }
 
         .nav-link {

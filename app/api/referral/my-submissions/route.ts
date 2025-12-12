@@ -69,10 +69,11 @@ export async function GET(request: NextRequest) {
   // Determine partner_id (if any) and role
   let partnerId: string | null = null;
   let role: string | null = null;
+  let points: number | null = null;
   try {
     const { data: partnerUser } = await supabaseService
       .from('partner_users')
-      .select('partner_id, role')
+      .select('partner_id, role, points')
       .eq('user_id', user.id)
       .maybeSingle();
     if (partnerUser?.partner_id) {
@@ -80,6 +81,9 @@ export async function GET(request: NextRequest) {
     }
     if (partnerUser?.role) {
       role = partnerUser.role;
+    }
+    if (typeof partnerUser?.points === 'number') {
+      points = partnerUser.points;
     }
   } catch (err) {
     // ignore; partnerId stays null
@@ -133,6 +137,7 @@ export async function GET(request: NextRequest) {
     partnerId,
     submissions,
     role,
+    points,
     warning,
     debug,
   }, { status: 200 });
