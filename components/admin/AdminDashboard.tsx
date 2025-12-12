@@ -184,6 +184,7 @@ export default function AdminDashboard() {
 
       const response = await fetch(`/api/admin/submission/${id}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -193,9 +194,11 @@ export default function AdminDashboard() {
         fetchDashboardData();
       } else {
         const data = await response.json().catch(() => ({}));
+        console.error('Delete submission failed', data);
         alert(data.error || 'Failed to delete submission');
       }
     } catch (err: any) {
+      console.error('Delete submission error', err);
       alert(err.message || 'An error occurred');
     }
   };
