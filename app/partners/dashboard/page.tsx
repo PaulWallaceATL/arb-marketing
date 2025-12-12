@@ -346,7 +346,8 @@ export default function DashboardPage() {
         }
 
         .dashboard-main {
-          padding: 0;
+          padding: 2rem 0 3rem;
+          margin-top: 76px; /* keeps content clear of sticky header */
         }
 
         .partner-view {

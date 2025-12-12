@@ -170,6 +170,20 @@ export default function AdminDashboard() {
     e.preventDefault();
     setRaffleLoading(true);
     try {
+      const payload = {
+        name: raffleForm.name.trim(),
+        description: raffleForm.description.trim() || null,
+        entry_cost_points: Math.max(1, Number(raffleForm.entry_cost_points) || 1),
+        max_entries: Math.max(1, Number(raffleForm.max_entries) || 1),
+        image_url: raffleForm.image_url.trim() || null,
+      };
+
+      if (!payload.name) {
+        alert('Please enter a raffle name.');
+        setRaffleLoading(false);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
       if (!token) {
@@ -185,7 +199,7 @@ export default function AdminDashboard() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(raffleForm),
+        body: JSON.stringify(payload),
       });
       const json = await resp.json();
       if (!resp.ok) {
@@ -1255,7 +1269,8 @@ export default function AdminDashboard() {
           background: #f8fafc;
           border: 1px solid #e2e8f0;
           border-radius: 12px;
-          padding: 1.25rem;
+          padding: 1.5rem;
+          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
         }
 
         .raffle-list {
@@ -1277,6 +1292,69 @@ export default function AdminDashboard() {
           align-items: flex-start;
           gap: 8px;
           margin-bottom: 10px;
+        }
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 1rem;
+        }
+
+        .form-grid label {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+          font-weight: 600;
+          color: #0f172a;
+          font-size: 0.95rem;
+        }
+
+        .form-grid input,
+        .form-grid textarea {
+          width: 100%;
+          border: 1px solid #d7dce4;
+          border-radius: 10px;
+          padding: 0.7rem 0.85rem;
+          background: #fff;
+          font-size: 0.95rem;
+          color: #0f172a;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .form-grid input:focus,
+        .form-grid textarea:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-grid input[type="number"]::-webkit-inner-spin-button,
+        .form-grid input[type="number"]::-webkit-outer-spin-button {
+          margin: 0;
+        }
+
+        .form-grid textarea {
+          resize: vertical;
+          min-height: 96px;
+        }
+
+        .form-grid .full-row {
+          grid-column: 1 / -1;
+        }
+
+        .raffle-form-header h3 {
+          margin: 0.25rem 0;
+        }
+
+        .raffle-form-header .muted {
+          margin: 0;
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.75rem;
         }
 
         .raffle-meta {
