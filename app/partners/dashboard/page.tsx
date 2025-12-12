@@ -162,14 +162,14 @@ export default function DashboardPage() {
         <div className="nav-content">
           <h1 className="nav-logo">Partner Portal</h1>
           <div className="nav-actions">
-            <span className="user-role">{userRole || 'User'}</span>
+            <span className="pill role">{userRole || 'User'}</span>
             {typeof userPoints === 'number' && (
-              <span className="user-points">Points: {userPoints}</span>
+              <span className="pill points">Points: {userPoints}</span>
             )}
             <a href="/submission-form" className="nav-link">
               Referral Form
             </a>
-            <button onClick={handleLogout} className="btn-logout">
+            <button onClick={handleLogout} className="btn-ghost">
               Logout
             </button>
           </div>
@@ -181,29 +181,39 @@ export default function DashboardPage() {
           <AdminDashboard />
         ) : (
           <div className="partner-view">
-            <div className="page-heading">
+            <div className="page-heading card">
               <div>
                 <p className="eyebrow">Welcome back</p>
-                <h2>Partner Dashboard</h2>
+                <h2 className="page-title">Partner Dashboard</h2>
                 <p className="muted">Track the referrals you’ve shared with us.</p>
               </div>
-              <a className="cta" href="/submission-form">Submit a referral</a>
+              <div className="heading-actions">
+                <a className="btn-primary" href="/submission-form">Submit a referral</a>
+              </div>
             </div>
 
             <div className="info-grid">
-              <div className="info-card">
+              <div className="info-card card">
                 <div className="info-label">Your Email</div>
                 <div className="info-value">{userEmail || '—'}</div>
               </div>
-              <div className="info-card">
+              <div className="info-card card">
                 <div className="info-label">Role</div>
                 <div className="info-value">{userRole || 'User'}</div>
               </div>
+              <div className="info-card card">
+                <div className="info-label">Points</div>
+                <div className="info-value accent">{typeof userPoints === 'number' ? userPoints : '—'}</div>
+                <p className="micro-text">Earn 1 point per referral, +2 when approved.</p>
+              </div>
             </div>
 
-            <div className="submissions-card">
+            <div className="submissions-card card">
               <div className="submissions-header">
-                <h3>Your Referrals</h3>
+                <div>
+                  <p className="eyebrow">Recent activity</p>
+                  <h3 className="card-title">Your Referrals</h3>
+                </div>
                 <span className="chip">
                   {subsLoading ? 'Loading...' : `${submissions.length} total`}
                 </span>
@@ -242,7 +252,7 @@ export default function DashboardPage() {
                           <td>{s.lead_email}</td>
                           <td>{s.lead_phone || '—'}</td>
                           <td>
-                            <span className="status-chip">{s.status}</span>
+                            <span className={`status-chip ${s.status}`}>{s.status}</span>
                           </td>
                           <td className="details">
                             {s.lead_message || '—'}
@@ -261,117 +271,156 @@ export default function DashboardPage() {
       <style jsx>{`
         .dashboard-page {
           min-height: 100vh;
-          background: radial-gradient(circle at 10% 20%, rgba(102,126,234,0.12), transparent 25%), #f7f8fb;
+          background: radial-gradient(circle at 10% 20%, rgba(102,126,234,0.10), transparent 25%), #f8fafc;
           position: relative;
         }
         .gradient-bg {
           position: absolute;
           inset: 0;
-          background: radial-gradient(900px 900px at 80% 0%, rgba(76,29,149,0.08), transparent), radial-gradient(700px 700px at 10% 30%, rgba(99,102,241,0.10), transparent);
+          background: radial-gradient(900px 900px at 80% 0%, rgba(76,29,149,0.06), transparent), radial-gradient(700px 700px at 10% 30%, rgba(99,102,241,0.08), transparent);
           z-index: 0;
         }
 
         .dashboard-nav {
-          background: white;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background: rgba(255,255,255,0.92);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 16px rgba(15,23,42,0.06);
           position: sticky;
           top: 0;
-          z-index: 100;
+          z-index: 120;
+          border-bottom: 1px solid #e2e8f0;
         }
 
         .nav-content {
-          max-width: 1400px;
+          max-width: 1360px;
           margin: 0 auto;
           padding: 1rem 2rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 1rem;
         }
 
         .nav-logo {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #333;
+          font-size: 1.4rem;
+          font-weight: 800;
+          color: #0f172a;
           margin: 0;
+          letter-spacing: -0.01em;
         }
 
         .nav-actions {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+          justify-content: flex-end;
         }
 
-        .user-role {
-          padding: 0.5rem 1rem;
-          background: #667eea;
-          color: white;
-          border-radius: 20px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          text-transform: capitalize;
-        }
-
-        .user-points {
-          padding: 0.4rem 0.9rem;
-          background: #f1f5f9;
-          color: #0f172a;
-          border: 1px solid #e2e8f0;
+        .pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.45rem 0.9rem;
           border-radius: 999px;
+          font-weight: 700;
           font-size: 0.85rem;
-          font-weight: 600;
+        }
+        .pill.role {
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          color: white;
+        }
+        .pill.points {
+          background: #eef2ff;
+          color: #312e81;
+          border: 1px solid #c7d2fe;
         }
 
         .nav-link {
-          color: #667eea;
+          color: #4f46e5;
           text-decoration: none;
-          font-weight: 600;
+          font-weight: 700;
+          padding: 0.45rem 0.6rem;
+          border-radius: 10px;
         }
-
         .nav-link:hover {
-          text-decoration: underline;
+          background: #eef2ff;
         }
 
-        .btn-logout {
-          padding: 0.5rem 1.5rem;
-          background: #f8f9fa;
-          color: #333;
-          border: 1px solid #e0e0e0;
-          border-radius: 6px;
+        .btn-ghost {
+          padding: 0.55rem 1.1rem;
+          background: #f8fafc;
+          color: #111827;
+          border: 1px solid #e5e7eb;
+          border-radius: 10px;
+          font-weight: 700;
           cursor: pointer;
-          font-weight: 600;
         }
-
-        .btn-logout:hover {
-          background: #e9ecef;
+        .btn-ghost:hover {
+          background: #e5e7eb;
         }
 
         .dashboard-main {
-          padding: 2rem 0 3rem;
-          margin-top: 76px; /* keeps content clear of sticky header */
+          padding: 2.5rem 0 3rem;
+          margin-top: 76px;
         }
 
         .partner-view {
-          max-width: 1200px;
+          max-width: 1240px;
           margin: 0 auto;
-          padding: 3rem 2rem;
+          padding: 0 1.5rem 2rem;
           position: relative;
           z-index: 1;
           display: flex;
           flex-direction: column;
           gap: 1.5rem;
         }
+
+        .card {
+          background: white;
+          border-radius: 16px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+        }
+
         .page-heading {
+          padding: 1.25rem 1.5rem;
           display: flex;
           justify-content: space-between;
           align-items: center;
           gap: 1rem;
           flex-wrap: wrap;
         }
-        .page-heading h2 {
+
+        .page-title {
+          margin: 0.25rem 0 0;
           font-size: 2rem;
           color: #0f172a;
-          margin: 0.25rem 0 0;
+          letter-spacing: -0.01em;
         }
+
+        .heading-actions {
+          display: flex;
+          gap: 0.75rem;
+          align-items: center;
+        }
+
+        .btn-primary {
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          color: white;
+          padding: 0.8rem 1.35rem;
+          border-radius: 12px;
+          font-weight: 700;
+          text-decoration: none;
+          border: none;
+          box-shadow: 0 12px 30px rgba(99,102,241,0.28);
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn-primary:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 16px 36px rgba(99,102,241,0.32);
+        }
+
         .eyebrow {
           text-transform: uppercase;
           letter-spacing: 0.08em;
@@ -384,175 +433,143 @@ export default function DashboardPage() {
           color: #6b7280;
           margin: 0;
         }
-        .cta {
-          background: linear-gradient(135deg, #6366f1, #8b5cf6);
-          color: #fff;
-          padding: 0.8rem 1.25rem;
-          border-radius: 10px;
-          font-weight: 700;
-          text-decoration: none;
-          box-shadow: 0 10px 30px rgba(99,102,241,0.25);
-          transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-        .cta:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 14px 38px rgba(99,102,241,0.3);
-        }
 
         .info-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
           gap: 1rem;
-          margin: 1.5rem 0 2rem;
         }
-
         .info-card {
-          background: white;
-          padding: 1.5rem;
-          border-radius: 12px;
-          border: 1px solid rgba(99,102,241,0.08);
-          box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+          padding: 1.1rem 1.25rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
         }
-
         .info-label {
           font-size: 0.9rem;
           color: #6b7280;
-          margin-bottom: 0.35rem;
+          margin: 0;
         }
-
         .info-value {
-          font-size: 1rem;
-          font-weight: 600;
-          color: #1f2937;
+          font-weight: 800;
+          color: #0f172a;
+          font-size: 1.05rem;
+        }
+        .info-value.accent {
+          color: #4f46e5;
+        }
+        .micro-text {
+          margin: 0;
+          font-size: 0.8rem;
+          color: #94a3b8;
         }
 
         .submissions-card {
-          background: white;
-          padding: 1.5rem;
-          border-radius: 12px;
-          border: 1px solid rgba(99,102,241,0.08);
-          box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+          padding: 1.35rem 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
         }
-
         .submissions-header {
           display: flex;
           align-items: center;
+          justify-content: space-between;
           gap: 0.75rem;
-          margin-bottom: 1rem;
         }
-
-        .submissions-header h3 {
+        .card-title {
           margin: 0;
           font-size: 1.25rem;
-          color: #1f2937;
+          color: #0f172a;
         }
-
         .chip {
-          display: inline-flex;
-          align-items: center;
-          padding: 0.35rem 0.6rem;
+          padding: 0.4rem 0.85rem;
+          background: #f3f4f6;
           border-radius: 999px;
-          background: #eef2ff;
-          color: #4338ca;
-          font-size: 0.85rem;
-          font-weight: 600;
+          font-size: 0.88rem;
+          color: #374151;
+          border: 1px solid #e5e7eb;
         }
 
         .table-wrapper {
-          width: 100%;
           overflow-x: auto;
         }
-
         .submissions-table {
           width: 100%;
           border-collapse: collapse;
-          font-size: 0.95rem;
         }
-
-        .submissions-table th,
-        .submissions-table td {
-          padding: 0.85rem;
-          border-bottom: 1px solid #eef2f7;
+        th, td {
           text-align: left;
-          color: #0f172a;
+          padding: 0.75rem 0.5rem;
+          font-size: 0.95rem;
+          color: #1f2937;
+          border-bottom: 1px solid #e5e7eb;
         }
-
-        .submissions-table th {
-          color: #4b5563;
-          font-weight: 700;
-          font-size: 0.85rem;
+        th {
+          font-size: 0.82rem;
           text-transform: uppercase;
-          letter-spacing: 0.03em;
-          background: #f8fafc;
+          letter-spacing: 0.04em;
+          color: #6b7280;
         }
-
-        .submissions-table td {
-          color: #0f172a;
-        }
-
         .status-chip {
-          display: inline-flex;
-          padding: 0.25rem 0.55rem;
+          padding: 0.35rem 0.6rem;
           border-radius: 999px;
-          background: #e0f2fe;
-          color: #0369a1;
-          font-weight: 600;
-          font-size: 0.85rem;
+          font-weight: 700;
+          text-transform: capitalize;
+          display: inline-block;
         }
+        .status-chip.pending { background: #fef3c7; color: #d97706; }
+        .status-chip.approved { background: #d1fae5; color: #059669; }
+        .status-chip.denied { background: #fee2e2; color: #dc2626; }
 
         .details {
-          max-width: 320px;
-          white-space: pre-wrap;
+          max-width: 360px;
+          color: #4b5563;
         }
-
         .empty-state {
-          padding: 1rem 0.5rem;
-          color: #475569;
-        }
-
-        .btn-link {
-          display: inline-block;
-          margin-top: 0.35rem;
-          color: #4f46e5;
-          text-decoration: underline;
-          font-weight: 600;
-        }
-
-        .coming-soon {
-          background: white;
-          padding: 3rem;
-          border-radius: 12px;
           text-align: center;
-          margin-top: 2rem;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          color: #6b7280;
+          padding: 1rem 0;
+        }
+        .btn-link {
+          color: #6366f1;
+          text-decoration: none;
+          font-weight: 700;
+        }
+        .btn-link:hover {
+          text-decoration: underline;
         }
 
-        .coming-soon .icon {
-          font-size: 4rem;
-          margin-bottom: 1rem;
-          display: block;
-        }
-
-        .coming-soon p {
-          color: #666;
-          font-size: 1.1rem;
-          line-height: 1.6;
+        @media (max-width: 900px) {
+          .nav-content {
+            padding: 0.85rem 1.25rem;
+          }
+          .page-heading {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .heading-actions {
+            width: 100%;
+            justify-content: flex-start;
+          }
         }
 
         @media (max-width: 768px) {
-          .nav-content {
-            flex-direction: column;
-            gap: 1rem;
-            align-items: flex-start;
-          }
-
           .nav-actions {
-            width: 100%;
-            justify-content: space-between;
+            gap: 0.5rem;
           }
-
+          .pill.points {
+            width: 100%;
+            justify-content: center;
+          }
+          .dashboard-main {
+            margin-top: 70px;
+            padding: 1.5rem 0 2rem;
+          }
           .partner-view {
-            padding: 2rem 1rem;
+            padding: 0 1rem 1.5rem;
+          }
+          th, td {
+            font-size: 0.85rem;
           }
         }
       `}</style>
