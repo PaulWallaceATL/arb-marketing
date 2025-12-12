@@ -391,7 +391,6 @@ export default function AdminDashboard() {
           <div className="raffle-list">
             {raffles.length === 0 && (
               <div className="empty-state">
-                <div className="empty-icon">🎟️</div>
                 <h4>No raffles yet</h4>
                 <p>Create a raffle to start accepting entries.</p>
               </div>
@@ -877,7 +876,7 @@ export default function AdminDashboard() {
 
         /* Metrics Section */
         .metrics-section {
-          margin-bottom: 2rem;
+          margin: 2rem 0;
         }
 
         .metrics-grid {
@@ -915,14 +914,23 @@ export default function AdminDashboard() {
         }
 
         .metric-icon {
-          width: 60px;
-          height: 60px;
-          border-radius: 12px;
-          background: #f1f5f9;
+          width: 52px;
+          height: 52px;
+          border-radius: 14px;
+          background: linear-gradient(135deg, #e0e7ff, #f5f3ff);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 1.5rem;
+        }
+
+        .metric-icon::after {
+          content: '';
+          width: 22px;
+          height: 22px;
+          border-radius: 8px;
+          background: #4f46e5;
+          opacity: 0.15;
+          box-shadow: 0 0 0 6px rgba(79,70,229,0.08);
         }
 
         .metric-card.highlight .metric-icon {
