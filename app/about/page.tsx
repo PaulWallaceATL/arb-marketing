@@ -1,8 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function AboutPage() {
+  const [founderPhoto, setFounderPhoto] = useState('/assets/images/gallery/Alexis.png');
+
+  useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        const res = await fetch('/api/site-media');
+        const json = await res.json();
+        if (Array.isArray(json.media)) {
+          const match = json.media.find((m: any) => m?.key === 'founder_photo' && m?.url);
+          if (match?.url) setFounderPhoto(match.url);
+        }
+      } catch (e) {
+        // ignore, fall back to default
+      }
+    };
+    fetchMedia();
+  }, []);
+
   return (
     <>
       <div className="section aximo-section-padding">
@@ -158,7 +177,7 @@ export default function AboutPage() {
             <div className="col-lg-6 col-md-8">
               <div className="aximo-team-wrap wow fadeInUpX" data-wow-delay="0s" style={{ maxWidth: '500px', margin: '0 auto' }}>
                 <div className="aximo-team-thumb" style={{ borderRadius: '12px', overflow: 'hidden', width: '400px', height: '400px', margin: '0 auto' }}>
-                  <img src="/assets/images/gallery/Alexis.png" alt="Alexis Broadwater - Founder of ARB Marketing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={founderPhoto} alt="Alexis Broadwater - Founder of ARB Marketing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div className="aximo-team-data" style={{ textAlign: 'center' }}>
                   <h3 style={{ fontFamily: "'Roxborough CF', serif", fontSize: '28px', marginTop: '20px' }}>Alexis Broadwater</h3>

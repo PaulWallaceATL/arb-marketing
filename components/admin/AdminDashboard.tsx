@@ -75,6 +75,8 @@ export default function AdminDashboard() {
     max_entries: 10,
     image_url: '',
   });
+  const [siteMedia, setSiteMedia] = useState<Record<string, string>>({});
+  const [mediaLoading, setMediaLoading] = useState(false);
   const [raffleLoading, setRaffleLoading] = useState(false);
   const [showRaffleForm, setShowRaffleForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -84,6 +86,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
+    fetchSiteMedia();
   }, []);
 
   const fetchDashboardData = async () => {
@@ -138,6 +141,74 @@ export default function AdminDashboard() {
       setError(err.message || 'An error occurred');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchSiteMedia = async () => {
+    setMediaLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        setMediaLoading(false);
+        return;
+      }
+      const res = await fetch('/api/admin/site-media', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const json = await res.json();
+      if (res.ok && Array.isArray(json.media)) {
+        const map: Record<string, string> = {};
+        json.media.forEach((m: any) => {
+          if (m?.key && m?.url) map[m.key] = m.url;
+        });
+        setSiteMedia(map);
+      }
+    } catch (e) {
+      // ignore
+    } finally {
+      setMediaLoading(false);
+    }
+  };
+
+  const handleMediaUpload = async (key: string, file: File | null) => {
+    if (!file) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        alert('No session found. Please log in again.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('key', key);
+
+      const uploadRes = await fetch('/api/admin/site-media/upload', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const uploadJson = await uploadRes.json();
+      if (!uploadRes.ok) {
+        alert(uploadJson.error || 'Upload failed');
+        return;
+      }
+      const url = uploadJson.url;
+      // Save mapping
+      await fetch('/api/admin/site-media', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ key, url }),
+      });
+      setSiteMedia((prev) => ({ ...prev, [key]: url }));
+    } catch (err: any) {
+      alert(err?.message || 'Failed to upload image');
     }
   };
 
@@ -307,6 +378,33 @@ export default function AdminDashboard() {
               <span>🔄</span> Refresh
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Site Media */}
+      <div className="card media-section">
+        <div className="section-header">
+          <h2 className="section-title">Site Media</h2>
+          <span className="muted small">Update hero images and founder photo.</span>
+        </div>
+        {mediaLoading && <p className="muted small">Loading current media…</p>}
+        <div className="media-grid">
+          {['hero_1','hero_2','hero_3','hero_4','hero_5','founder_photo'].map((key) => (
+            <div key={key} className="media-card">
+              <div className="media-preview">
+                <img src={siteMedia[key] || '/assets/img/placeholder.png'} alt={key} />
+              </div>
+              <div className="media-meta">
+                <strong>{key.replace('_', ' ').toUpperCase()}</strong>
+                <p className="muted small">Upload to replace</p>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleMediaUpload(key, e.target.files?.[0] || null)}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -1243,6 +1341,48 @@ export default function AdminDashboard() {
           height: 10px;
           border-radius: 999px;
           display: inline-block;
+        }
+
+        .media-section {
+          margin-top: 1.5rem;
+          padding: 1.5rem;
+        }
+
+        .media-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 1rem;
+        }
+
+        .media-card {
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 0.75rem;
+          background: #f8fafc;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .media-preview {
+          width: 100%;
+          aspect-ratio: 4 / 3;
+          background: #e2e8f0;
+          border-radius: 10px;
+          overflow: hidden;
+        }
+
+        .media-preview img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .media-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
         }
 
         /* Users Section */

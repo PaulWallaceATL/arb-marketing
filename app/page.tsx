@@ -14,6 +14,13 @@ export default function Home() {
   const [particleCount, setParticleCount] = useState(80);
   const [shouldAnimateCards, setShouldAnimateCards] = useState(false);
   const [isMobile, setIsMobile] = useState(true); // Start as true to prevent loader flash on mobile
+  const [heroImages, setHeroImages] = useState<string[]>([
+    '/assets/img/images/th-2/hero-img-1.jpg',
+    '/assets/img/images/th-2/hero-img-2.jpg',
+    '/assets/img/images/th-2/hero-img-3.jpg',
+    '/assets/img/images/th-2/hero-img-4.jpg',
+    '/assets/img/images/th-2/hero-img-5.jpg',
+  ]);
 
   useEffect(() => {
     // Set particle count based on screen size
@@ -33,6 +40,27 @@ export default function Home() {
         setShouldAnimateCards(true);
       }, 3500); // After loading screen
     }
+  }, []);
+
+  useEffect(() => {
+    // Fetch dynamic hero media
+    const fetchMedia = async () => {
+      try {
+        const res = await fetch('/api/site-media');
+        const json = await res.json();
+        if (Array.isArray(json.media)) {
+          const map: Record<string, string> = {};
+          json.media.forEach((m: any) => {
+            if (m?.key && m?.url) map[m.key] = m.url;
+          });
+          const updated = heroImages.map((src, idx) => map[`hero_${idx + 1}`] || src);
+          setHeroImages(updated);
+        }
+      } catch (e) {
+        // ignore, fall back to defaults
+      }
+    };
+    fetchMedia();
   }, []);
 
   // Removed GSAP animations - causing mobile visibility issues
@@ -146,19 +174,19 @@ export default function Home() {
         </div>
         <div className="aximo-hero-thumb-wrap" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10000 }}>
           <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-1.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            <img src={heroImages[0]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-2.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            <img src={heroImages[1]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-3.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            <img src={heroImages[2]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-4.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            <img src={heroImages[3]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
           <BounceCard delay={0.8} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src="/assets/img/images/th-2/hero-img-5.jpg" alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            <img src={heroImages[4]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
         </div>
       </div>
