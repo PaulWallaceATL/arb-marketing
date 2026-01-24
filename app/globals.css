@@ -440,13 +440,24 @@ a.aximo-default-btn {
 
   /* Hero images mobile stacking */
   .aximo-hero-thumb-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 40px !important;
+  }
+
+  .aximo-hero-thumb-inner {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 15px !important;
-    margin-top: 40px !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .aximo-hero-thumb-item {
     width: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    max-width: none !important;
   }
 
   .aximo-hero-thumb-item:nth-child(5) {
@@ -746,7 +757,7 @@ a.aximo-default-btn {
     font-size: 1.5rem !important;
   }
 
-  .aximo-hero-thumb-wrap {
+  .aximo-hero-thumb-inner {
     grid-template-columns: 1fr !important;
   }
 
@@ -769,16 +780,19 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
 /* Desktop Hero Images - Restore styling with controlled overlap */
 @media (min-width: 992px) {
   .aximo-hero-thumb-wrap {
-    gap: 0px !important;
     justify-content: center !important;
     align-items: center !important;
-    overflow: visible !important;
     width: 100% !important;
     display: flex !important;
+  }
+
+  .aximo-hero-thumb-inner {
+    display: flex !important;
     flex-wrap: nowrap !important;
-    max-width: 1100px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: fit-content !important;
+    max-width: 100% !important;
   }
 
   .aximo-hero-thumb-item {

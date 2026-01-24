@@ -179,29 +179,36 @@ export default function Home() {
             position: 'relative',
             zIndex: 10000,
             display: 'flex',
-            flexWrap: 'nowrap',
-            gap: '0px',
             justifyContent: 'center',
             alignItems: 'center',
             padding: '24px 20px',
-            maxWidth: '100%',
-            margin: '0 auto',
             width: '100%',
             overflow: 'visible',
           }}
         >
-          <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src={heroImages[0]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-          </BounceCard>
-          <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src={heroImages[1]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-          </BounceCard>
-          <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src={heroImages[2]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-          </BounceCard>
-          <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src={heroImages[3]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-          </BounceCard>
+          <div
+            className="aximo-hero-thumb-inner"
+            style={{
+              display: 'flex',
+              flexWrap: 'nowrap',
+              gap: 0,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
+              <img src={heroImages[0]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            </BounceCard>
+            <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
+              <img src={heroImages[1]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            </BounceCard>
+            <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
+              <img src={heroImages[2]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            </BounceCard>
+            <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
+              <img src={heroImages[3]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
+            </BounceCard>
+          </div>
         </div>
       </div>
 
