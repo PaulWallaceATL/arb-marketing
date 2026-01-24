@@ -180,12 +180,14 @@ export default function Home() {
             zIndex: 10000,
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '40px',
+            gap: '20px',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: '24px 20px',
-            maxWidth: '1400px',
+            padding: '24px 40px',
+            maxWidth: '1200px',
             margin: '0 auto',
+            width: '100%',
+            overflow: 'visible',
           }}
         >
           <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
