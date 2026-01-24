@@ -769,11 +769,16 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
 /* Desktop Hero Images - Restore styling with controlled overlap */
 @media (min-width: 992px) {
   .aximo-hero-thumb-wrap {
-    gap: 20px !important;
+    gap: 0px !important;
     justify-content: center !important;
     align-items: center !important;
     overflow: visible !important;
     width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    max-width: 1100px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .aximo-hero-thumb-item {
@@ -786,27 +791,27 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
   .aximo-hero-thumb-item:nth-child(1) {
     transform: rotate(-5deg) !important;
     z-index: 1 !important;
-    margin-right: -10px !important;
+    margin-right: -25px !important;
   }
 
   .aximo-hero-thumb-item:nth-child(2) {
     transform: rotate(3deg) !important;
     z-index: 3 !important;
-    margin-left: -10px !important;
-    margin-right: -10px !important;
+    margin-left: -25px !important;
+    margin-right: -25px !important;
   }
 
   .aximo-hero-thumb-item:nth-child(3) {
     transform: rotate(-4deg) !important;
     z-index: 2 !important;
-    margin-left: -10px !important;
-    margin-right: -10px !important;
+    margin-left: -25px !important;
+    margin-right: -25px !important;
   }
 
   .aximo-hero-thumb-item:nth-child(4) {
     transform: rotate(5deg) !important;
     z-index: 1 !important;
-    margin-left: -10px !important;
+    margin-left: -25px !important;
   }
 
   .aximo-hero-thumb-item img {
