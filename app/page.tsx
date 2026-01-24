@@ -180,11 +180,11 @@ export default function Home() {
             zIndex: 10000,
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '32px',
+            gap: '48px',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: '18px 16px',
-            maxWidth: '1250px',
+            padding: '24px 20px',
+            maxWidth: '1400px',
             margin: '0 auto',
           }}
         >
