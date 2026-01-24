@@ -172,7 +172,23 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="aximo-hero-thumb-wrap" style={{ opacity: 1, visibility: 'visible', position: 'relative', zIndex: 10000 }}>
+        <div
+          className="aximo-hero-thumb-wrap"
+          style={{
+            opacity: 1,
+            visibility: 'visible',
+            position: 'relative',
+            zIndex: 10000,
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '18px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '10px 12px',
+            maxWidth: '1200px',
+            margin: '0 auto',
+          }}
+        >
           <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src={heroImages[0]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
