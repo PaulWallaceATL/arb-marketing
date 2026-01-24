@@ -766,31 +766,51 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
   color: #000000 !important;
 }
 
-/* Desktop Hero Images - Prevent Overlap */
+/* Desktop Hero Images - Restore styling with controlled overlap */
 @media (min-width: 992px) {
   .aximo-hero-thumb-wrap {
-    gap: 80px !important;
+    gap: 40px !important;
   }
 
   .aximo-hero-thumb-item {
     position: relative !important;
-    margin: 0 !important;
-    transform: none !important;
-    left: auto !important;
-    right: auto !important;
-    top: auto !important;
-    bottom: auto !important;
     flex: 0 0 auto !important;
     max-width: 300px !important;
   }
 
+  .aximo-hero-thumb-item:nth-child(1) {
+    transform: rotate(-5deg) !important;
+    z-index: 1 !important;
+    margin-right: -20px !important;
+  }
+
+  .aximo-hero-thumb-item:nth-child(2) {
+    transform: rotate(3deg) !important;
+    z-index: 3 !important;
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+  }
+
+  .aximo-hero-thumb-item:nth-child(3) {
+    transform: rotate(-4deg) !important;
+    z-index: 2 !important;
+    margin-left: -15px !important;
+    margin-right: -20px !important;
+  }
+
+  .aximo-hero-thumb-item:nth-child(4) {
+    transform: rotate(5deg) !important;
+    z-index: 1 !important;
+    margin-left: -20px !important;
+  }
+
   .aximo-hero-thumb-item img {
-    position: relative !important;
-    margin: 0 !important;
-    transform: none !important;
     display: block !important;
     max-width: 100% !important;
     width: auto !important;
     height: auto !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    border: 3px solid #ffffff !important;
   }
 }
