@@ -19,7 +19,6 @@ export default function Home() {
     '/assets/img/images/th-2/hero-img-2.jpg',
     '/assets/img/images/th-2/hero-img-3.jpg',
     '/assets/img/images/th-2/hero-img-4.jpg',
-    '/assets/img/images/th-2/hero-img-5.jpg',
   ]);
 
   useEffect(() => {
@@ -181,11 +180,11 @@ export default function Home() {
             zIndex: 10000,
             display: 'flex',
             flexWrap: 'wrap',
-            gap: '18px',
+            gap: '32px',
             justifyContent: 'center',
             alignItems: 'center',
-            padding: '10px 12px',
-            maxWidth: '1200px',
+            padding: '18px 16px',
+            maxWidth: '1250px',
             margin: '0 auto',
           }}
         >
@@ -200,9 +199,6 @@ export default function Home() {
           </BounceCard>
           <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
             <img src={heroImages[3]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-          </BounceCard>
-          <BounceCard delay={0.8} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-            <img src={heroImages[4]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
           </BounceCard>
         </div>
       </div>
