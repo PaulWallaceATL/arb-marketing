@@ -127,7 +127,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="aximo-all-section">
         {/* Hero Section */}
-        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#fff' }}>
+        <div className="aximo-hero-section2" style={{ position: 'relative', overflow: 'hidden', backgroundColor: '#fff', width: '100%' }}>
         <Hyperspeed
           className="particles-bg"
           lineCount={particleCount}
@@ -170,21 +170,22 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </div>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          gap: '20px', 
-          padding: '40px 20px',
-          flexWrap: 'wrap',
-          maxWidth: '100%',
-          margin: '0 auto'
-        }}>
-          <img src={heroImages[0]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
-          <img src={heroImages[1]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
-          <img src={heroImages[2]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
-          <img src={heroImages[3]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            gap: '20px', 
+            padding: '40px 0',
+            flexWrap: 'wrap',
+            width: '100%',
+            boxSizing: 'border-box',
+            overflow: 'hidden'
+          }}>
+            <img src={heroImages[0]} alt="" style={{ width: '260px', maxWidth: '100%', height: 'auto', borderRadius: '12px', display: 'block', flexShrink: 0 }} />
+            <img src={heroImages[1]} alt="" style={{ width: '260px', maxWidth: '100%', height: 'auto', borderRadius: '12px', display: 'block', flexShrink: 0 }} />
+            <img src={heroImages[2]} alt="" style={{ width: '260px', maxWidth: '100%', height: 'auto', borderRadius: '12px', display: 'block', flexShrink: 0 }} />
+            <img src={heroImages[3]} alt="" style={{ width: '260px', maxWidth: '100%', height: 'auto', borderRadius: '12px', display: 'block', flexShrink: 0 }} />
+          </div>
         </div>
       </div>
 
