@@ -20,6 +20,7 @@ export default function Home() {
     '/assets/img/images/th-2/hero-img-3.jpg',
     '/assets/img/images/th-2/hero-img-4.jpg',
   ]);
+  const [aboutSectionImage, setAboutSectionImage] = useState<string>('/assets/img/images/th-2/content-img-1.jpg');
 
   useEffect(() => {
     // Set particle count based on screen size
@@ -54,6 +55,9 @@ export default function Home() {
           });
           const updated = heroImages.map((src, idx) => map[`hero_${idx + 1}`] || src);
           setHeroImages(updated);
+          if (map['about_section_image']) {
+            setAboutSectionImage(map['about_section_image']);
+          }
         }
       } catch (e) {
         // ignore, fall back to defaults
@@ -458,7 +462,7 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-5">
               <div className="aximo-thumb wow fadeInUpX" data-wow-delay="0s" id="rotatetwo" style={{ marginTop: '-90px', opacity: 1, visibility: 'visible' }}>
-                <img src="/assets/img/images/th-2/content-img-1.jpg" alt="Happy attorneys team" style={{ opacity: 1, visibility: 'visible', display: 'block', width: '100%', height: 'auto' }} />
+                <img src={aboutSectionImage} alt="Happy attorneys team" style={{ opacity: 1, visibility: 'visible', display: 'block', width: '100%', height: 'auto' }} />
               </div>
             </div>
             <div className="col-lg-7">

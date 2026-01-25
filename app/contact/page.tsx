@@ -146,9 +146,9 @@ export default function ContactPage() {
         <div className="container">
           <div className="row">
             <div className="col-lg-8">
-              <div className="aximo-section-title">
-                <h2 style={{ fontFamily: "'Roxborough CF', serif" }}>
-                  <span className="aximo-title-animation">
+              <div className="aximo-section-title" style={{ marginBottom: '40px' }}>
+                <h2 style={{ fontFamily: "'Roxborough CF', serif", opacity: 1, visibility: 'visible', display: 'block', marginBottom: '20px' }}>
+                  <span className="aximo-title-animation" style={{ opacity: 1, visibility: 'visible', display: 'inline-block' }}>
                     Experience the Difference
                   </span>
                 </h2>

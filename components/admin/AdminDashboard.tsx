@@ -389,14 +389,14 @@ export default function AdminDashboard() {
         </div>
         {mediaLoading && <p className="muted small">Loading current media…</p>}
         <div className="media-grid">
-          {['hero_1','hero_2','hero_3','hero_4','hero_5','founder_photo'].map((key) => (
+          {['hero_1','hero_2','hero_3','hero_4','founder_photo','about_section_image'].map((key) => (
             <div key={key} className="media-card">
               <div className="media-preview">
                 <img src={siteMedia[key] || '/assets/img/placeholder.png'} alt={key} />
               </div>
               <div className="media-meta">
-                <strong>{key.replace('_', ' ').toUpperCase()}</strong>
-                <p className="muted small">Upload to replace</p>
+                <strong>{key === 'about_section_image' ? 'ABOUT SECTION IMAGE' : key.replace('_', ' ').toUpperCase()}</strong>
+                <p className="muted small">{key === 'about_section_image' ? 'Empowering Your Injury Firm section' : 'Upload to replace'}</p>
                 <input
                   type="file"
                   accept="image/*"
@@ -1936,6 +1936,178 @@ export default function AdminDashboard() {
         .dashboard-error h2 {
           color: #ef4444;
           margin: 0;
+        }
+
+        /* Dark Mode Styles */
+        :global(.dark-mode) .admin-dashboard {
+          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+          color: #ffffff;
+        }
+
+        :global(.dark-mode) .card {
+          background: #1a1a1a !important;
+          border-color: #333 !important;
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .section-title,
+        :global(.dark-mode) h2,
+        :global(.dark-mode) h3,
+        :global(.dark-mode) h4 {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .muted,
+        :global(.dark-mode) .small,
+        :global(.dark-mode) p,
+        :global(.dark-mode) span {
+          color: #e0e0e0 !important;
+        }
+
+        :global(.dark-mode) .btn-primary {
+          background: #9333EA !important;
+          color: #ffffff !important;
+          border-color: #9333EA !important;
+        }
+
+        :global(.dark-mode) .btn-secondary {
+          background: #2a2a2a !important;
+          color: #ffffff !important;
+          border-color: #444 !important;
+        }
+
+        :global(.dark-mode) .btn-secondary:hover {
+          background: #333 !important;
+        }
+
+        :global(.dark-mode) .media-card {
+          background: #1a1a1a !important;
+          border-color: #333 !important;
+        }
+
+        :global(.dark-mode) .media-preview {
+          background: #2a2a2a !important;
+        }
+
+        :global(.dark-mode) .media-meta strong {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) input[type="file"] {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .users-section {
+          background: #1a1a1a !important;
+          border-color: #333 !important;
+        }
+
+        :global(.dark-mode) .user-card {
+          background: #1a1a1a !important;
+          border-color: #333 !important;
+        }
+
+        :global(.dark-mode) .user-card-header h3,
+        :global(.dark-mode) .user-card-header p {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .submission-preview {
+          background: #2a2a2a !important;
+          border-color: #333 !important;
+        }
+
+        :global(.dark-mode) .submission-preview:hover {
+          background: #333 !important;
+        }
+
+        :global(.dark-mode) .modal-content {
+          background: #1a1a1a !important;
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .modal-header {
+          border-bottom-color: #333 !important;
+        }
+
+        :global(.dark-mode) .modal-header h2 {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .btn-close {
+          background: #2a2a2a !important;
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .btn-close:hover {
+          background: #333 !important;
+        }
+
+        :global(.dark-mode) .detail-group label {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .detail-group p {
+          color: #e0e0e0 !important;
+        }
+
+        :global(.dark-mode) .btn-status {
+          background: #2a2a2a !important;
+          color: #ffffff !important;
+          border-color: #444 !important;
+        }
+
+        :global(.dark-mode) .btn-status:hover:not(:disabled) {
+          background: #333 !important;
+        }
+
+        :global(.dark-mode) .btn-chip {
+          background: #2a2a2a !important;
+          border-color: #444 !important;
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .table {
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .table th,
+        :global(.dark-mode) .table td {
+          border-color: #333 !important;
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) .table thead {
+          background: #2a2a2a !important;
+        }
+
+        :global(.dark-mode) .table tbody tr:hover {
+          background: #2a2a2a !important;
+        }
+
+        :global(.dark-mode) .raffles-section {
+          background: #1a1a1a !important;
+          border-color: #333 !important;
+        }
+
+        :global(.dark-mode) .raffle-card {
+          background: #1a1a1a !important;
+          border-color: #333 !important;
+        }
+
+        :global(.dark-mode) input[type="text"],
+        :global(.dark-mode) input[type="number"],
+        :global(.dark-mode) textarea {
+          background: #2a2a2a !important;
+          border-color: #444 !important;
+          color: #ffffff !important;
+        }
+
+        :global(.dark-mode) input[type="text"]:focus,
+        :global(.dark-mode) input[type="number"]:focus,
+        :global(.dark-mode) textarea:focus {
+          border-color: #9333EA !important;
+          outline: none !important;
         }
       `}</style>
     </div>
