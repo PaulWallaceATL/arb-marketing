@@ -171,40 +171,20 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div
-          className="aximo-hero-thumb-wrap"
-          style={{
-            opacity: 1,
-            visibility: 'visible',
-            position: 'relative',
-            zIndex: 10000,
-            padding: '24px 20px',
-            width: '100%',
-            overflow: 'visible',
-          }}
-        >
-          <div
-            className="aximo-hero-thumb-inner"
-            style={{
-              display: 'flex',
-              flexWrap: 'nowrap',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <BounceCard delay={0.2} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-              <img src={heroImages[0]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-            </BounceCard>
-            <BounceCard delay={0.35} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-              <img src={heroImages[1]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-            </BounceCard>
-            <BounceCard delay={0.5} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-              <img src={heroImages[2]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-            </BounceCard>
-            <BounceCard delay={0.65} className="aximo-hero-thumb-item" shouldAnimate={shouldAnimateCards}>
-              <img src={heroImages[3]} alt="" style={{ opacity: 1, visibility: 'visible', display: 'block', position: 'relative', zIndex: 10000 }} />
-            </BounceCard>
-          </div>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          gap: '20px', 
+          padding: '40px 20px',
+          flexWrap: 'wrap',
+          maxWidth: '100%',
+          margin: '0 auto'
+        }}>
+          <img src={heroImages[0]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
+          <img src={heroImages[1]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
+          <img src={heroImages[2]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
+          <img src={heroImages[3]} alt="" style={{ width: '260px', height: 'auto', borderRadius: '12px', display: 'block' }} />
         </div>
       </div>
 

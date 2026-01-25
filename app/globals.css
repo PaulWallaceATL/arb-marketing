@@ -438,33 +438,6 @@ a.aximo-default-btn {
     }
   }
 
-  /* Hero images mobile stacking */
-  .aximo-hero-thumb-wrap {
-    display: flex !important;
-    justify-content: center !important;
-    margin-top: 40px !important;
-  }
-
-  .aximo-hero-thumb-inner {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .aximo-hero-thumb-item {
-    width: 100% !important;
-    margin: 0 !important;
-    transform: none !important;
-    max-width: none !important;
-  }
-
-  .aximo-hero-thumb-item:nth-child(5) {
-    grid-column: 1 / -1 !important;
-    max-width: 50% !important;
-    margin: 0 auto !important;
-  }
 
   /* Section spacing */
   .section {
@@ -757,13 +730,6 @@ a.aximo-default-btn {
     font-size: 1.5rem !important;
   }
 
-  .aximo-hero-thumb-inner {
-    grid-template-columns: 1fr !important;
-  }
-
-  .aximo-hero-thumb-item:nth-child(5) {
-    max-width: 100% !important;
-  }
 }
 
 /* Fix for Hire Us Button in Light Mode */
@@ -775,52 +741,4 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn {
 
 html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
   color: #000000 !important;
-}
-
-/* Desktop Hero Images - Restore styling with controlled overlap */
-@media (min-width: 992px) {
-  .aximo-hero-thumb-wrap {
-    display: block !important;
-    width: 100% !important;
-    position: relative !important;
-    text-align: center !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    box-sizing: border-box !important;
-  }
-
-  .aximo-hero-thumb-inner {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-    gap: 20px !important;
-  }
-
-  .aximo-hero-thumb-item {
-    position: relative !important;
-    flex: 0 0 260px !important;
-    width: 260px !important;
-    max-width: 260px !important;
-    min-width: 260px !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transform: none !important;
-  }
-
-  .aximo-hero-thumb-item img {
-    display: block !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    height: auto !important;
-    border-radius: 12px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
-    border: 3px solid #ffffff !important;
-  }
 }
