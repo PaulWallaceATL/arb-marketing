@@ -48,18 +48,6 @@ interface UserWithSubs {
   submissions: ReferralSubmission[];
 }
 
-interface Raffle {
-  id: string;
-  name: string;
-  description: string | null;
-  entry_cost_points: number;
-  max_entries: number;
-  status: string;
-  entry_count?: number;
-  created_at?: string;
-  image_url?: string | null;
-}
-
 export default function AdminDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -67,18 +55,8 @@ export default function AdminDashboard() {
   const [recentSubmissions, setRecentSubmissions] = useState<ReferralSubmission[]>([]);
   const [partnerPerformance, setPartnerPerformance] = useState<PartnerPerformance[]>([]);
   const [usersWithSubs, setUsersWithSubs] = useState<UserWithSubs[]>([]);
-  const [raffles, setRaffles] = useState<Raffle[]>([]);
-  const [raffleForm, setRaffleForm] = useState({
-    name: '',
-    description: '',
-    entry_cost_points: 1,
-    max_entries: 10,
-    image_url: '',
-  });
   const [siteMedia, setSiteMedia] = useState<Record<string, string>>({});
   const [mediaLoading, setMediaLoading] = useState(false);
-  const [raffleLoading, setRaffleLoading] = useState(false);
-  const [showRaffleForm, setShowRaffleForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<ReferralSubmission | null>(null);
@@ -126,17 +104,6 @@ export default function AdminDashboard() {
         setError((prev) => prev || usersJson.error || 'Failed to fetch users/submissions');
       }
 
-      // Fetch raffles
-      const rafflesResp = await fetch('/api/admin/raffles', {
-        credentials: 'include',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const rafflesJson = await rafflesResp.json();
-      if (rafflesResp.ok) {
-        setRaffles(rafflesJson.raffles || []);
-      } else {
-        setError((prev) => prev || rafflesJson.error || 'Failed to fetch raffles');
-      }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -276,55 +243,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const createRaffle = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setRaffleLoading(true);
-    try {
-      const payload = {
-        name: raffleForm.name.trim(),
-        description: raffleForm.description.trim() || null,
-        entry_cost_points: Math.max(1, Number(raffleForm.entry_cost_points) || 1),
-        max_entries: Math.max(1, Number(raffleForm.max_entries) || 1),
-        image_url: raffleForm.image_url.trim() || null,
-      };
-
-      if (!payload.name) {
-        alert('Please enter a raffle name.');
-        setRaffleLoading(false);
-        return;
-      }
-
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
-      if (!token) {
-        alert('No session found. Please log in again.');
-        setRaffleLoading(false);
-        return;
-      }
-
-      const resp = await fetch('/api/admin/raffles', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      const json = await resp.json();
-      if (!resp.ok) {
-        alert(json.error || 'Failed to create raffle');
-      } else {
-        // refresh raffles
-        setRaffles((prev) => [json.raffle, ...prev]);
-        setRaffleForm({ name: '', description: '', entry_cost_points: 1, max_entries: 10, image_url: '' });
-      }
-    } catch (err: any) {
-      alert(err?.message || 'Failed to create raffle');
-    } finally {
-      setRaffleLoading(false);
-    }
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -370,8 +288,8 @@ export default function AdminDashboard() {
         <div className="header-content">
           <div className="header-text">
             <div className="header-badge">Admin Panel</div>
-            <h1 className="header-title">Referral Management</h1>
-            <p className="header-subtitle">Monitor and manage your referral pipeline</p>
+            <h1 className="header-title">Partner Lead Management</h1>
+            <p className="header-subtitle">Review and approve/deny partner-submitted leads</p>
           </div>
           <div className="header-actions">
             <button onClick={fetchDashboardData} className="btn-secondary">
@@ -408,131 +326,6 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Raffles */}
-      <div className="raffles-section card">
-        <div className="section-header raffles-header">
-          <div>
-            <h2 className="section-title">Raffles</h2>
-            <p className="muted small">Create raffles, set entry cost, and track entries.</p>
-          </div>
-          <div className="raffle-actions">
-            <span className="raffle-count">{raffles.length} active</span>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => setShowRaffleForm((prev) => !prev)}
-            >
-              {showRaffleForm ? 'Close' : 'New raffle'}
-            </button>
-          </div>
-        </div>
-
-        <div className="raffle-layout">
-          {showRaffleForm && (
-            <div className="raffle-form">
-              <div className="raffle-form-header">
-                <div>
-                  <p className="eyebrow">Admin Panel</p>
-                  <h3>Create Raffle</h3>
-                  <p className="muted">Set entry cost, limit, and optional cover image.</p>
-                </div>
-              </div>
-              <form className="form-grid" onSubmit={createRaffle}>
-                <label>
-                  Name
-                  <input
-                    required
-                    value={raffleForm.name}
-                    onChange={(e) => setRaffleForm((p) => ({ ...p, name: e.target.value }))}
-                  />
-                </label>
-                <label>
-                  Entry cost (points)
-                  <input
-                    type="number"
-                    min={1}
-                    required
-                    value={raffleForm.entry_cost_points}
-                    onChange={(e) => setRaffleForm((p) => ({ ...p, entry_cost_points: Number(e.target.value) || 1 }))}
-                  />
-                </label>
-                <label>
-                  Max entries
-                  <input
-                    type="number"
-                    min={1}
-                    required
-                    value={raffleForm.max_entries}
-                    onChange={(e) => setRaffleForm((p) => ({ ...p, max_entries: Number(e.target.value) || 1 }))}
-                  />
-                </label>
-                <label>
-                  Image URL (optional)
-                  <input
-                    placeholder="https://..."
-                    value={raffleForm.image_url}
-                    onChange={(e) => setRaffleForm((p) => ({ ...p, image_url: e.target.value }))}
-                  />
-                </label>
-                <label className="full-row">
-                  Description
-                  <textarea
-                    value={raffleForm.description}
-                    onChange={(e) => setRaffleForm((p) => ({ ...p, description: e.target.value }))}
-                    rows={3}
-                  />
-                </label>
-                <div className="form-actions full-row">
-                  <button className="btn-primary" type="submit" disabled={raffleLoading}>
-                    {raffleLoading ? 'Creating...' : 'Create raffle'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          <div className="raffle-list">
-            {raffles.length === 0 && (
-              <div className="empty-state">
-                <h4>No raffles yet</h4>
-                <p>Create a raffle to start accepting entries.</p>
-              </div>
-            )}
-            {raffles.map((r) => (
-              <div key={r.id} className="raffle-card">
-                <div className="raffle-card-header">
-                  <div className="raffle-card-title">
-                    <h4>{r.name}</h4>
-                    {r.description && <p className="muted">{r.description}</p>}
-                  </div>
-                  <span className={`status-badge ${r.status === 'active' ? 'badge-approved' : 'badge-pending'}`}>
-                    {r.status}
-                  </span>
-                </div>
-                {r.image_url && (
-                  <div className="raffle-image">
-                    <img src={r.image_url} alt={r.name} />
-                  </div>
-                )}
-                <div className="raffle-meta">
-                  <div>
-                    <strong>{r.entry_cost_points}</strong>
-                    <span>Points per entry</span>
-                  </div>
-                  <div>
-                    <strong>{r.max_entries}</strong>
-                    <span>Max entries</span>
-                  </div>
-                  <div>
-                    <strong>{r.entry_count ?? 0}</strong>
-                    <span>Entries used</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Key Metrics */}
       <div className="metrics-section">
@@ -629,8 +422,8 @@ export default function AdminDashboard() {
       {/* Recent Activity */}
       <div className="activity-section">
         <div className="section-header">
-          <h2 className="section-title">Recent Submissions</h2>
-          <button className="btn-link">View All</button>
+          <h2 className="section-title">Pending Leads - Review Required</h2>
+          <p className="muted small">All leads are submitted as "pending". Review and approve or deny each lead.</p>
         </div>
           <div className="activity-list">
           {recentSubmissions.slice(0, 5).map((submission: any) => (
@@ -728,11 +521,11 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* User Management */}
+      {/* Partner Management */}
       <div className="users-section">
         <div className="section-header">
-          <h2 className="section-title">Partner Management</h2>
-          <button className="btn-primary">Add Partner</button>
+          <h2 className="section-title">All Partners</h2>
+          <p className="muted small">View all partners and their submitted leads. Partners can see the status of their leads (pending, approved, or denied).</p>
         </div>
 
         {usersWithSubs.length === 0 ? (
@@ -872,17 +665,20 @@ export default function AdminDashboard() {
               <div className="detail-group">
                 <label>Change Status:</label>
                 <div className="status-buttons">
-                  {['pending', 'approved', 'denied'].map((status) => (
+                  {['approved', 'denied'].map((status) => (
                     <button
                       key={status}
                       onClick={() => updateSubmissionStatus(selectedSubmission.id, status)}
                       className={`btn-status ${getStatusBadgeClass(status)}`}
                       disabled={selectedSubmission.status === status}
                     >
-                      {status}
+                      {status === 'approved' ? '✓ Approve' : '✗ Deny'}
                     </button>
                   ))}
                 </div>
+                <p className="muted small" style={{ marginTop: '0.5rem' }}>
+                  Leads are submitted as "pending". Use the buttons above to approve or deny.
+                </p>
               </div>
             </div>
           </div>

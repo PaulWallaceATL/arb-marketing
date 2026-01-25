@@ -145,10 +145,10 @@ export default function ContactPage() {
       <div className="section aximo-section-padding extra-side-margin">
         <div className="container">
           <div className="row">
-            <div className="col-lg-8">
-              <div className="aximo-section-title" style={{ marginBottom: '40px' }}>
-                <h2 style={{ fontFamily: "'Roxborough CF', serif", opacity: 1, visibility: 'visible', display: 'block', marginBottom: '20px' }}>
-                  <span className="aximo-title-animation" style={{ opacity: 1, visibility: 'visible', display: 'inline-block' }}>
+            <div className="col-12">
+              <div className="aximo-section-title" style={{ marginBottom: '40px', textAlign: 'center' }}>
+                <h2 style={{ fontFamily: "'Roxborough CF', serif", opacity: 1, visibility: 'visible', display: 'block', marginBottom: '20px', color: '#000000', textAlign: 'center' }}>
+                  <span className="aximo-title-animation" style={{ opacity: 1, visibility: 'visible', display: 'inline-block', color: '#000000' }}>
                     Experience the Difference
                   </span>
                 </h2>
