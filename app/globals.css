@@ -784,6 +784,9 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
     width: 100% !important;
     position: relative !important;
     text-align: center !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
   }
 
   .aximo-hero-thumb-inner {
@@ -798,6 +801,7 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
     transform: translateX(-50%) !important;
     margin: 0 !important;
     padding: 0 !important;
+    gap: 4px !important;
   }
 
   .aximo-hero-thumb-item {
@@ -805,32 +809,27 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
     flex: 0 0 auto !important;
     width: 260px !important;
     max-width: 260px !important;
+    margin: 0 !important;
   }
 
   .aximo-hero-thumb-item:nth-child(1) {
     transform: rotate(-5deg) !important;
     z-index: 1 !important;
-    margin-right: -2px !important;
   }
 
   .aximo-hero-thumb-item:nth-child(2) {
     transform: rotate(3deg) !important;
     z-index: 3 !important;
-    margin-left: -2px !important;
-    margin-right: -2px !important;
   }
 
   .aximo-hero-thumb-item:nth-child(3) {
     transform: rotate(-4deg) !important;
     z-index: 2 !important;
-    margin-left: -2px !important;
-    margin-right: -2px !important;
   }
 
   .aximo-hero-thumb-item:nth-child(4) {
     transform: rotate(5deg) !important;
     z-index: 1 !important;
-    margin-left: -2px !important;
   }
 
   .aximo-hero-thumb-item img {
