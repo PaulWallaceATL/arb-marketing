@@ -810,6 +810,9 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
     width: 260px !important;
     max-width: 260px !important;
     margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .aximo-hero-thumb-item:nth-child(1) {
@@ -835,7 +838,7 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
   .aximo-hero-thumb-item img {
     display: block !important;
     max-width: 100% !important;
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
     border-radius: 12px !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
