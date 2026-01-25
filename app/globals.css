@@ -794,21 +794,19 @@ html:not(.dark-mode) .hire-us-header-btn.outline-btn .hire-us-text {
     flex-wrap: nowrap !important;
     align-items: center !important;
     justify-content: center !important;
-    width: fit-content !important;
+    width: 100% !important;
     max-width: 100% !important;
-    position: relative !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     padding: 0 !important;
-    gap: 4px !important;
+    gap: 20px !important;
   }
 
   .aximo-hero-thumb-item {
     position: relative !important;
-    flex: 0 0 auto !important;
+    flex: 0 0 260px !important;
     width: 260px !important;
     max-width: 260px !important;
+    min-width: 260px !important;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;

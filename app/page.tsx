@@ -188,7 +188,6 @@ export default function Home() {
             style={{
               display: 'flex',
               flexWrap: 'nowrap',
-              gap: 0,
               alignItems: 'center',
               justifyContent: 'center',
             }}
