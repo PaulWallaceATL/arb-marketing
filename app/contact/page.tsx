@@ -142,6 +142,26 @@ export default function ContactPage() {
         }
       `}</style>
 
+      <style jsx global>{`
+        /* Fix Experience the Difference heading color */
+        .aximo-section-title h2,
+        .aximo-section-title h2 span,
+        .aximo-title-animation {
+          color: #000000 !important;
+          -webkit-text-fill-color: #000000 !important;
+          background: none !important;
+          -webkit-background-clip: unset !important;
+        }
+
+        /* Dark mode - white text */
+        .dark-mode .aximo-section-title h2,
+        .dark-mode .aximo-section-title h2 span,
+        .dark-mode .aximo-title-animation {
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
+        }
+      `}</style>
+
       <div className="section aximo-section-padding extra-side-margin">
         <div className="container">
           <div className="row">

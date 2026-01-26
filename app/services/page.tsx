@@ -145,7 +145,6 @@ export default function ServicesPage() {
                 <div className="aximo-pricing-body">
                   <ul>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Monthly content calendars</li>
-                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />5 reel/content deliverables</li>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Strategic content planning</li>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Social media optimization</li>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Performance tracking</li>
@@ -163,7 +162,6 @@ export default function ServicesPage() {
                 <div className="aximo-pricing-body">
                   <ul>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Full social media management</li>
-                    <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />7-10 reels/content delivered</li>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Professional editing & planning</li>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />Strategic marketing consulting</li>
                     <li><img src="/assets/img/icons/icon-black-thumb-up.svg" alt="" style={{ width: '20px', height: '20px' }} />ROI optimization strategies</li>
