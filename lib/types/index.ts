@@ -115,7 +115,7 @@ export interface PartnerPoints {
 export const referralSubmissionSchema = z.object({
   // Required fields
   lead_name: z.string().min(2, 'Name must be at least 2 characters').max(255),
-  lead_email: z.string().email('Invalid email address'),
+  lead_email: z.string().email('Invalid email address').optional().or(z.literal('')),
   lead_company: z.string().min(2, 'Company name must be at least 2 characters').max(255),
   
   // Optional contact fields

@@ -154,7 +154,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
             <div className="form-group">
               <label htmlFor="referrer_email" className="form-label">
-                Your Email <span className="required">*</span>
+                Your Email
               </label>
               <input
                 type="email"
@@ -162,7 +162,6 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 name="referrer_email"
                 value={formData.referrer_email}
                 onChange={handleChange}
-                required
                 className="form-input"
                 placeholder="you@example.com"
               />
@@ -236,7 +235,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
             <div className="form-group">
               <label htmlFor="lead_email" className="form-label">
-                Their Email <span className="required">*</span>
+                Their Email
               </label>
               <input
                 type="email"
@@ -244,7 +243,6 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 name="lead_email"
                 value={formData.lead_email}
                 onChange={handleChange}
-                required
                 className="form-input"
                 placeholder="their.email@example.com"
               />

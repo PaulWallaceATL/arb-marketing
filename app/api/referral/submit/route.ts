@@ -38,20 +38,22 @@ export async function POST(request: NextRequest) {
       utm_campaign,
     } = body;
 
-    // Validate required fields
-    if (!lead_name || !lead_email) {
+    // Validate required fields (both emails are optional)
+    if (!lead_name || !lead_name.trim()) {
       return NextResponse.json(
-        { error: 'Lead name and email are required' },
+        { error: 'Lead name is required' },
         { status: 400 }
       );
     }
-    if (!referrer_name || !referrer_email || !referrer_phone) {
-      return NextResponse.json(
-        { error: 'Referrer name, email, and phone are required' },
-        { status: 400 }
-      );
+    if (referrer_name || referrer_phone) {
+      if (!referrer_name || !referrer_phone) {
+        return NextResponse.json(
+          { error: 'When providing referrer info, referrer name and phone are required' },
+          { status: 400 }
+        );
+      }
     }
-    if (!lead_phone) {
+    if (referrer_name && !lead_phone) {
       return NextResponse.json(
         { error: 'Lead phone number is required' },
         { status: 400 }
@@ -128,61 +130,52 @@ export async function POST(request: NextRequest) {
     if (referrer_phone) quality_score += 10;
     if (combined_message && combined_message.length > 40) quality_score += 20;
 
-    // Insert referral submission
-    const baseRecord = {
-        partner_id,
-        referral_code: referral_code || null,
-        lead_name,
-        lead_email,
-        lead_phone: lead_phone || null,
-      lead_company: null,
-      lead_job_title: null,
-      lead_industry: null,
-      lead_company_size: null,
-      lead_budget_range: null,
-      lead_timeline: null,
-      lead_pain_points: null,
-      lead_linkedin_url: null,
+    // Normalize optional email (store null when empty; use '' for DBs that still have NOT NULL)
+    const leadEmailValue = lead_email && String(lead_email).trim() ? lead_email.trim() : null;
+    const leadEmailForDb = leadEmailValue ?? '';
+
+    // Insert referral submission. Use minimal column set first for compatibility with DBs
+    // that haven't run migrations (no is_accounted, quality_score, or optional lead_email).
+    const minimalRecord = {
+      partner_id,
+      referral_code: referral_code || null,
+      lead_name,
+      lead_email: leadEmailForDb,
+      lead_phone: lead_phone || null,
       lead_message: combined_message || null,
-        submission_source: 'web_form',
-        ip_address,
-        user_agent,
-        utm_source: utm_source || null,
-        utm_medium: utm_medium || null,
-        utm_campaign: utm_campaign || null,
-        submitted_by_user_id: user?.id || null,
-        is_authenticated: !!user,
-        is_accounted,
-        quality_score,
-        status: 'pending',
+      submission_source: 'web_form',
+      ip_address,
+      user_agent,
+      utm_source: utm_source || null,
+      utm_medium: utm_medium || null,
+      utm_campaign: utm_campaign || null,
+      submitted_by_user_id: user?.id || null,
+      is_authenticated: !!user,
+      status: 'pending',
     };
 
-    const insertAttempt = async (record: any) => {
+    const insertAttempt = async (record: Record<string, unknown>) => {
       return supabase!.from('referral_submissions').insert(record).select().single();
     };
 
-    let { data, error } = await insertAttempt(baseRecord);
+    let { data, error } = await insertAttempt(minimalRecord);
 
-    // Fallback if schema migrations not applied (missing columns)
-    if (error && error.message && error.message.includes('column')) {
-      const fallbackRecord = {
-        partner_id: baseRecord.partner_id,
-        referral_code: baseRecord.referral_code,
-        lead_name: baseRecord.lead_name,
-        lead_email: baseRecord.lead_email,
-        lead_phone: baseRecord.lead_phone,
-        lead_message: baseRecord.lead_message,
-        submission_source: baseRecord.submission_source,
-        ip_address: baseRecord.ip_address,
-        user_agent: baseRecord.user_agent,
-        utm_source: baseRecord.utm_source,
-        utm_medium: baseRecord.utm_medium,
-        utm_campaign: baseRecord.utm_campaign,
-        submitted_by_user_id: baseRecord.submitted_by_user_id,
-        is_authenticated: baseRecord.is_authenticated,
-        status: 'pending',
+    // If minimal insert fails due to missing columns, try with extended columns (is_accounted, quality_score, etc.)
+    if (error && error.message && typeof error.message === 'string' && error.message.includes('column')) {
+      const extendedRecord = {
+        ...minimalRecord,
+        lead_company: null,
+        lead_job_title: null,
+        lead_industry: null,
+        lead_company_size: null,
+        lead_budget_range: null,
+        lead_timeline: null,
+        lead_pain_points: null,
+        lead_linkedin_url: null,
+        is_accounted: !!user,
+        quality_score,
       };
-      const fallback = await insertAttempt(fallbackRecord);
+      const fallback = await insertAttempt(extendedRecord);
       data = fallback.data;
       error = fallback.error;
     }
@@ -204,16 +197,20 @@ export async function POST(request: NextRequest) {
     // Award 10 points for any submission by an authenticated user (ensure row exists)
     const POINTS_PER_SUBMISSION = 10;
     if (user?.id) {
-      const { data: currentPointsRow } = await supabase
-        .from('partner_users')
-        .select('points')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      try {
+        const { data: currentPointsRow } = await supabase
+          .from('partner_users')
+          .select('points')
+          .eq('user_id', user.id)
+          .maybeSingle();
 
-      const currentPoints = currentPointsRow?.points ?? 0;
-      await supabase
-        .from('partner_users')
-        .upsert({ user_id: user.id, points: currentPoints + POINTS_PER_SUBMISSION }, { onConflict: 'user_id' });
+        const currentPoints = currentPointsRow?.points ?? 0;
+        await supabase
+          .from('partner_users')
+          .upsert({ user_id: user.id, points: currentPoints + POINTS_PER_SUBMISSION }, { onConflict: 'user_id' });
+      } catch (pointsErr) {
+        console.error('Points award failed (submission still saved):', pointsErr);
+      }
     }
 
     return NextResponse.json(

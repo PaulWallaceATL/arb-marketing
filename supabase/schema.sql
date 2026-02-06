@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS public.referral_submissions (
     referral_code VARCHAR(50),
     
     -- Lead Information
-    lead_email VARCHAR(255) NOT NULL,
+    lead_email VARCHAR(255),
     lead_name VARCHAR(255) NOT NULL,
     lead_phone VARCHAR(50),
     lead_company VARCHAR(255),

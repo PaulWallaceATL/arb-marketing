@@ -132,7 +132,7 @@ export default function ReferralForm({ referralCode, onSuccess }: ReferralFormPr
 
         <div className="form-group">
           <label htmlFor="lead_email" className="form-label">
-            Email Address <span className="required">*</span>
+            Email Address
           </label>
           <input
             type="email"
@@ -140,7 +140,6 @@ export default function ReferralForm({ referralCode, onSuccess }: ReferralFormPr
             name="lead_email"
             value={formData.lead_email}
             onChange={handleChange}
-            required
             className="form-input"
             placeholder="john@company.com"
           />
