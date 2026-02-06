@@ -83,9 +83,16 @@ export async function POST(request: NextRequest) {
     // Determine if this is an accounted referral (logged in partner)
     const is_accounted = !!user;
     
-    // Get IP address and user agent for tracking
+    // Get IP address and user agent for tracking (DB column is INET - must be single valid IP or null)
     const ip_header = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip');
-    const ip_address = ip_header && ip_header !== 'unknown' ? ip_header : null;
+    let ip_address: string | null = null;
+    if (ip_header && ip_header !== 'unknown') {
+      const first = String(ip_header).split(',')[0].trim();
+      // INET accepts IPv4 (e.g. 1.2.3.4) or IPv6; reject comma/space lists or junk
+      if (first && first.length >= 7 && first.length <= 45 && !/[\s,]/.test(first)) {
+        ip_address = first;
+      }
+    }
     const user_agent = request.headers.get('user-agent') || 'unknown';
 
     // Find partner by referral code OR by logged-in user
@@ -178,6 +185,16 @@ export async function POST(request: NextRequest) {
       const fallback = await insertAttempt(extendedRecord);
       data = fallback.data;
       error = fallback.error;
+    }
+
+    // If still failing (e.g. invalid INET for ip_address), retry without ip_address
+    if (error && ip_address !== null) {
+      const withoutIp = { ...minimalRecord, ip_address: null };
+      const retry = await insertAttempt(withoutIp);
+      if (!retry.error) {
+        data = retry.data;
+        error = null;
+      }
     }
 
     if (error) {
