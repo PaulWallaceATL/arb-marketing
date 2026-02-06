@@ -80,13 +80,10 @@ export default function ReferralForm({ referralCode, onSuccess }: ReferralFormPr
         }
       } else {
         console.error('Referral submit failed', data);
+        const detailMsg = data.details ? ` (${data.details})` : '';
         setSubmitStatus({
           type: 'error',
-          message:
-            data.error ||
-            data.details ||
-            data.code ||
-            'Failed to submit referral. Please try again.',
+          message: (data.error || data.details || data.code || 'Failed to submit referral') + detailMsg,
         });
       }
     } catch (error) {

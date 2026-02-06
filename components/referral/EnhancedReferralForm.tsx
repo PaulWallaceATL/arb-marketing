@@ -94,9 +94,10 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           onSuccess();
         }
       } else {
+        const detailMsg = data.details ? ` (${data.details})` : '';
         setSubmitStatus({
           type: 'error',
-          message: data.error || data.details || 'Failed to submit referral. Please try again.',
+          message: (data.error || 'Failed to submit referral') + detailMsg,
         });
       }
     } catch (error) {

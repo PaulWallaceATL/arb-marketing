@@ -197,6 +197,18 @@ export async function POST(request: NextRequest) {
         error = result.error;
       }
 
+      // If service-role insert still fails, try anon client so RLS "Anyone can submit referrals" may allow it
+      if (error) {
+        const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
+          auth: { autoRefreshToken: false, persistSession: false },
+        });
+        const anonResult = await supabaseAnon.from('referral_submissions').insert(minimalRecord).select().single();
+        if (!anonResult.error) {
+          data = anonResult.data as { id: string } | null;
+          error = null;
+        }
+      }
+
     } catch (insertErr: unknown) {
       const err = insertErr as Error;
       console.error('Referral insert threw:', err);
