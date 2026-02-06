@@ -99,6 +99,7 @@ export async function PATCH(
       referral_code,
       partner_id,
       submitted_by_user_id,
+      assign_to_user_id,
       utm_source,
       utm_medium,
       utm_campaign,
@@ -117,7 +118,7 @@ export async function PATCH(
     // Get existing submission for status transitions/points
     const { data: existingSubmission, error: existingErr } = await supabaseService
       .from('referral_submissions')
-      .select('id,status,submitted_by_user_id')
+      .select('id,status,submitted_by_user_id,partner_id')
       .eq('id', id)
       .maybeSingle();
 
@@ -126,7 +127,7 @@ export async function PATCH(
     }
 
     const previousStatus = existingSubmission.status;
-    const submittedByUserId = existingSubmission.submitted_by_user_id;
+    let submittedByUserId = existingSubmission.submitted_by_user_id;
 
     // Build update object
     const updateData: any = {};
@@ -153,7 +154,21 @@ export async function PATCH(
     if (referral_code !== undefined) updateData.referral_code = referral_code || null;
     if (partner_id !== undefined) updateData.partner_id = partner_id || null;
 
-    if (submitted_by_user_id !== undefined) {
+    if (assign_to_user_id) {
+      const { data: partnerUser } = await supabaseService
+        .from('partner_users')
+        .select('user_id, partner_id')
+        .eq('user_id', assign_to_user_id)
+        .maybeSingle();
+      if (!partnerUser) {
+        return NextResponse.json({ error: 'Invalid user to assign' }, { status: 400 });
+      }
+      updateData.submitted_by_user_id = partnerUser.user_id;
+      updateData.partner_id = partnerUser.partner_id;
+      updateData.is_authenticated = true;
+      updateData.is_accounted = true;
+      submittedByUserId = partnerUser.user_id;
+    } else if (submitted_by_user_id !== undefined) {
       updateData.submitted_by_user_id = submitted_by_user_id || null;
       updateData.is_authenticated =
         is_authenticated !== undefined ? is_authenticated : !!submitted_by_user_id;
@@ -193,21 +208,89 @@ export async function PATCH(
       );
     }
 
-    // Award points if status transitions to approved from a non-approved state (ensure row exists)
-    if (
-      submittedByUserId &&
-      previousStatus !== 'approved' &&
-      updateData.status === 'approved'
-    ) {
-      const { data: pointsRow } = await supabaseService
+    const effectiveUserId = data.submitted_by_user_id;
+    const POINTS_SUBMISSION = 10;
+    const POINTS_DENIAL = 10;
+    const POINTS_APPROVAL = 250;
+    const POINTS_APPROVAL_BONUS_EVERY_5 = 500;
+    const GIFT_CARD_THRESHOLD = 50;
+
+    // 1) Just assigned this referral to a user → award 10 points for the submission
+    if (assign_to_user_id && effectiveUserId) {
+      const { data: row } = await supabaseService
         .from('partner_users')
         .select('points')
-        .eq('user_id', submittedByUserId)
+        .eq('user_id', effectiveUserId)
         .maybeSingle();
-      const currentPoints = pointsRow?.points ?? 0;
+      const current = row?.points ?? 0;
+      const next = current + POINTS_SUBMISSION;
       await supabaseService
         .from('partner_users')
-        .upsert({ user_id: submittedByUserId, points: currentPoints + 2 }, { onConflict: 'user_id' });
+        .update({ points: next })
+        .eq('user_id', effectiveUserId);
+      // Gift card at 50 (one-time)
+      const { data: pu } = await supabaseService
+        .from('partner_users')
+        .select('gift_card_25_claimed')
+        .eq('user_id', effectiveUserId)
+        .maybeSingle();
+      if (next >= GIFT_CARD_THRESHOLD && !(pu as any)?.gift_card_25_claimed) {
+        await supabaseService
+          .from('partner_users')
+          .update({ gift_card_25_claimed: true })
+          .eq('user_id', effectiveUserId);
+      }
+    }
+
+    // 2) Status changed to denied → award 10 points
+    if (effectiveUserId && previousStatus !== 'denied' && data.status === 'denied') {
+      const { data: row } = await supabaseService
+        .from('partner_users')
+        .select('points, gift_card_25_claimed')
+        .eq('user_id', effectiveUserId)
+        .maybeSingle();
+      const current = row?.points ?? 0;
+      const next = current + POINTS_DENIAL;
+      await supabaseService
+        .from('partner_users')
+        .update({ points: next })
+        .eq('user_id', effectiveUserId);
+      if (next >= GIFT_CARD_THRESHOLD && !(row as any)?.gift_card_25_claimed) {
+        await supabaseService
+          .from('partner_users')
+          .update({ gift_card_25_claimed: true })
+          .eq('user_id', effectiveUserId);
+      }
+    }
+
+    // 3) Status changed to approved → award 250, plus 500 every 5th approval
+    if (effectiveUserId && previousStatus !== 'approved' && data.status === 'approved') {
+      const { data: approvedList } = await supabaseService
+        .from('referral_submissions')
+        .select('id')
+        .eq('submitted_by_user_id', effectiveUserId)
+        .eq('status', 'approved');
+      const approvedCount = approvedList?.length ?? 0;
+      const isFifth = approvedCount > 0 && approvedCount % 5 === 0;
+      const addPoints = POINTS_APPROVAL + (isFifth ? POINTS_APPROVAL_BONUS_EVERY_5 : 0);
+
+      const { data: row } = await supabaseService
+        .from('partner_users')
+        .select('points, gift_card_25_claimed')
+        .eq('user_id', effectiveUserId)
+        .maybeSingle();
+      const current = row?.points ?? 0;
+      const next = current + addPoints;
+      await supabaseService
+        .from('partner_users')
+        .update({ points: next })
+        .eq('user_id', effectiveUserId);
+      if (next >= GIFT_CARD_THRESHOLD && !(row as any)?.gift_card_25_claimed) {
+        await supabaseService
+          .from('partner_users')
+          .update({ gift_card_25_claimed: true })
+          .eq('user_id', effectiveUserId);
+      }
     }
 
     // Log the activity

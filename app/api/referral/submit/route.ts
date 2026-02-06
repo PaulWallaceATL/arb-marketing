@@ -201,7 +201,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Award 1 point for any submission by an authenticated user (ensure row exists)
+    // Award 10 points for any submission by an authenticated user (ensure row exists)
+    const POINTS_PER_SUBMISSION = 10;
     if (user?.id) {
       const { data: currentPointsRow } = await supabase
         .from('partner_users')
@@ -212,14 +213,14 @@ export async function POST(request: NextRequest) {
       const currentPoints = currentPointsRow?.points ?? 0;
       await supabase
         .from('partner_users')
-        .upsert({ user_id: user.id, points: currentPoints + 1 }, { onConflict: 'user_id' });
+        .upsert({ user_id: user.id, points: currentPoints + POINTS_PER_SUBMISSION }, { onConflict: 'user_id' });
     }
 
     return NextResponse.json(
       {
         success: true,
         message: is_accounted 
-          ? 'Referral submitted! Status set to pending. 1 point awarded.' 
+          ? `Referral submitted! Status set to pending. ${POINTS_PER_SUBMISSION} points awarded.` 
           : 'Referral submitted successfully! Status set to pending.',
         submission_id: data.id,
         is_accounted,

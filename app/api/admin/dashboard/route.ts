@@ -150,6 +150,13 @@ export async function GET(request: NextRequest) {
       return acc;
     }, {}) || {};
 
+    const { data: unassignedSubmissions } = await supabaseService
+      .from('referral_submissions')
+      .select('id, lead_name, lead_email, lead_phone, status, created_at')
+      .is('submitted_by_user_id', null)
+      .order('created_at', { ascending: false })
+      .limit(50);
+
     const totalCount = totalSubmissions || 0;
     const approvedCount = approvedSubmissions?.length || 0;
     
@@ -157,7 +164,7 @@ export async function GET(request: NextRequest) {
       summary: {
         totalSubmissions: totalCount,
         newSubmissions: recentSubmissionsCount || 0,
-        convertedSubmissions: approvedCount, // renamed to maintain frontend shape; represents approved
+        convertedSubmissions: approvedCount,
         activePartners: activePartners || 0,
         totalRevenue: totalRevenue.toFixed(2),
         conversionRate: totalCount > 0
@@ -166,6 +173,7 @@ export async function GET(request: NextRequest) {
       },
       statusCounts,
       recentSubmissions,
+      unassignedSubmissions: unassignedSubmissions || [],
       partnerPerformance,
     });
 

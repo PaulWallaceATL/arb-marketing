@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS public.partner_users (
     partner_id UUID REFERENCES public.channel_partners(id) ON DELETE CASCADE,
     role VARCHAR(50) DEFAULT 'partner' CHECK (role IN ('admin', 'partner', 'viewer')),
     points INTEGER NOT NULL DEFAULT 0,
+    gift_card_25_claimed BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     last_login_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -114,6 +115,19 @@ CREATE INDEX IF NOT EXISTS idx_partner_users_partner_id ON public.partner_users(
 
 CREATE INDEX IF NOT EXISTS idx_activity_log_user_id ON public.activity_log(user_id);
 CREATE INDEX IF NOT EXISTS idx_activity_log_created_at ON public.activity_log(created_at DESC);
+
+-- =====================================================
+-- 5b. PARTNER PAYOUTS (cash-out in 250 pt increments)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS public.partner_payouts (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    points_deducted INTEGER NOT NULL CHECK (points_deducted > 0),
+    amount_dollars DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_partner_payouts_user_id ON public.partner_payouts(user_id);
+CREATE INDEX IF NOT EXISTS idx_partner_payouts_created_at ON public.partner_payouts(created_at DESC);
 
 -- =====================================================
 -- 6. UPDATED_AT TRIGGER FUNCTION

@@ -36,11 +36,18 @@ export const appConfig = {
     competitions: process.env.NEXT_PUBLIC_ENABLE_COMPETITIONS === 'true',
   },
 
-  // Points System
+  // Points System (referral rewards)
   points: {
-    newSubmission: 10,
-    qualifiedLead: 25,
-    convertedLead: 100,
+    perSubmission: 10,
+    perDenial: 10,
+    perApproval: 250,
+    approvalBonusEvery5: 500,
+  },
+  giftCard25AtPoints: 50,
+  cashOut: {
+    minPoints: 250,
+    multipleOf: 250,
+    dollarsPerPoint: 1,
   },
 
   // Quality Score Weights

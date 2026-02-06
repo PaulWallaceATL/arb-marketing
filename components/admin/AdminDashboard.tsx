@@ -60,7 +60,9 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState<ReferralSubmission | null>(null);
-
+  const [unassignedSubmissions, setUnassignedSubmissions] = useState<any[]>([]);
+  const [partnerUsers, setPartnerUsers] = useState<{ user_id: string; email: string | null; partner_id: string | null }[]>([]);
+  const [assigningId, setAssigningId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -87,6 +89,7 @@ export default function AdminDashboard() {
         setStats(data.summary);
         setStatusCounts(data.statusCounts || {});
         setRecentSubmissions(data.recentSubmissions || []);
+        setUnassignedSubmissions(data.unassignedSubmissions || []);
         setPartnerPerformance(data.partnerPerformance || []);
       } else {
         setError(data.error || 'Failed to fetch dashboard data');
@@ -104,6 +107,14 @@ export default function AdminDashboard() {
         setError((prev) => prev || usersJson.error || 'Failed to fetch users/submissions');
       }
 
+      const partnerUsersResp = await fetch('/api/admin/partner-users', {
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const partnerUsersJson = await partnerUsersResp.json();
+      if (partnerUsersResp.ok && Array.isArray(partnerUsersJson.users)) {
+        setPartnerUsers(partnerUsersJson.users);
+      }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -176,6 +187,37 @@ export default function AdminDashboard() {
       setSiteMedia((prev) => ({ ...prev, [key]: url }));
     } catch (err: any) {
       alert(err?.message || 'Failed to upload image');
+    }
+  };
+
+  const assignSubmissionToUser = async (submissionId: string, userId: string) => {
+    setAssigningId(submissionId);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) {
+        alert('No session found. Please log in again.');
+        return;
+      }
+      const response = await fetch(`/api/admin/submission/${submissionId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: 'include',
+        body: JSON.stringify({ assign_to_user_id: userId }),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (response.ok) {
+        fetchDashboardData();
+      } else {
+        alert(payload.error || 'Failed to assign');
+      }
+    } catch (err: any) {
+      alert(err?.message || 'Failed to assign');
+    } finally {
+      setAssigningId(null);
     }
   };
 
@@ -326,6 +368,58 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* Unassigned Referrals - Admin can assign to a partner user */}
+      {unassignedSubmissions.length > 0 && (
+        <div className="card" style={{ marginTop: '1.5rem' }}>
+          <div className="section-header">
+            <h2 className="section-title">Unassigned Referrals</h2>
+            <p className="muted small">Referrals submitted without login. Assign to a partner to award points.</p>
+          </div>
+          <div className="activity-list">
+            {unassignedSubmissions.map((sub: any) => (
+              <div key={sub.id} className="activity-item" style={{ flexWrap: 'wrap' }}>
+                <div className="activity-content">
+                  <div className="activity-primary">
+                    <span className="activity-name">{sub.lead_name}</span>
+                    <span className="activity-company">{sub.lead_email}</span>
+                  </div>
+                  <div className="activity-meta">
+                    <span className="activity-date">{formatDate(sub.created_at)}</span>
+                    <span className={`status-badge ${getStatusBadgeClass(sub.status)}`}>{sub.status}</span>
+                  </div>
+                </div>
+                <div className="activity-actions" style={{ alignItems: 'center' }}>
+                  <label className="muted small" style={{ marginRight: '8px' }}>Assign to:</label>
+                  <select
+                    value=""
+                    onChange={(e) => {
+                      const uid = e.target.value;
+                      if (uid) assignSubmissionToUser(sub.id, uid);
+                    }}
+                    disabled={!!assigningId}
+                    style={{ minWidth: '180px', padding: '6px 10px', borderRadius: '6px' }}
+                  >
+                    <option value="">Select partner...</option>
+                    {partnerUsers.filter((u) => u.email).map((u) => (
+                      <option key={u.user_id} value={u.user_id}>
+                        {u.email}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/partners/admin/submission/${sub.id}`)}
+                    className="btn-chip neutral"
+                    style={{ marginLeft: '8px' }}
+                  >
+                    View
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Key Metrics */}
       <div className="metrics-section">
