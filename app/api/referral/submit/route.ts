@@ -21,8 +21,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
-    
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: 'Expected JSON' },
+        { status: 400 }
+      );
+    }
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: 'Body must be an object' },
+        { status: 400 }
+      );
+    }
+
     const {
       referral_code,
       referrer_name,
@@ -36,10 +50,11 @@ export async function POST(request: NextRequest) {
       utm_source,
       utm_medium,
       utm_campaign,
-    } = body;
+    } = body as Record<string, unknown>;
 
     // Validate required fields (both emails are optional)
-    if (!lead_name || !lead_name.trim()) {
+    const leadNameStr = lead_name != null ? String(lead_name).trim() : '';
+    if (!leadNameStr) {
       return NextResponse.json(
         { error: 'Lead name is required' },
         { status: 400 }
@@ -124,11 +139,11 @@ export async function POST(request: NextRequest) {
     if (referrer_name) referrerParts.push(`Name: ${referrer_name}`);
     if (referrer_email) referrerParts.push(`Email: ${referrer_email}`);
     if (referrer_phone) referrerParts.push(`Phone: ${referrer_phone}`);
-    if (relation_to_referral) referrerParts.push(`Relation to referral: ${relation_to_referral.replace(/_/g, ' ')}`);
+    if (relation_to_referral) referrerParts.push(`Relation to referral: ${String(relation_to_referral).replace(/_/g, ' ')}`);
     const referrerBlock = referrerParts.length
       ? `\n\nReferrer Details:\n${referrerParts.join('\n')}`
       : '';
-    const combined_message = [(lead_message || '').trim(), referrerBlock].join('');
+    const combined_message = [String(lead_message ?? '').trim(), referrerBlock].join('');
 
     // Calculate a simple quality score
     let quality_score = 0;
@@ -138,63 +153,57 @@ export async function POST(request: NextRequest) {
     if (combined_message && combined_message.length > 40) quality_score += 20;
 
     // Normalize optional email (store null when empty; use '' for DBs that still have NOT NULL)
-    const leadEmailValue = lead_email && String(lead_email).trim() ? lead_email.trim() : null;
+    const leadEmailValue = lead_email && String(lead_email).trim() ? String(lead_email).trim() : null;
     const leadEmailForDb = leadEmailValue ?? '';
 
-    // Insert referral submission. Use minimal column set first for compatibility with DBs
-    // that haven't run migrations (no is_accounted, quality_score, or optional lead_email).
-    const minimalRecord = {
-      partner_id,
-      referral_code: referral_code || null,
-      lead_name,
+    // Build insert record with no undefined (Supabase/Postgres can reject undefined).
+    // Omit ip_address to avoid INET parse errors from proxies; we can add it back later with validation.
+    const minimalRecord: Record<string, unknown> = {
+      partner_id: partner_id ?? null,
+      referral_code: referral_code ? String(referral_code) : null,
+      lead_name: leadNameStr,
       lead_email: leadEmailForDb,
-      lead_phone: lead_phone || null,
-      lead_message: combined_message || null,
+      lead_phone: lead_phone ? String(lead_phone) : null,
+      lead_message: combined_message ? String(combined_message) : null,
       submission_source: 'web_form',
-      ip_address,
-      user_agent,
-      utm_source: utm_source || null,
-      utm_medium: utm_medium || null,
-      utm_campaign: utm_campaign || null,
-      submitted_by_user_id: user?.id || null,
+      user_agent: user_agent ?? null,
+      utm_source: utm_source ? String(utm_source) : null,
+      utm_medium: utm_medium ? String(utm_medium) : null,
+      utm_campaign: utm_campaign ? String(utm_campaign) : null,
+      submitted_by_user_id: user?.id ?? null,
       is_authenticated: !!user,
       status: 'pending',
     };
+    // Omit ip_address to avoid INET parse errors (proxies often send comma-separated or invalid values).
+    // Optional: add back with strict validation if you need IP logging.
 
     const insertAttempt = async (record: Record<string, unknown>) => {
       return supabase!.from('referral_submissions').insert(record).select().single();
     };
 
-    let { data, error } = await insertAttempt(minimalRecord);
+    let data: { id: string } | null = null;
+    let error: { message?: string; code?: string; hint?: string } | null = null;
 
-    // If minimal insert fails due to missing columns, try with extended columns (is_accounted, quality_score, etc.)
-    if (error && error.message && typeof error.message === 'string' && error.message.includes('column')) {
-      const extendedRecord = {
-        ...minimalRecord,
-        lead_company: null,
-        lead_job_title: null,
-        lead_industry: null,
-        lead_company_size: null,
-        lead_budget_range: null,
-        lead_timeline: null,
-        lead_pain_points: null,
-        lead_linkedin_url: null,
-        is_accounted: !!user,
-        quality_score,
-      };
-      const fallback = await insertAttempt(extendedRecord);
-      data = fallback.data;
-      error = fallback.error;
-    }
+    try {
+      let result = await insertAttempt(minimalRecord);
+      data = result.data as { id: string } | null;
+      error = result.error;
 
-    // If still failing (e.g. invalid INET for ip_address), retry without ip_address
-    if (error && ip_address !== null) {
-      const withoutIp = { ...minimalRecord, ip_address: null };
-      const retry = await insertAttempt(withoutIp);
-      if (!retry.error) {
-        data = retry.data;
-        error = null;
+      // If minimal insert fails due to missing columns, try with extended columns
+      if (error && typeof error.message === 'string' && error.message.includes('column')) {
+        const extendedRecord = { ...minimalRecord, lead_company: null, lead_job_title: null, lead_industry: null, lead_company_size: null, lead_budget_range: null, lead_timeline: null, lead_pain_points: null, lead_linkedin_url: null, is_accounted: !!user, quality_score };
+        result = await insertAttempt(extendedRecord);
+        data = result.data as { id: string } | null;
+        error = result.error;
       }
+
+    } catch (insertErr: unknown) {
+      const err = insertErr as Error;
+      console.error('Referral insert threw:', err);
+      return NextResponse.json(
+        { error: 'Failed to submit referral', details: err?.message ?? String(insertErr) },
+        { status: 500 }
+      );
     }
 
     if (error) {
@@ -202,11 +211,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: 'Failed to submit referral',
-          details: error.message,
+          details: error.message ?? 'Database error',
           code: (error as any)?.code,
           hint: (error as any)?.hint,
-          raw: error,
         },
+        { status: 500 }
+      );
+    }
+
+    if (!data?.id) {
+      return NextResponse.json(
+        { error: 'Failed to submit referral', details: 'No submission id returned' },
         { status: 500 }
       );
     }
