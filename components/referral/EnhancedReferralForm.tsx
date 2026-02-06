@@ -14,6 +14,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
     referrer_name: '',
     referrer_email: '',
     referrer_phone: '',
+    relation_to_referral: '',
     // Person being referred
     lead_name: '',
     lead_email: '',
@@ -31,9 +32,10 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
+    const target = e.target as HTMLInputElement;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     });
   };
 
@@ -81,6 +83,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           referrer_name: '',
           referrer_email: '',
           referrer_phone: '',
+          relation_to_referral: '',
           lead_name: '',
           lead_email: '',
           lead_phone: '',
@@ -128,9 +131,9 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           </div>
         )}
 
-        {/* Section: Referrer Information */}
+        {/* Section: Referred By */}
         <div className="form-section">
-          <h3 className="section-title">Your Information</h3>
+          <h3 className="section-title">Referred By</h3>
           
           <div className="form-row">
             <div className="form-group">
@@ -169,7 +172,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="referrer_phone" className="form-label">
-                Your Phone (optional)
+                Your Phone <span className="required">*</span>
               </label>
               <input
                 type="tel"
@@ -177,9 +180,35 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 name="referrer_phone"
                 value={formData.referrer_phone}
                 onChange={handleChange}
+                required
                 className="form-input"
                 placeholder="+1 (555) 123-4567"
               />
+            </div>
+          </div>
+
+          <div className="form-group relation-to-referral">
+            <span className="form-label">Relation to Referral</span>
+            <div className="relation-options">
+              {[
+                { value: 'friend', label: 'Friend' },
+                { value: 'family', label: 'Family' },
+                { value: 'business', label: 'Business' },
+                { value: 'followers', label: 'Followers' },
+                { value: 'other', label: 'Other' },
+                { value: 'self_referral', label: 'Self Referral' },
+              ].map((opt) => (
+                <label key={opt.value} className="relation-option">
+                  <input
+                    type="radio"
+                    name="relation_to_referral"
+                    value={opt.value}
+                    checked={formData.relation_to_referral === opt.value}
+                    onChange={handleChange}
+                  />
+                  <span>{opt.label}</span>
+                </label>
+              ))}
             </div>
           </div>
         </div>
@@ -225,7 +254,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="lead_phone" className="form-label">
-                Their Phone (optional)
+                Their Phone <span className="required">*</span>
               </label>
               <input
                 type="tel"
@@ -233,6 +262,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
                 name="lead_phone"
                 value={formData.lead_phone}
                 onChange={handleChange}
+                required
                 className="form-input"
                 placeholder="+1 (555) 987-6543"
               />
@@ -277,6 +307,11 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
         <p className="form-notice">
           <small>
             By submitting this referral, you agree that we can contact the person you're referring about our services.
+          </small>
+        </p>
+        <p className="form-disclaimer">
+          <small>
+            <strong>Disclaimer:</strong> The person you are submitting for referral has agreed to be contacted about our services.
           </small>
         </p>
       </form>
@@ -360,6 +395,32 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         .form-group {
           margin-bottom: 1.5rem;
+        }
+
+        .relation-to-referral .form-label {
+          margin-bottom: 0.75rem;
+        }
+
+        .relation-options {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem 1.5rem;
+          margin-top: 0.5rem;
+        }
+
+        .relation-option {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          font-size: 0.95rem;
+          color: #333;
+        }
+
+        .relation-option input {
+          width: 1rem;
+          height: 1rem;
+          accent-color: #667eea;
         }
 
         .form-label {
@@ -446,6 +507,18 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
           text-align: center;
           color: #666;
           line-height: 1.6;
+        }
+
+        .form-disclaimer {
+          margin-top: 0.75rem;
+          text-align: center;
+          color: #555;
+          line-height: 1.6;
+          font-size: 0.9rem;
+        }
+
+        .form-disclaimer strong {
+          color: #333;
         }
 
         @media (max-width: 768px) {

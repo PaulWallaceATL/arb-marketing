@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
       referrer_name,
       referrer_email,
       referrer_phone,
+      relation_to_referral,
       lead_name,
       lead_email,
       lead_phone,
@@ -40,7 +41,19 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!lead_name || !lead_email) {
       return NextResponse.json(
-        { error: 'Name and email are required' },
+        { error: 'Lead name and email are required' },
+        { status: 400 }
+      );
+    }
+    if (!referrer_name || !referrer_email || !referrer_phone) {
+      return NextResponse.json(
+        { error: 'Referrer name, email, and phone are required' },
+        { status: 400 }
+      );
+    }
+    if (!lead_phone) {
+      return NextResponse.json(
+        { error: 'Lead phone number is required' },
         { status: 400 }
       );
     }
@@ -98,12 +111,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Combine referrer info into notes so it's stored
-    const combined_message = [
-      lead_message || '',
-      referrer_name || referrer_email || referrer_phone
-        ? `\n\nReferrer Details:\n${referrer_name ? `Name: ${referrer_name}` : ''}${referrer_email ? `\nEmail: ${referrer_email}` : ''}${referrer_phone ? `\nPhone: ${referrer_phone}` : ''}`
-        : '',
-    ].join('');
+    const referrerParts = [];
+    if (referrer_name) referrerParts.push(`Name: ${referrer_name}`);
+    if (referrer_email) referrerParts.push(`Email: ${referrer_email}`);
+    if (referrer_phone) referrerParts.push(`Phone: ${referrer_phone}`);
+    if (relation_to_referral) referrerParts.push(`Relation to referral: ${relation_to_referral.replace(/_/g, ' ')}`);
+    const referrerBlock = referrerParts.length
+      ? `\n\nReferrer Details:\n${referrerParts.join('\n')}`
+      : '';
+    const combined_message = [(lead_message || '').trim(), referrerBlock].join('');
 
     // Calculate a simple quality score
     let quality_score = 0;

@@ -196,6 +196,25 @@ export default function Header() {
             >
               Contact
             </Link>
+            <Link
+              href="/submission-form"
+              onClick={() => setMobileOpen(false)}
+              style={{
+                fontFamily: "'Roxborough CF', serif",
+                fontSize: '22px',
+                fontWeight: 500,
+                color: '#1f2937',
+                textDecoration: 'none',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: '#fff',
+                transition: 'all 0.2s',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                display: 'block'
+              }}
+            >
+              Referrals
+            </Link>
           </div>
 
           {/* CTA Button */}
@@ -270,6 +289,11 @@ export default function Header() {
                   <li className="nav-item">
                     <Link href="/contact" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
                       Contact
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link href="/submission-form" className="nav-link-item" style={{ fontFamily: "'Roxborough CF', serif" }}>
+                      Referrals
                     </Link>
                   </li>
                 </ul>

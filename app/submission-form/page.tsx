@@ -69,14 +69,13 @@ function SubmissionFormContent() {
         <div className="header-section">
           <div className="header-content">
             <div className="header-badge">
-              <span className="badge-text">REFERRAL COMPETITION</span>
+              <span className="badge-text">Start Earning as an Affiliate</span>
             </div>
             <h1 className="header-title">
-              Refer & Win<br />
-              <span className="gradient-text">Amazing Prizes</span>
+              Refer and Win Rewards!
             </h1>
             <p className="header-description">
-              Know someone who needs marketing help? Refer them to us and compete for cash prizes up to <strong>$5,000</strong>!
+              Earn cash for qualified referrals.
             </p>
             
             {referralCode && (
