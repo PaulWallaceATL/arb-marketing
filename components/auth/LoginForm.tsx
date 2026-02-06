@@ -96,50 +96,19 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
       }
 
       if (data.user) {
-        setMessage(
-          'Account created! Please check your email to verify your account.'
-        );
-        
-        // Clear form
-        setFormData({
-          email: '',
-          password: '',
-          confirmPassword: '',
-        });
+        // With "Confirm email" disabled in Supabase, we often get a session and can redirect
+        if (data.session) {
+          setIsLoggedIn(true);
+          router.push(redirectTo);
+          if (onSuccess) onSuccess();
+          setTimeout(() => { window.location.href = redirectTo; }, 300);
+        } else {
+          setMessage('Account created! You can log in with your email and password.');
+          setFormData({ email: '', password: '', confirmPassword: '' });
+        }
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred during signup');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handlePasswordReset = async () => {
-    if (!formData.email) {
-      setError('Please enter your email address');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setError('');
-    setMessage('');
-
-    try {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-        formData.email,
-        {
-          redirectTo: `${window.location.origin}/auth/reset-password`,
-        }
-      );
-
-      if (resetError) {
-        setError(resetError.message);
-        return;
-      }
-
-      setMessage('Password reset link sent! Check your email.');
-    } catch (err: any) {
-      setError(err.message || 'An error occurred');
     } finally {
       setIsSubmitting(false);
     }
@@ -235,17 +204,6 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
               : 'Sign Up'}
           </button>
         </form>
-
-        {isLogin && (
-          <button
-            type="button"
-            onClick={handlePasswordReset}
-            className="btn-link"
-            disabled={isSubmitting}
-          >
-            Forgot Password?
-          </button>
-        )}
 
         <div className="form-footer">
           <p>

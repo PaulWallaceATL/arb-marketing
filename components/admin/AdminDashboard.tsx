@@ -63,6 +63,9 @@ export default function AdminDashboard() {
   const [unassignedSubmissions, setUnassignedSubmissions] = useState<any[]>([]);
   const [partnerUsers, setPartnerUsers] = useState<{ user_id: string; email: string | null; partner_id: string | null }[]>([]);
   const [assigningId, setAssigningId] = useState<string | null>(null);
+  const [resetPasswordEmail, setResetPasswordEmail] = useState('');
+  const [resetPasswordMessage, setResetPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
@@ -420,6 +423,67 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {/* Password reset (admin only) */}
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <div className="section-header">
+          <h2 className="section-title">Password reset</h2>
+          <p className="muted small">Send a password reset email to a user. Only available here in the admin dashboard.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <input
+            type="email"
+            value={resetPasswordEmail}
+            onChange={(e) => {
+              setResetPasswordEmail(e.target.value);
+              setResetPasswordMessage(null);
+            }}
+            placeholder="User email address"
+            className="form-input"
+            style={{ maxWidth: '280px', padding: '0.5rem 0.75rem' }}
+          />
+          <button
+            type="button"
+            disabled={resetPasswordLoading || !resetPasswordEmail.trim()}
+            onClick={async () => {
+              setResetPasswordLoading(true);
+              setResetPasswordMessage(null);
+              try {
+                const { data: { session } } = await supabase.auth.getSession();
+                const token = session?.access_token;
+                if (!token) {
+                  setResetPasswordMessage({ type: 'error', text: 'Not logged in.' });
+                  return;
+                }
+                const res = await fetch('/api/admin/users/send-reset-email', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                  body: JSON.stringify({ email: resetPasswordEmail.trim() }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok) {
+                  setResetPasswordMessage({ type: 'success', text: data.message || 'Reset email sent.' });
+                  setResetPasswordEmail('');
+                } else {
+                  setResetPasswordMessage({ type: 'error', text: data.error || data.details || 'Failed to send.' });
+                }
+              } catch (e: any) {
+                setResetPasswordMessage({ type: 'error', text: e?.message || 'Request failed.' });
+              } finally {
+                setResetPasswordLoading(false);
+              }
+            }}
+            className="btn-chip neutral"
+          >
+            {resetPasswordLoading ? 'Sending…' : 'Send reset email'}
+          </button>
+        </div>
+        {resetPasswordMessage && (
+          <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: resetPasswordMessage.type === 'error' ? 'var(--color-error, #b91c1c)' : 'var(--color-success, #15803d)' }}>
+            {resetPasswordMessage.text}
+          </p>
+        )}
+      </div>
 
       {/* Key Metrics */}
       <div className="metrics-section">

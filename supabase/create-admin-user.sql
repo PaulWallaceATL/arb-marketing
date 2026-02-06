@@ -7,6 +7,15 @@
 -- =====================================================
 
 -- =====================================================
+-- DISABLE EMAIL CONFIRMATION (recommended for simpler signup)
+-- =====================================================
+-- So new accounts can log in with just email + password:
+-- 1. Supabase Dashboard → Authentication → Providers → Email
+-- 2. Turn OFF "Confirm email"
+-- 3. Save. New signups will get a session immediately.
+-- =====================================================
+
+-- =====================================================
 -- STEP 1: CREATE USER IN SUPABASE AUTH
 -- =====================================================
 -- You MUST do this in the Supabase Dashboard first:
@@ -87,6 +96,45 @@ LEFT JOIN public.channel_partners cp ON pu.partner_id = cp.id
 WHERE pu.role = 'admin';
 
 -- You should see your admin user listed here
+
+-- =====================================================
+-- REPLACE CURRENT ADMIN (create new admin, remove old)
+-- =====================================================
+-- 1) Create the NEW admin user in Auth (Dashboard → Authentication → Users → Add user)
+--    with the new email and password. Or sign up at /partners/login with the new email.
+--
+-- 2) Grant admin role to the NEW user (run with the NEW email):
+--
+DO $$
+DECLARE
+    new_admin_email VARCHAR := 'new-admin@example.com';  -- CHANGE to new admin email
+    new_admin_user_id UUID;
+BEGIN
+    SELECT id INTO new_admin_user_id FROM auth.users WHERE email = new_admin_email;
+    IF new_admin_user_id IS NULL THEN
+        RAISE EXCEPTION 'User with email % not found. Create them in Auth first.', new_admin_email;
+    END IF;
+    INSERT INTO public.partner_users (user_id, partner_id, role)
+    VALUES (new_admin_user_id, NULL, 'admin')
+    ON CONFLICT (user_id) DO UPDATE SET role = 'admin';
+    RAISE NOTICE 'Admin granted to %', new_admin_email;
+END $$;
+--
+-- 3) Remove the OLD admin (choose one):
+--
+-- Option A: Remove admin role only (user stays in Auth, becomes partner)
+-- UPDATE public.partner_users
+-- SET role = 'partner'
+-- WHERE user_id = (SELECT id FROM auth.users WHERE email = 'old-admin@example.com');
+--
+-- Option B: Remove from partner_users entirely (user can still log in but has no role)
+-- DELETE FROM public.partner_users
+-- WHERE user_id = (SELECT id FROM auth.users WHERE email = 'old-admin@example.com');
+--
+-- Option C: Delete the old user from Auth (they can no longer log in)
+-- Do this in Supabase Dashboard: Authentication → Users → find user → Delete user
+-- Then remove their row from partner_users if still present:
+-- DELETE FROM public.partner_users WHERE user_id = 'OLD-USER-UUID-HERE';
 
 -- =====================================================
 -- QUICK SETUP: ALL-IN-ONE SCRIPT FOR NEW ADMINS

@@ -2,6 +2,16 @@
 
 This guide will help you set up an admin user to test the admin features of the referral system.
 
+## Auth: No email confirmation (optional)
+
+To allow signup with **email + password only** (no verification email):
+
+1. In **Supabase Dashboard** go to **Authentication** → **Providers** → **Email**.
+2. Turn **OFF** “Confirm email”.
+3. Save. New accounts can log in immediately after signup.
+
+**Password reset** is only available in the **admin dashboard**: admins use the “Password reset” section to send a reset email to a user’s email address.
+
 ## Prerequisites
 
 Before you begin, make sure you have:
@@ -39,6 +49,16 @@ ON CONFLICT (user_id) DO UPDATE SET role = 'admin';
 ```
 
 3. Done! 🎉
+
+### Replace current admin with a new admin
+
+To create a **new** admin and remove the **current** one:
+
+1. Create the new user in Supabase Auth (Dashboard → Authentication → Users → Add user) or sign up at `/partners/login` with the new email.
+2. In **SQL Editor**, run the “REPLACE CURRENT ADMIN” block from `supabase/create-admin-user.sql` (set `new_admin_email` to the new admin’s email).
+3. Remove the old admin: run the “Option A” or “Option B” SQL in that same file (or delete the old user in Dashboard → Authentication → Users and clean up `partner_users` if needed).
+
+See the full commented steps in `supabase/create-admin-user.sql`.
 
 ### Option 2: Use Existing User (Easiest)
 
