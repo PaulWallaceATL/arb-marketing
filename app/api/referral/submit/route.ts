@@ -158,6 +158,7 @@ export async function POST(request: NextRequest) {
 
     // Build insert record with no undefined (Supabase/Postgres can reject undefined).
     // Omit ip_address to avoid INET parse errors from proxies; we can add it back later with validation.
+    // Omit status so DB default is used (production may have different check constraint: e.g. 'new' vs 'pending')
     const minimalRecord: Record<string, unknown> = {
       partner_id: partner_id ?? null,
       referral_code: referral_code ? String(referral_code) : null,
@@ -172,7 +173,6 @@ export async function POST(request: NextRequest) {
       utm_campaign: utm_campaign ? String(utm_campaign) : null,
       submitted_by_user_id: user?.id ?? null,
       is_authenticated: !!user,
-      status: 'pending',
     };
     // Omit ip_address to avoid INET parse errors (proxies often send comma-separated or invalid values).
     // Optional: add back with strict validation if you need IP logging.
@@ -197,12 +197,22 @@ export async function POST(request: NextRequest) {
         error = result.error;
       }
 
+      // If insert failed due to status check constraint (e.g. production allows 'new' not 'pending'), retry with status 'new'
+      if (error && typeof error.message === 'string' && error.message.includes('referral_submissions_status_check')) {
+        result = await insertAttempt({ ...minimalRecord, status: 'new' });
+        if (!result.error) {
+          data = result.data as { id: string } | null;
+          error = null;
+        }
+      }
+
       // If service-role insert still fails, try anon client so RLS "Anyone can submit referrals" may allow it
       if (error) {
         const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
           auth: { autoRefreshToken: false, persistSession: false },
         });
-        const anonResult = await supabaseAnon.from('referral_submissions').insert(minimalRecord).select().single();
+        const recordToTry = error.message && error.message.includes('status_check') ? { ...minimalRecord, status: 'new' } : minimalRecord;
+        const anonResult = await supabaseAnon.from('referral_submissions').insert(recordToTry).select().single();
         if (!anonResult.error) {
           data = anonResult.data as { id: string } | null;
           error = null;
