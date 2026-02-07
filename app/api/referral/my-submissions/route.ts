@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     if (!partnerUser) {
       await supabaseService.from('partner_users').upsert(
         { user_id: user.id, partner_id: null, role: 'partner', points: 0 },
-        { onConflict: 'user_id' }
+        { onConflict: 'user_id', ignoreDuplicates: true }
       );
       const res = await supabaseService.from('partner_users').select('partner_id, role, points').eq('user_id', user.id).maybeSingle();
       partnerUser = res.data;

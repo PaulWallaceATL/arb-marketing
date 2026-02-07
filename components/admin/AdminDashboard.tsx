@@ -613,12 +613,6 @@ export default function AdminDashboard() {
                     {submission.lead_company || 'No company'}
                   </span>
                 </div>
-                <div className="activity-meta">
-                  <span className="breadcrumb">
-                    {submission.status} • {submission.channel_partners?.company_name || 'Direct'}
-                  </span>
-                  <span className="activity-date">{formatDate(submission.created_at)}</span>
-                </div>
               </div>
               <div className="activity-status">
                 <span className={`status-badge ${getStatusBadgeClass(submission.status)}`}>

@@ -64,11 +64,17 @@ export async function GET(request: NextRequest) {
 
     const withEmails: { user_id: string; partner_id: string | null; email: string | null; points: number }[] = [];
     for (const pu of partnerUsers || []) {
-      const { data: authUser } = await supabaseService.auth.admin.getUserById(pu.user_id);
+      let email: string | null = null;
+      try {
+        const { data: authUser } = await supabaseService.auth.admin.getUserById(pu.user_id);
+        email = authUser?.user?.email ?? null;
+      } catch {
+        // Skip email for users we can't look up (e.g. deleted from auth)
+      }
       withEmails.push({
         user_id: pu.user_id,
         partner_id: pu.partner_id,
-        email: authUser?.user?.email ?? null,
+        email,
         points: pu.points ?? 0,
       });
     }
