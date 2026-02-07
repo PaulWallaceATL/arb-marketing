@@ -278,7 +278,7 @@ export default function AdminUserDetailPage() {
       });
       const json = await resp.json();
       if (!resp.ok) {
-        setError(json.error || 'Failed to update points');
+        setError(json.details ? `${json.error}: ${json.details}` : json.error || 'Failed to update points');
         return;
       }
       setUserPoints(json.points);
@@ -308,7 +308,7 @@ export default function AdminUserDetailPage() {
       });
       const json = await resp.json();
       if (!resp.ok) {
-        setError(json.error || 'Failed to set points');
+        setError(json.details ? `${json.error}: ${json.details}` : json.error || 'Failed to set points');
         return;
       }
       setUserPoints(json.points);

@@ -213,8 +213,18 @@ export async function PATCH(
       );
     }
 
-    const body = await request.json();
-    const { points, delta } = body || {};
+    let body: { points?: number; delta?: number } = {};
+    try {
+      body = (await request.json()) || {};
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    const rawPoints = body.points;
+    const rawDelta = body.delta;
+    const pointsNum = typeof rawPoints === 'number' ? rawPoints : typeof rawPoints === 'string' ? Number(rawPoints) : undefined;
+    const deltaNum = typeof rawDelta === 'number' ? rawDelta : typeof rawDelta === 'string' ? Number(rawDelta) : undefined;
+    const points = pointsNum !== undefined && !Number.isNaN(pointsNum) ? pointsNum : undefined;
+    const delta = deltaNum !== undefined && !Number.isNaN(deltaNum) ? deltaNum : undefined;
 
     if (points === undefined && delta === undefined) {
       return NextResponse.json(
@@ -237,12 +247,14 @@ export async function PATCH(
     }
 
     const currentPoints = currentRow?.points ?? 0;
-    const nextPoints =
+    const nextPoints = Math.max(
+      0,
       typeof points === 'number'
         ? points
-        : currentPoints + (typeof delta === 'number' ? delta : 0);
+        : currentPoints + (typeof delta === 'number' ? delta : 0)
+    );
 
-    let updateErr: { message?: string } | null = null;
+    let updateErr: { message?: string; code?: string } | null = null;
     if (currentRow) {
       const res = await supabaseService
         .from('partner_users')
@@ -252,24 +264,32 @@ export async function PATCH(
     } else {
       const res = await supabaseService
         .from('partner_users')
-        .upsert({ user_id: id, partner_id: null, role: 'partner', points: nextPoints }, { onConflict: 'user_id' });
+        .upsert(
+          { user_id: id, partner_id: null, role: 'partner', points: nextPoints },
+          { onConflict: 'user_id' }
+        );
       updateErr = res.error;
     }
 
     if (updateErr) {
+      console.error('Partner users update/upsert error:', updateErr);
       return NextResponse.json(
-        { error: 'Failed to update points', details: updateErr.message },
+        { error: 'Failed to update points', details: updateErr.message, code: updateErr.code },
         { status: 500 }
       );
     }
 
-    await supabaseService.from('activity_log').insert({
-      user_id: user.id,
-      action: 'update_points',
-      entity_type: 'partner_user',
-      entity_id: id,
-      details: { previous: currentPoints, next: nextPoints, delta },
-    });
+    try {
+      await supabaseService.from('activity_log').insert({
+        user_id: user.id,
+        action: 'update_points',
+        entity_type: 'partner_user',
+        entity_id: id,
+        details: { previous: currentPoints, next: nextPoints, delta },
+      });
+    } catch (logErr: any) {
+      console.error('Activity log insert failed (non-fatal):', logErr);
+    }
 
     return NextResponse.json({ success: true, points: nextPoints });
   } catch (error: any) {
