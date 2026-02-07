@@ -174,8 +174,9 @@ export async function POST(request: NextRequest) {
       submitted_by_user_id: user?.id ?? null,
       is_authenticated: !!user,
     };
+    // New submissions start as "new"; after 24h they transition to "pending" (handled when fetching)
+    minimalRecord.status = 'new';
     // Omit ip_address to avoid INET parse errors (proxies often send comma-separated or invalid values).
-    // Optional: add back with strict validation if you need IP logging.
 
     const insertAttempt = async (record: Record<string, unknown>) => {
       return supabase!.from('referral_submissions').insert(record).select().single();
@@ -197,9 +198,10 @@ export async function POST(request: NextRequest) {
         error = result.error;
       }
 
-      // If insert failed due to status check constraint (e.g. production allows 'new' not 'pending'), retry with status 'new'
+      // If insert failed due to status check (e.g. DB doesn't allow 'new'), retry without status so DB default is used
       if (error && typeof error.message === 'string' && error.message.includes('referral_submissions_status_check')) {
-        result = await insertAttempt({ ...minimalRecord, status: 'new' });
+        const { status: _s, ...recordWithoutStatus } = minimalRecord;
+        result = await insertAttempt(recordWithoutStatus);
         if (!result.error) {
           data = result.data as { id: string } | null;
           error = null;
@@ -211,7 +213,7 @@ export async function POST(request: NextRequest) {
         const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey, {
           auth: { autoRefreshToken: false, persistSession: false },
         });
-        const recordToTry = error.message && error.message.includes('status_check') ? { ...minimalRecord, status: 'new' } : minimalRecord;
+        const recordToTry = (error.message && error.message.includes('status_check')) ? (() => { const { status: _s, ...r } = minimalRecord; return r; })() : minimalRecord;
         const anonResult = await supabaseAnon.from('referral_submissions').insert(recordToTry).select().single();
         if (!anonResult.error) {
           data = anonResult.data as { id: string } | null;

@@ -66,28 +66,42 @@ export async function GET(request: NextRequest) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  // Determine partner_id (if any) and role
+  // Determine partner_id (if any), role, and points (ensure row exists so points show)
   let partnerId: string | null = null;
   let role: string | null = null;
   let points: number | null = null;
   try {
-    const { data: partnerUser } = await supabaseService
+    let { data: partnerUser } = await supabaseService
       .from('partner_users')
       .select('partner_id, role, points')
       .eq('user_id', user.id)
       .maybeSingle();
+    if (!partnerUser) {
+      await supabaseService.from('partner_users').upsert(
+        { user_id: user.id, partner_id: null, role: 'partner', points: 0 },
+        { onConflict: 'user_id' }
+      );
+      const res = await supabaseService.from('partner_users').select('partner_id, role, points').eq('user_id', user.id).maybeSingle();
+      partnerUser = res.data;
+    }
     if (partnerUser?.partner_id) {
       partnerId = partnerUser.partner_id;
     }
     if (partnerUser?.role) {
       role = partnerUser.role;
     }
-    if (typeof partnerUser?.points === 'number') {
-      points = partnerUser.points;
-    }
+    points = typeof partnerUser?.points === 'number' ? partnerUser.points : 0;
   } catch (err) {
-    // ignore; partnerId stays null
+    // ignore; partnerId stays null, points stay null
   }
+
+  // Transition submissions from "new" to "pending" after 24 hours
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  await supabaseService
+    .from('referral_submissions')
+    .update({ status: 'pending' })
+    .eq('status', 'new')
+    .lt('created_at', twentyFourHoursAgo);
 
   let submissions: any[] = [];
   let warning: string | null = null;

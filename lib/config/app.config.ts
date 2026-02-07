@@ -37,6 +37,8 @@ export const appConfig = {
   },
 
   // Points System (referral rewards)
+  // 10 per submission (when submitted by logged-in user); status starts as "new" → "pending" after 24h
+  // 10 per denial; 250 per approval; 500 bonus on every 5th approval per user
   points: {
     perSubmission: 10,
     perDenial: 10,

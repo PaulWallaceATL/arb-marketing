@@ -79,6 +79,14 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Transition submissions from "new" to "pending" after 24 hours
+    const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    await supabaseService
+      .from('referral_submissions')
+      .update({ status: 'pending' })
+      .eq('status', 'new')
+      .lt('created_at', twentyFourHoursAgo);
+
     // Fetch dashboard statistics
     const [
       { count: totalSubmissions },

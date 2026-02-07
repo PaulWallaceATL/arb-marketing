@@ -132,9 +132,16 @@ export async function PATCH(
     // Build update object
     const updateData: any = {};
 
-    const allowedStatuses = ['pending', 'approved', 'denied'];
+    // Support both schemas: (pending|approved|denied) and (new|contacted|qualified|converted)
+    const statusMapToAlternate: Record<string, string> = {
+      approved: 'qualified',
+      denied: 'denied',
+      pending: 'new',
+    };
+    const allowedStatuses = ['pending', 'approved', 'denied', 'new', 'contacted', 'qualified', 'converted'];
     if (status !== undefined) {
-      updateData.status = allowedStatuses.includes(status) ? status : 'pending';
+      const normalized = allowedStatuses.includes(status) ? status : 'pending';
+      updateData.status = normalized;
     }
 
     if (admin_notes !== undefined) {
@@ -193,13 +200,28 @@ export async function PATCH(
     if (quality_score !== undefined) updateData.quality_score = quality_score;
 
     // Update the submission
-    const { data, error } = await supabaseService
+    let result = await supabaseService
       .from('referral_submissions')
       .update(updateData)
       .eq('id', id)
       .select()
       .single();
 
+    // If status check constraint fails (e.g. production uses new/qualified/converted), retry with mapped status
+    if (result.error && typeof result.error.message === 'string' && result.error.message.includes('referral_submissions_status_check') && updateData.status) {
+      const alt = statusMapToAlternate[updateData.status as string];
+      if (alt) {
+        const retryData = { ...updateData, status: alt };
+        result = await supabaseService
+          .from('referral_submissions')
+          .update(retryData)
+          .eq('id', id)
+          .select()
+          .single();
+      }
+    }
+
+    const { data, error } = result;
     if (error) {
       console.error('Supabase error:', error);
       return NextResponse.json(
@@ -242,8 +264,11 @@ export async function PATCH(
       }
     }
 
+    const isApprovedStatus = (s: string) => s === 'approved' || s === 'qualified' || s === 'converted';
+    const isDeniedStatus = (s: string) => s === 'denied';
+
     // 2) Status changed to denied → award 10 points
-    if (effectiveUserId && previousStatus !== 'denied' && data.status === 'denied') {
+    if (effectiveUserId && !isDeniedStatus(previousStatus) && isDeniedStatus(data.status)) {
       const { data: row } = await supabaseService
         .from('partner_users')
         .select('points, gift_card_25_claimed')
@@ -263,13 +288,13 @@ export async function PATCH(
       }
     }
 
-    // 3) Status changed to approved → award 250, plus 500 every 5th approval
-    if (effectiveUserId && previousStatus !== 'approved' && data.status === 'approved') {
+    // 3) Status changed to approved (or qualified/converted) → award 250, plus 500 every 5th approval
+    if (effectiveUserId && !isApprovedStatus(previousStatus) && isApprovedStatus(data.status)) {
       const { data: approvedList } = await supabaseService
         .from('referral_submissions')
         .select('id')
         .eq('submitted_by_user_id', effectiveUserId)
-        .eq('status', 'approved');
+        .in('status', ['approved', 'qualified', 'converted']);
       const approvedCount = approvedList?.length ?? 0;
       const isFifth = approvedCount > 0 && approvedCount % 5 === 0;
       const addPoints = POINTS_APPROVAL + (isFifth ? POINTS_APPROVAL_BONUS_EVERY_5 : 0);
@@ -293,14 +318,18 @@ export async function PATCH(
       }
     }
 
-    // Log the activity
-    await supabaseService.from('activity_log').insert({
-      user_id: user.id,
-      action: 'update_submission',
-      entity_type: 'referral_submission',
-      entity_id: id,
-      details: { changes: updateData },
-    });
+    // Log the activity (non-fatal if it fails)
+    try {
+      await supabaseService.from('activity_log').insert({
+        user_id: user.id,
+        action: 'update_submission',
+        entity_type: 'referral_submission',
+        entity_id: id,
+        details: { changes: updateData },
+      });
+    } catch (logErr) {
+      console.error('Activity log insert failed:', logErr);
+    }
 
     return NextResponse.json({
       success: true,

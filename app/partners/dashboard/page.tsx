@@ -204,7 +204,6 @@ export default function DashboardPage() {
               <div className="info-card card">
                 <div className="info-label">Points</div>
                 <div className="info-value accent">{typeof userPoints === 'number' ? userPoints : '—'}</div>
-                <p className="micro-text">Earn 1 point per referral, +2 when approved.</p>
               </div>
             </div>
 
