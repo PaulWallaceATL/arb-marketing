@@ -88,26 +88,45 @@ export async function GET(
       );
     }
 
-    // Submissions for that user
-    const { data: submissions, error: subErr } = await supabaseService
+    // Points row (also gives us partner_id for submission query)
+    const { data: pointsRow } = await supabaseService
+      .from('partner_users')
+      .select('points, partner_id')
+      .eq('user_id', id)
+      .maybeSingle();
+
+    // Submissions: direct (submitted_by_user_id) OR unassigned linked to this user's partner
+    let submissions: any[] = [];
+    const { data: directSubs, error: directErr } = await supabaseService
       .from('referral_submissions')
       .select('id, lead_name, lead_email, lead_phone, status, created_at, lead_message')
       .eq('submitted_by_user_id', id)
       .order('created_at', { ascending: false });
 
-    if (subErr) {
+    if (directErr) {
       return NextResponse.json(
-        { error: 'Failed to fetch submissions', details: subErr.message },
+        { error: 'Failed to fetch submissions', details: directErr.message },
         { status: 500 }
       );
     }
+    submissions = directSubs || [];
 
-    // Points for that user
-    const { data: pointsRow } = await supabaseService
-      .from('partner_users')
-      .select('points')
-      .eq('user_id', id)
-      .maybeSingle();
+    if (pointsRow?.partner_id) {
+      const { data: partnerSubs } = await supabaseService
+        .from('referral_submissions')
+        .select('id, lead_name, lead_email, lead_phone, status, created_at, lead_message')
+        .eq('partner_id', pointsRow.partner_id)
+        .is('submitted_by_user_id', null)
+        .order('created_at', { ascending: false });
+      const ids = new Set(submissions.map((s: any) => s.id));
+      for (const s of partnerSubs || []) {
+        if (!ids.has(s.id)) {
+          ids.add(s.id);
+          submissions.push(s);
+        }
+      }
+      submissions.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    }
 
     return NextResponse.json(
       {
@@ -223,10 +242,19 @@ export async function PATCH(
         ? points
         : currentPoints + (typeof delta === 'number' ? delta : 0);
 
-    const { error: updateErr } = await supabaseService
-      .from('partner_users')
-      .update({ points: nextPoints })
-      .eq('user_id', id);
+    let updateErr: { message?: string } | null = null;
+    if (currentRow) {
+      const res = await supabaseService
+        .from('partner_users')
+        .update({ points: nextPoints })
+        .eq('user_id', id);
+      updateErr = res.error;
+    } else {
+      const res = await supabaseService
+        .from('partner_users')
+        .upsert({ user_id: id, partner_id: null, role: 'partner', points: nextPoints }, { onConflict: 'user_id' });
+      updateErr = res.error;
+    }
 
     if (updateErr) {
       return NextResponse.json(

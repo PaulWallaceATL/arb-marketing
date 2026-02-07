@@ -35,6 +35,8 @@ export default function AdminUserDetailPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userPoints, setUserPoints] = useState<number>(0);
   const [pointsInput, setPointsInput] = useState<number>(0);
+  const [setToInput, setSetToInput] = useState<string>('');
+  const [recalculating, setRecalculating] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [newReferral, setNewReferral] = useState({
     lead_name: '',
@@ -251,8 +253,8 @@ export default function AdminUserDetailPage() {
 
   const summary = useMemo(() => {
     const total = submissions.length;
-    const approved = submissions.filter((s) => s.status === 'approved').length;
-    const pending = submissions.filter((s) => s.status === 'pending').length;
+    const approved = submissions.filter((s) => ['approved', 'qualified', 'converted'].includes(s.status)).length;
+    const pending = submissions.filter((s) => ['pending', 'new'].includes(s.status)).length;
     const denied = submissions.filter((s) => s.status === 'denied').length;
     return { total, approved, pending, denied };
   }, [submissions]);
@@ -284,6 +286,69 @@ export default function AdminUserDetailPage() {
       setError(null);
     } catch (err: any) {
       setError(err?.message || 'Failed to update points');
+    }
+  };
+
+  const setPointsAbsolute = async (points: number) => {
+    if (!userId || Number.isNaN(points) || points < 0) return;
+    try {
+      const token = await getToken();
+      if (!token) {
+        setError('No session found.');
+        return;
+      }
+      const resp = await fetch(`/api/admin/user/${userId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ points }),
+      });
+      const json = await resp.json();
+      if (!resp.ok) {
+        setError(json.error || 'Failed to set points');
+        return;
+      }
+      setUserPoints(json.points);
+      setSetToInput('');
+      setError(null);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to set points');
+    }
+  };
+
+  const recalculatePoints = async () => {
+    if (!userId) return;
+    setRecalculating(true);
+    setError(null);
+    try {
+      const token = await getToken();
+      if (!token) {
+        setError('No session found.');
+        setRecalculating(false);
+        return;
+      }
+      const resp = await fetch(`/api/admin/user/${userId}/recalculate-points`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const json = await resp.json();
+      if (!resp.ok) {
+        setError(json.error || 'Failed to recalculate points');
+        setRecalculating(false);
+        return;
+      }
+      setUserPoints(json.points ?? userPoints);
+      setSetToInput('');
+      setError(null);
+      fetchUser(); // refresh submissions and points
+    } catch (err: any) {
+      setError(err?.message || 'Failed to recalculate points');
+    } finally {
+      setRecalculating(false);
     }
   };
 
@@ -350,7 +415,7 @@ export default function AdminUserDetailPage() {
                   type="number"
                   value={pointsInput}
                   onChange={(e) => setPointsInput(Number(e.target.value))}
-                  placeholder="Amount"
+                  placeholder="Add/remove amount"
                 />
                 <button
                   type="button"
@@ -369,6 +434,33 @@ export default function AdminUserDetailPage() {
                   Remove
                 </button>
               </div>
+              <div className="points-actions" style={{ marginTop: '8px' }}>
+                <input
+                  type="number"
+                  value={setToInput}
+                  onChange={(e) => setSetToInput(e.target.value)}
+                  placeholder="Set to value"
+                  min={0}
+                />
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => setPointsAbsolute(Number(setToInput))}
+                  disabled={setToInput === '' || Number.isNaN(Number(setToInput)) || Number(setToInput) < 0}
+                >
+                  Set to
+                </button>
+              </div>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={recalculatePoints}
+                disabled={recalculating}
+                style={{ marginTop: '8px', width: '100%' }}
+                title="Recalculate points from existing referrals (10 per submission, 250 per approved, 10 per denied)"
+              >
+                {recalculating ? 'Recalculating...' : 'Recalculate from referrals'}
+              </button>
             </div>
           </motion.div>
 
