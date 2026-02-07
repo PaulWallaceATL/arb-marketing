@@ -87,25 +87,23 @@ function SubmissionFormContent() {
             
             {isAuthenticated && (
               <div className="points-info">
-                <div className="point-item">
-                  <div className="point-details">
-                    <strong>10 pts</strong>
+                <div className="points-grid">
+                  <div className="point-item">
+                    <strong>10 points</strong>
                     <span>per referral</span>
                   </div>
-                </div>
-                <div className="point-divider">→</div>
-                <div className="point-item">
-                  <div className="point-details">
-                    <strong>25 pts</strong>
-                    <span>when qualified</span>
+                  <div className="point-item">
+                    <strong>250 points</strong>
+                    <span>per accepted referral</span>
+                  </div>
+                  <div className="point-item">
+                    <strong>500 point bonus</strong>
+                    <span>for every 5 accepted referrals</span>
                   </div>
                 </div>
-                <div className="point-divider">→</div>
-                <div className="point-item">
-                  <div className="point-details">
-                    <strong>100 pts</strong>
-                    <span>when converted</span>
-                  </div>
+                <div className="rewards-cash">
+                  <div className="reward-item">Get a <strong>$25 gift card</strong> on your first 50 points</div>
+                  <div className="reward-item">Get <strong>$250</strong> for every 250 points</div>
                 </div>
               </div>
             )}
@@ -285,48 +283,62 @@ function SubmissionFormContent() {
         }
 
         .points-info {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          flex-wrap: wrap;
           margin-bottom: 1rem;
           animation: fadeInUp 0.6s ease-out 0.4s both;
         }
 
+        .points-grid {
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+          margin-bottom: 1rem;
+        }
+
         .point-item {
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
           background: rgba(255, 255, 255, 0.15);
           backdrop-filter: blur(10px);
-          padding: 1rem 1.5rem;
+          padding: 1rem 1.25rem;
           border-radius: 16px;
           border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .point-details {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
           color: white;
           text-align: center;
         }
 
-        .point-details strong {
-          font-size: 1.25rem;
+        .point-item strong {
+          font-size: 1.15rem;
           font-weight: 700;
         }
 
-        .point-details span {
+        .point-item span {
           font-size: 0.85rem;
-          opacity: 0.9;
+          opacity: 0.95;
+          margin-top: 0.25rem;
         }
 
-        .point-divider {
+        .rewards-cash {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          align-items: center;
           color: white;
-          font-size: 1.5rem;
-          opacity: 0.5;
+          font-size: 0.95rem;
+        }
+
+        .reward-item {
+          background: rgba(255, 255, 255, 0.12);
+          padding: 0.5rem 1rem;
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .reward-item strong {
+          font-weight: 700;
         }
 
         .auth-status {
@@ -516,18 +528,13 @@ function SubmissionFormContent() {
             font-size: 1.05rem;
           }
 
-          .points-info {
+          .points-grid {
             flex-direction: column;
             align-items: stretch;
           }
 
           .point-item {
             width: 100%;
-          }
-
-          .point-divider {
-            transform: rotate(90deg);
-            margin: 0.5rem 0;
           }
 
           .info-grid {
