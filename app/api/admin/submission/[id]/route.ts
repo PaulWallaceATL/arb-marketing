@@ -230,7 +230,16 @@ export async function PATCH(
       );
     }
 
-    const effectiveUserId = data.submitted_by_user_id;
+    let effectiveUserId = data.submitted_by_user_id;
+    // If no submitter but has partner_id, award points to a partner user linked to that partner
+    if (!effectiveUserId && data.partner_id) {
+      const { data: puList } = await supabaseService
+        .from('partner_users')
+        .select('user_id')
+        .eq('partner_id', data.partner_id)
+        .limit(1);
+      effectiveUserId = puList?.[0]?.user_id || null;
+    }
     const POINTS_SUBMISSION = 10;
     const POINTS_DENIAL = 10;
     const POINTS_APPROVAL = 250;

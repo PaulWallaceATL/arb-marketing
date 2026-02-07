@@ -516,6 +516,7 @@ export default function DashboardPage() {
           text-transform: capitalize;
           display: inline-block;
         }
+        .status-chip.new { background: #e0e7ff; color: #4338ca; }
         .status-chip.pending { background: #fef3c7; color: #d97706; }
         .status-chip.approved { background: #d1fae5; color: #059669; }
         .status-chip.denied { background: #fee2e2; color: #dc2626; }

@@ -301,12 +301,17 @@ export default function AdminDashboard() {
 
   const getStatusBadgeClass = (status: string) => {
     const classes: { [key: string]: string } = {
+      new: 'badge-new',
       pending: 'badge-pending',
       approved: 'badge-approved',
+      qualified: 'badge-approved',
+      converted: 'badge-approved',
       denied: 'badge-denied',
     };
     return classes[status] || 'badge-default';
   };
+  const displayStatus = (status: string) =>
+    status === 'qualified' || status === 'converted' ? 'Approved' : (status ? status.charAt(0).toUpperCase() + status.slice(1) : status);
 
   if (isLoading) {
     return (
@@ -388,7 +393,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="activity-meta">
                     <span className="activity-date">{formatDate(sub.created_at)}</span>
-                    <span className={`status-badge ${getStatusBadgeClass(sub.status)}`}>{sub.status}</span>
+                    <span className={`status-badge ${getStatusBadgeClass(sub.status)}`}>{displayStatus(sub.status)}</span>
                   </div>
                 </div>
                 <div className="activity-actions" style={{ alignItems: 'center' }}>
@@ -559,7 +564,7 @@ export default function AdminDashboard() {
                   <div className="status-info">
                     <div className="status-header">
                       <StatusIcon status={status} />
-                      <span className="status-name">{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+                      <span className="status-name">{displayStatus(status)}</span>
                     </div>
                     <span className="status-count">{count}</span>
                   </div>
@@ -618,7 +623,7 @@ export default function AdminDashboard() {
               <div className="activity-status">
                 <span className={`status-badge ${getStatusBadgeClass(submission.status)}`}>
                   <StatusIcon status={submission.status} />
-                  {submission.status}
+                  {displayStatus(submission.status)}
                 </span>
               </div>
               <div className="activity-actions">
@@ -763,7 +768,7 @@ export default function AdminDashboard() {
                           <div className="preview-info">
                             <span className="preview-name">{s.lead_name}</span>
                             <span className={`preview-status ${getStatusBadgeClass(s.status)}`}>
-                              {s.status}
+                              {displayStatus(s.status)}
                             </span>
                           </div>
                           <span className="preview-date">
@@ -817,7 +822,7 @@ export default function AdminDashboard() {
               <div className="detail-group">
                 <label>Current Status:</label>
                 <span className={`badge ${getStatusBadgeClass(selectedSubmission.status)}`}>
-                  {selectedSubmission.status}
+                  {displayStatus(selectedSubmission.status)}
                 </span>
               </div>
               <div className="detail-group">
@@ -1099,6 +1104,7 @@ export default function AdminDashboard() {
           transition: width 0.3s ease;
         }
 
+        .progress-fill.badge-new { background: #6366f1; }
         .progress-fill.badge-pending { background: #f59e0b; }
         .progress-fill.badge-approved { background: #16a34a; }
         .progress-fill.badge-denied { background: #ef4444; }
@@ -1214,26 +1220,38 @@ export default function AdminDashboard() {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          padding: 0.375rem 0.75rem;
-          border-radius: 20px;
-          font-size: 0.75rem;
-          font-weight: 600;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          font-size: 0.875rem;
+          font-weight: 700;
           text-transform: capitalize;
+          letter-spacing: 0.02em;
+          border: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .status-badge.badge-new {
+          background: #e0e7ff;
+          color: #4338ca;
+          border-color: #c7d2fe;
         }
 
         .status-badge.badge-pending {
           background: #fef3c7;
-          color: #d97706;
+          color: #b45309;
+          border-color: #fde68a;
         }
 
         .status-badge.badge-approved {
           background: #d1fae5;
-          color: #059669;
+          color: #047857;
+          border-color: #a7f3d0;
         }
 
         .status-badge.badge-denied {
           background: #fee2e2;
-          color: #dc2626;
+          color: #b91c1c;
+          border-color: #fecaca;
         }
 
         .activity-actions {

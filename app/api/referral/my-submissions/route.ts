@@ -139,7 +139,11 @@ export async function GET(request: NextRequest) {
       warning = error.message;
       debug = { code: error.code, hint: error.hint, message: error.message };
     } else {
-      submissions = data || [];
+      // Map qualified/converted to "approved" for display so partner sees "Approved" not "Qualified"
+      submissions = (data || []).map((s: any) => ({
+        ...s,
+        status: s.status === 'qualified' || s.status === 'converted' ? 'approved' : s.status,
+      }));
     }
   } catch (err: any) {
     warning = err?.message || 'Failed to fetch submissions';
