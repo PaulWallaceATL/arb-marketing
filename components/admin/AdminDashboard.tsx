@@ -337,13 +337,13 @@ export default function AdminDashboard() {
       <div className="admin-header">
         <div className="header-content">
           <div className="header-text">
-            <div className="header-badge">Admin Panel</div>
-            <h1 className="header-title">Partner Lead Management</h1>
-            <p className="header-subtitle">Review and approve/deny partner-submitted leads</p>
+            <div className="header-badge">Admin Dashboard</div>
+            <h1 className="header-title">Lead Management</h1>
+            <p className="header-subtitle">Monitor referrals, manage partners, and review incoming leads.</p>
           </div>
           <div className="header-actions">
             <button onClick={fetchDashboardData} className="btn-secondary">
-              <span>🔄</span> Refresh
+              Refresh Data
             </button>
           </div>
         </div>
@@ -353,7 +353,7 @@ export default function AdminDashboard() {
       <div className="card media-section">
         <div className="section-header">
           <h2 className="section-title">Site Media</h2>
-          <span className="muted small">Update hero images and founder photo.</span>
+          <span className="muted small">Manage hero images and brand assets.</span>
         </div>
         {mediaLoading && <p className="muted small">Loading current media…</p>}
         <div className="media-grid">
@@ -381,7 +381,7 @@ export default function AdminDashboard() {
         <div className="card" style={{ marginTop: '1.5rem' }}>
           <div className="section-header">
             <h2 className="section-title">Unassigned Referrals</h2>
-            <p className="muted small">Referrals submitted without login. Assign to a partner to award points.</p>
+            <p className="muted small">These referrals were submitted without an account. Assign them to a partner to credit points.</p>
           </div>
           <div className="activity-list">
             {unassignedSubmissions.map((sub: any) => (
@@ -432,8 +432,8 @@ export default function AdminDashboard() {
       {/* Password reset (admin only) */}
       <div className="card" style={{ marginTop: '1.5rem' }}>
         <div className="section-header">
-          <h2 className="section-title">Password reset</h2>
-          <p className="muted small">Send a password reset email to a user. Only available here in the admin dashboard.</p>
+          <h2 className="section-title">Password Reset</h2>
+          <p className="muted small">Send a reset link to any partner account.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
           <input
@@ -492,22 +492,22 @@ export default function AdminDashboard() {
 
       {/* Key Metrics */}
       <div className="metrics-section">
-        <h2 className="section-title">Key Metrics</h2>
+        <h2 className="section-title">Overview</h2>
         <div className="metrics-grid">
           <div className="metric-card">
-            <div className="metric-icon">
-              <span className="metric-dot" />
+            <div className="metric-icon" style={{ background: 'linear-gradient(135deg, #e0e7ff, #c7d2fe)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.totalSubmissions || 0}</div>
-              <div className="metric-label">Total Submissions</div>
+              <div className="metric-label">Total Leads</div>
               <div className="metric-trend">All time</div>
             </div>
           </div>
 
           <div className="metric-card">
-            <div className="metric-icon">
-              <span className="metric-dot" />
+            <div className="metric-icon" style={{ background: 'linear-gradient(135deg, #fef3c7, #fde68a)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.newSubmissions || 0}</div>
@@ -517,19 +517,19 @@ export default function AdminDashboard() {
           </div>
 
           <div className="metric-card highlight">
-            <div className="metric-icon">
-              <span className="metric-dot" />
+            <div className="metric-icon" style={{ background: 'rgba(255,255,255,0.2)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.convertedSubmissions || 0}</div>
               <div className="metric-label">Conversions</div>
-              <div className="metric-trend">{stats?.conversionRate || 0}% success rate</div>
+              <div className="metric-trend">{stats?.conversionRate || 0}% rate</div>
             </div>
           </div>
 
           <div className="metric-card">
-            <div className="metric-icon">
-              <span className="metric-dot" />
+            <div className="metric-icon" style={{ background: 'linear-gradient(135deg, #d1fae5, #a7f3d0)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
             <div className="metric-content">
               <div className="metric-value">${stats?.totalRevenue || '0.00'}</div>
@@ -539,8 +539,8 @@ export default function AdminDashboard() {
           </div>
 
           <div className="metric-card">
-            <div className="metric-icon">
-              <span className="metric-dot" />
+            <div className="metric-icon" style={{ background: 'linear-gradient(135deg, #ede9fe, #ddd6fe)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <div className="metric-content">
               <div className="metric-value">{stats?.activePartners || 0}</div>
@@ -585,8 +585,8 @@ export default function AdminDashboard() {
       {/* Recent Activity */}
       <div className="activity-section">
         <div className="section-header">
-          <h2 className="section-title">Pending Leads - Review Required</h2>
-          <p className="muted small">All leads are submitted as "pending". Review and approve or deny each lead.</p>
+          <h2 className="section-title">Leads Awaiting Review</h2>
+          <p className="muted small">New leads arrive as pending. Approve or deny each one below.</p>
         </div>
           <div className="activity-list">
           {recentSubmissions.slice(0, 5).map((submission: any) => (
@@ -670,9 +670,9 @@ export default function AdminDashboard() {
           ))}
           {recentSubmissions.length === 0 && (
             <div className="empty-state">
-              <div className="empty-icon">📋</div>
-              <h3>No recent submissions</h3>
-              <p>Submissions will appear here as they come in.</p>
+              <div className="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <h3>No pending leads</h3>
+              <p>New leads will appear here as partners submit them.</p>
             </div>
           )}
         </div>
@@ -681,15 +681,15 @@ export default function AdminDashboard() {
       {/* Partner Management */}
       <div className="users-section">
         <div className="section-header">
-          <h2 className="section-title">All Partners</h2>
-          <p className="muted small">View all partners and their submitted leads. Partners can see the status of their leads (pending, approved, or denied).</p>
+          <h2 className="section-title">Partner Directory</h2>
+          <p className="muted small">Manage partners and view their referral activity.</p>
         </div>
 
         {usersWithSubs.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">👥</div>
+              <div className="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
             <h3>No partners yet</h3>
-            <p>Partners will appear here as they sign up and submit referrals.</p>
+            <p>Partners will appear here once they sign up and submit referrals.</p>
           </div>
         ) : (
           <div className="users-grid">
@@ -737,7 +737,8 @@ export default function AdminDashboard() {
                   </button>
                   <button
                     type="button"
-                    className="btn-icon"
+                    className="btn-secondary"
+                    style={{ padding: '0.5rem 0.85rem', fontSize: '0.85rem' }}
                     title="View Profile"
                     onClick={(e) => {
                       e.preventDefault();
@@ -745,7 +746,7 @@ export default function AdminDashboard() {
                       router.push(`/partners/admin/users/${u.user_id}`);
                     }}
                   >
-                    👁️
+                    View
                   </button>
                 </div>
 
@@ -834,7 +835,7 @@ export default function AdminDashboard() {
                   ))}
                 </div>
                 <p className="muted small" style={{ marginTop: '0.5rem' }}>
-                  Leads are submitted as "pending". Use the buttons above to approve or deny.
+                  Update the status of this lead using the buttons above.
                 </p>
               </div>
             </div>
@@ -884,16 +885,18 @@ export default function AdminDashboard() {
         }
 
         .header-title {
-          font-size: 2.5rem;
-          font-weight: 700;
-          color: #1e293b;
-          margin: 0 0 0.5rem 0;
+          font-size: 2rem;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 0.35rem 0;
+          letter-spacing: -0.02em;
         }
 
         .header-subtitle {
-          font-size: 1.125rem;
+          font-size: 1rem;
           color: #64748b;
           margin: 0;
+          line-height: 1.5;
         }
 
         .header-actions {
@@ -903,21 +906,30 @@ export default function AdminDashboard() {
 
         /* Section Styles */
         .section-title {
-          font-size: 1.5rem;
-          font-weight: 600;
-          color: #1e293b;
+          font-size: 1.35rem;
+          font-weight: 700;
+          color: #0f172a;
           margin: 0 0 1.5rem 0;
+          letter-spacing: -0.01em;
+        }
+
+        .muted.small {
+          font-size: 0.88rem;
+          color: #64748b;
+          margin: 0;
+          line-height: 1.5;
         }
 
         .section-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: flex-start;
           margin-bottom: 1.5rem;
+          gap: 1rem;
         }
 
         .section-header .section-title {
-          margin: 0;
+          margin: 0 0 0.25rem 0;
         }
 
         .btn-link {
@@ -973,33 +985,10 @@ export default function AdminDashboard() {
           width: 52px;
           height: 52px;
           border-radius: 14px;
-          background: linear-gradient(135deg, #e0e7ff, #f5f3ff);
           display: flex;
           align-items: center;
           justify-content: center;
-        }
-
-        .metric-icon::after {
-          content: '';
-          width: 22px;
-          height: 22px;
-          border-radius: 8px;
-          background: #4f46e5;
-          opacity: 0.15;
-          box-shadow: 0 0 0 6px rgba(79,70,229,0.08);
-        }
-
-        .metric-dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 999px;
-          background: #4f46e5;
-          display: inline-block;
-          box-shadow: 0 0 0 4px rgba(79,70,229,0.1);
-        }
-
-        .metric-card.highlight .metric-icon {
-          background: rgba(255, 255, 255, 0.2);
+          flex-shrink: 0;
         }
 
         .metric-content {
@@ -1007,10 +996,11 @@ export default function AdminDashboard() {
         }
 
         .metric-value {
-          font-size: 2rem;
-          font-weight: 700;
-          color: #1e293b;
-          margin: 0 0 0.25rem 0;
+          font-size: 1.75rem;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 0.15rem 0;
+          letter-spacing: -0.02em;
         }
 
         .metric-card.highlight .metric-value {
@@ -1018,15 +1008,25 @@ export default function AdminDashboard() {
         }
 
         .metric-label {
-          font-size: 0.875rem;
+          font-size: 0.82rem;
           font-weight: 600;
-          color: #64748b;
-          margin: 0 0 0.25rem 0;
+          color: #475569;
+          margin: 0 0 0.15rem 0;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+        }
+
+        .metric-card.highlight .metric-label {
+          color: rgba(255, 255, 255, 0.85);
         }
 
         .metric-trend {
           font-size: 0.75rem;
           color: #94a3b8;
+        }
+
+        .metric-card.highlight .metric-trend {
+          color: rgba(255, 255, 255, 0.7);
         }
 
         /* Status Section */
@@ -1670,19 +1670,22 @@ export default function AdminDashboard() {
         }
 
         .empty-icon {
-          font-size: 3rem;
-          margin-bottom: 1rem;
+          margin-bottom: 0.75rem;
+          display: flex;
+          justify-content: center;
         }
 
         .empty-state h3 {
-          font-size: 1.25rem;
-          font-weight: 600;
+          font-size: 1.1rem;
+          font-weight: 700;
           color: #1e293b;
-          margin: 0 0 0.5rem 0;
+          margin: 0 0 0.35rem 0;
         }
 
         .empty-state p {
           margin: 0;
+          font-size: 0.93rem;
+          line-height: 1.5;
         }
 
         /* Buttons */

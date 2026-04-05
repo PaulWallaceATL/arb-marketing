@@ -183,35 +183,50 @@ export default function DashboardPage() {
           <div className="partner-view">
             <div className="page-heading card">
               <div>
-                <p className="eyebrow">Welcome back</p>
-                <h2 className="page-title">Partner Dashboard</h2>
-                <p className="muted">Track the referrals you’ve shared with us.</p>
+                <p className="eyebrow">Partner Portal</p>
+                <h2 className="page-title">Your Referral Hub</h2>
+                <p className="muted">Monitor your referrals and track your earnings in one place.</p>
               </div>
               <div className="heading-actions">
-                <a className="btn-primary" href="/submission-form">Submit a referral</a>
+                <a className="btn-primary" href="/submission-form">+ New Referral</a>
               </div>
             </div>
 
             <div className="info-grid">
               <div className="info-card card">
-                <div className="info-label">Your Email</div>
-                <div className="info-value">{userEmail || '—'}</div>
+                <div className="info-icon" style={{ background: 'linear-gradient(135deg, #ede9fe, #ddd6fe)' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div className="info-text">
+                  <div className="info-label">Account</div>
+                  <div className="info-value">{userEmail || '—'}</div>
+                </div>
               </div>
               <div className="info-card card">
-                <div className="info-label">Role</div>
-                <div className="info-value">{userRole || 'User'}</div>
+                <div className="info-icon" style={{ background: 'linear-gradient(135deg, #fef3c7, #fde68a)' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div className="info-text">
+                  <div className="info-label">Total Referrals</div>
+                  <div className="info-value">{submissions.length}</div>
+                </div>
               </div>
               <div className="info-card card">
-                <div className="info-label">Points</div>
-                <div className="info-value accent">{typeof userPoints === 'number' ? userPoints : '—'}</div>
+                <div className="info-icon" style={{ background: 'linear-gradient(135deg, #d1fae5, #a7f3d0)' }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div className="info-text">
+                  <div className="info-label">Points Earned</div>
+                  <div className="info-value accent">{typeof userPoints === 'number' ? userPoints : '0'}</div>
+                </div>
               </div>
             </div>
 
             <div className="submissions-card card">
               <div className="submissions-header">
                 <div>
-                  <p className="eyebrow">Recent activity</p>
-                  <h3 className="card-title">Your Referrals</h3>
+                  <p className="eyebrow">Activity</p>
+                  <h3 className="card-title">Submitted Referrals</h3>
                 </div>
                 <span className="chip">
                   {subsLoading ? 'Loading...' : `${submissions.length} total`}
@@ -220,14 +235,18 @@ export default function DashboardPage() {
 
               {submissions.length === 0 && !subsLoading ? (
                 <div className="empty-state">
-                  <p>No referrals yet.</p>
+                  <div className="empty-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  </div>
+                  <h4>No referrals yet</h4>
+                  <p>Submit your first referral to start earning points and rewards.</p>
                   {subsError && (
-                    <p style={{ color: '#6b7280', marginTop: '0.35rem' }}>
-                      (We couldn’t load your referrals just now.)
+                    <p style={{ color: '#94a3b8', marginTop: '0.35rem', fontSize: '0.85rem' }}>
+                      Unable to load referrals right now. Please try again later.
                     </p>
                   )}
-                  <a href="/submission-form" className="btn-link">
-                    Go to submission form
+                  <a href="/submission-form" className="btn-primary" style={{ display: 'inline-block', marginTop: '1rem', fontSize: '0.9rem', padding: '0.7rem 1.4rem' }}>
+                    Submit Your First Referral
                   </a>
                 </div>
               ) : (
@@ -235,21 +254,22 @@ export default function DashboardPage() {
                   <table className="submissions-table">
                     <thead>
                       <tr>
-                        <th>Submitted</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
+                        <th>Date</th>
+                        <th>Lead Name</th>
+                        <th>Contact</th>
                         <th>Status</th>
-                        <th>Details</th>
+                        <th>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
                       {submissions.map((s) => (
                         <tr key={s.id}>
-                          <td>{new Date(s.created_at).toLocaleDateString()}</td>
-                          <td>{s.lead_name}</td>
-                          <td>{s.lead_email}</td>
-                          <td>{s.lead_phone || '—'}</td>
+                          <td className="date-cell">{new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                          <td className="name-cell"><strong>{s.lead_name}</strong></td>
+                          <td className="contact-cell">
+                            <span>{s.lead_email}</span>
+                            {s.lead_phone && <span className="phone-sub">{s.lead_phone}</span>}
+                          </td>
                           <td>
                             <span className={`status-chip ${s.status}`}>{s.status}</span>
                           </td>
@@ -439,28 +459,44 @@ export default function DashboardPage() {
           gap: 1rem;
         }
         .info-card {
-          padding: 1.1rem 1.25rem;
+          padding: 1.25rem 1.35rem;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        .info-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        .info-text {
           display: flex;
           flex-direction: column;
-          gap: 0.35rem;
+          gap: 0.2rem;
+          min-width: 0;
         }
         .info-label {
-          font-size: 0.9rem;
-          color: #6b7280;
+          font-size: 0.82rem;
+          color: #64748b;
           margin: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          font-weight: 600;
         }
         .info-value {
           font-weight: 800;
           color: #0f172a;
-          font-size: 1.05rem;
+          font-size: 1.1rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .info-value.accent {
-          color: #4f46e5;
-        }
-        .micro-text {
-          margin: 0;
-          font-size: 0.8rem;
-          color: #94a3b8;
+          color: #059669;
         }
 
         .submissions-card {
@@ -498,16 +534,25 @@ export default function DashboardPage() {
         }
         th, td {
           text-align: left;
-          padding: 0.75rem 0.5rem;
-          font-size: 0.95rem;
-          color: #1f2937;
-          border-bottom: 1px solid #e5e7eb;
+          padding: 0.85rem 0.75rem;
+          font-size: 0.93rem;
+          color: #374151;
+          border-bottom: 1px solid #f1f5f9;
         }
         th {
-          font-size: 0.82rem;
+          font-size: 0.75rem;
           text-transform: uppercase;
-          letter-spacing: 0.04em;
-          color: #6b7280;
+          letter-spacing: 0.06em;
+          color: #94a3b8;
+          font-weight: 600;
+          border-bottom: 1px solid #e2e8f0;
+          padding-bottom: 0.65rem;
+        }
+        tbody tr {
+          transition: background-color 0.15s ease;
+        }
+        tbody tr:hover {
+          background: #f8fafc;
         }
         .status-chip {
           padding: 0.35rem 0.6rem;
@@ -517,26 +562,54 @@ export default function DashboardPage() {
           display: inline-block;
         }
         .status-chip.new { background: #e0e7ff; color: #4338ca; }
-        .status-chip.pending { background: #fef3c7; color: #d97706; }
-        .status-chip.approved { background: #d1fae5; color: #059669; }
-        .status-chip.denied { background: #fee2e2; color: #dc2626; }
+        .status-chip.pending { background: #fef3c7; color: #92400e; }
+        .status-chip.approved { background: #d1fae5; color: #065f46; }
+        .status-chip.denied { background: #fee2e2; color: #991b1b; }
 
+        .date-cell {
+          white-space: nowrap;
+          color: #64748b;
+          font-size: 0.88rem;
+        }
+        .name-cell strong {
+          color: #0f172a;
+          font-weight: 600;
+        }
+        .contact-cell {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+        }
+        .contact-cell .phone-sub {
+          font-size: 0.82rem;
+          color: #94a3b8;
+        }
         .details {
-          max-width: 360px;
-          color: #4b5563;
+          max-width: 280px;
+          color: #64748b;
+          font-size: 0.9rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .empty-state {
           text-align: center;
-          color: #6b7280;
-          padding: 1rem 0;
+          color: #64748b;
+          padding: 3rem 1.5rem;
         }
-        .btn-link {
-          color: #6366f1;
-          text-decoration: none;
+        .empty-state .empty-icon {
+          margin-bottom: 1rem;
+        }
+        .empty-state h4 {
+          font-size: 1.15rem;
           font-weight: 700;
+          color: #1e293b;
+          margin: 0 0 0.35rem;
         }
-        .btn-link:hover {
-          text-decoration: underline;
+        .empty-state p {
+          margin: 0;
+          font-size: 0.95rem;
+          line-height: 1.5;
         }
 
         @media (max-width: 900px) {

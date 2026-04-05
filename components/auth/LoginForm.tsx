@@ -118,8 +118,11 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
     <div className="login-form-container">
       <div className="login-form-card">
         <h2 className="form-title">
-          {isLogin ? 'Partner Login' : 'Create Partner Account'}
+          {isLogin ? 'Welcome Back' : 'Create Your Account'}
         </h2>
+        <p className="form-subtitle">
+          {isLogin ? 'Sign in to access your partner dashboard.' : 'Join the referral program and start earning.'}
+        </p>
 
         {error && (
           <div className="alert alert-error" role="alert">
@@ -235,19 +238,28 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
 
         .login-form-card {
           background: white;
-          padding: 2.5rem;
-          border-radius: 12px;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          padding: 2.75rem;
+          border-radius: 20px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
           width: 100%;
-          max-width: 450px;
+          max-width: 440px;
         }
 
         .form-title {
           text-align: center;
+          margin-bottom: 0.5rem;
+          color: #0f172a;
+          font-size: 1.6rem;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+
+        .form-subtitle {
+          text-align: center;
           margin-bottom: 2rem;
-          color: #333;
-          font-size: 1.75rem;
-          font-weight: 600;
+          color: #64748b;
+          font-size: 0.93rem;
+          line-height: 1.5;
         }
 
         .alert {
@@ -275,36 +287,38 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
 
         .form-label {
           display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 500;
-          color: #333;
-          font-size: 0.95rem;
+          margin-bottom: 0.4rem;
+          font-weight: 600;
+          color: #1e293b;
+          font-size: 0.88rem;
         }
 
         .form-input {
           width: 100%;
-          padding: 0.75rem;
-          border: 2px solid #e0e0e0;
-          border-radius: 6px;
-          font-size: 1rem;
-          transition: all 0.2s;
+          padding: 0.8rem 0.95rem;
+          border: 1px solid #d1d5db;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          background: #fafbfc;
         }
 
         .form-input:focus {
           outline: none;
-          border-color: #667eea;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+          background: #fff;
         }
 
         .btn-submit {
           width: 100%;
-          padding: 0.875rem;
+          padding: 0.9rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
           border: none;
-          border-radius: 6px;
+          border-radius: 12px;
           font-size: 1rem;
-          font-weight: 600;
+          font-weight: 700;
           cursor: pointer;
           transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -338,15 +352,15 @@ export default function LoginForm({ redirectTo = '/partners/dashboard', onSucces
         }
 
         .form-footer {
-          margin-top: 2rem;
+          margin-top: 1.75rem;
           text-align: center;
           padding-top: 1.5rem;
-          border-top: 1px solid #e0e0e0;
+          border-top: 1px solid #f1f5f9;
         }
 
         .form-footer p {
-          color: #666;
-          font-size: 0.95rem;
+          color: #64748b;
+          font-size: 0.9rem;
         }
 
         .btn-text {

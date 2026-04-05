@@ -131,14 +131,14 @@ export default function AdminSubmissionDetailPage() {
           transition={{ duration: 0.2 }}
         >
           <div>
-            <p className="eyebrow">Submission Detail</p>
-            <h1 className="page-title">Lead Overview</h1>
-            <p className="muted">Full context and current status for this referral.</p>
+            <p className="eyebrow">Lead Detail</p>
+            <h1 className="page-title">Referral Overview</h1>
+            <p className="muted">Review the lead information and manage its status.</p>
           </div>
           <div className="hero-actions">
-            <a href="/partners/dashboard" className="btn-secondary">← Back to dashboard</a>
+            <a href="/partners/dashboard" className="btn-secondary">Back to Dashboard</a>
             <button className="btn-danger" onClick={deleteSubmission} disabled={deleting}>
-              {deleting ? 'Deleting...' : 'Delete submission'}
+              {deleting ? 'Deleting...' : 'Delete Lead'}
             </button>
           </div>
         </motion.div>
@@ -155,7 +155,7 @@ export default function AdminSubmissionDetailPage() {
           {!loading && !error && submission && (
             <div className="detail-grid">
               <div className="detail-card">
-                <p className="eyebrow">Lead</p>
+                <p className="eyebrow">Lead Information</p>
                 <h3 className="detail-title">{submission.lead_name}</h3>
                 <p className="muted">{submission.lead_email}</p>
                 <div className="detail-list">
@@ -175,8 +175,8 @@ export default function AdminSubmissionDetailPage() {
               </div>
 
               <div className="detail-card">
-                <p className="eyebrow">Status</p>
-                <h3 className="detail-title">{submission.status}</h3>
+                <p className="eyebrow">Current Status</p>
+                <h3 className="detail-title" style={{ textTransform: 'capitalize' }}>{submission.status}</h3>
                 <div className="detail-list">
                   <div className="detail-row">
                     <span>Created</span>
@@ -207,8 +207,8 @@ export default function AdminSubmissionDetailPage() {
 
       <style jsx>{`
         .page-shell {
-          padding: 96px 16px 64px;
-          background: #f8fafc;
+          padding: 96px 24px 64px;
+          background: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.04), transparent 40%), #f8fafc;
           min-height: 100vh;
         }
 
@@ -217,19 +217,19 @@ export default function AdminSubmissionDetailPage() {
           margin: 0 auto;
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 20px;
         }
 
         .page-hero {
           background: white;
-          padding: 20px;
-          border-radius: 14px;
+          padding: 24px 28px;
+          border-radius: 16px;
           border: 1px solid #e2e8f0;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 16px;
-          box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+          gap: 20px;
+          box-shadow: 0 4px 16px rgba(15,23,42,0.06);
         }
 
         .hero-actions {
@@ -241,9 +241,10 @@ export default function AdminSubmissionDetailPage() {
 
         .page-title {
           margin: 4px 0;
-          font-size: 2rem;
-          font-weight: 700;
+          font-size: 1.75rem;
+          font-weight: 800;
           color: #0f172a;
+          letter-spacing: -0.02em;
         }
 
         .eyebrow {
@@ -263,42 +264,55 @@ export default function AdminSubmissionDetailPage() {
         .btn-secondary {
           background: #f1f5f9;
           color: #0f172a;
-          border: 1px solid #d8dee9;
-          padding: 10px 14px;
+          border: 1px solid #d1d5db;
+          padding: 10px 16px;
           border-radius: 10px;
           font-weight: 600;
+          font-size: 0.9rem;
           cursor: pointer;
+          transition: background-color 0.15s;
+          text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+          background: #e2e8f0;
         }
 
         .btn-danger {
-          background: #fee2e2;
-          color: #b91c1c;
+          background: #fff1f2;
+          color: #991b1b;
           border: 1px solid #fecaca;
-          padding: 10px 14px;
+          padding: 10px 16px;
           border-radius: 10px;
           font-weight: 700;
+          font-size: 0.9rem;
           cursor: pointer;
+          transition: background-color 0.15s;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+          background: #fee2e2;
         }
 
         .card {
           background: white;
           border: 1px solid #e2e8f0;
-          border-radius: 14px;
-          padding: 18px;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: 0 4px 16px rgba(15,23,42,0.06);
         }
 
         .detail-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 16px;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 20px;
         }
 
         .detail-card {
           background: #f8fafc;
           border: 1px solid #e2e8f0;
-          border-radius: 12px;
-          padding: 16px;
+          border-radius: 14px;
+          padding: 20px;
         }
 
         .status-actions {

@@ -69,13 +69,13 @@ function SubmissionFormContent() {
         <div className="header-section">
           <div className="header-content">
             <div className="header-badge">
-              <span className="badge-text">Start Earning as an Affiliate</span>
+              <span className="badge-text">Partner Referral Program</span>
             </div>
             <h1 className="header-title">
-              Refer and Win Rewards!
+              Submit a Referral
             </h1>
             <p className="header-description">
-              Earn cash for qualified referrals.
+              Know someone who needs legal marketing help? Send us their details and earn rewards for every qualified lead.
             </p>
             
             {referralCode && (
@@ -133,25 +133,25 @@ function SubmissionFormContent() {
           <div className="info-grid">
             <div className="info-card">
               <div className="info-number">1</div>
-              <h3>Submit Referral</h3>
+              <h3>Submit a Referral</h3>
               <p>
-                Fill out the form with detailed information about someone who needs marketing services.
+                Fill out the form below with the details of the person you are referring.
               </p>
             </div>
             <div className="info-card">
               <div className="info-number">2</div>
-              <h3>We'll Review & Contact</h3>
+              <h3>We Review &amp; Connect</h3>
               <p>
-                Our team reviews the referral and reaches out to discuss their needs.
+                Our team reviews each referral and reaches out to discuss how we can help.
               </p>
             </div>
             <div className="info-card">
               <div className="info-number">3</div>
-              <h3>Track Your Progress</h3>
+              <h3>Track &amp; Earn</h3>
               <p>
                 {isAuthenticated 
-                  ? "View your submissions and earnings in your dashboard!"
-                  : "Login or create an account to track your referrals and compete for prizes!"}
+                  ? "View your submissions and track your points from your dashboard."
+                  : "Create an account to track your referrals and earn rewards."}
               </p>
             </div>
           </div>
@@ -159,7 +159,7 @@ function SubmissionFormContent() {
           {!isAuthenticated && (
             <div className="login-cta">
               <p>
-                Want to track your referrals and compete for prizes?
+                Want to track your referrals and earn points?
               </p>
               <a href="/partners/login" className="btn-login">
                 Login / Sign Up
@@ -232,11 +232,12 @@ function SubmissionFormContent() {
         }
 
         .header-title {
-          font-size: 3.5rem;
+          font-size: 3rem;
           color: white;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1.25rem;
           font-weight: 800;
           line-height: 1.1;
+          letter-spacing: -0.02em;
           animation: fadeInUp 0.6s ease-out 0.1s both;
         }
 
@@ -246,10 +247,13 @@ function SubmissionFormContent() {
         }
 
         .header-description {
-          font-size: 1.2rem;
-          color: rgba(255, 255, 255, 0.95);
+          font-size: 1.1rem;
+          color: rgba(255, 255, 255, 0.9);
           margin-bottom: 2rem;
-          line-height: 1.6;
+          line-height: 1.7;
+          max-width: 560px;
+          margin-left: auto;
+          margin-right: auto;
           animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 

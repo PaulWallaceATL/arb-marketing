@@ -366,11 +366,11 @@ export default function AdminUserDetailPage() {
           transition={{ duration: 0.2 }}
         >
           <div>
-            <p className="eyebrow">User Detail</p>
+            <p className="eyebrow">Partner Detail</p>
             <h1 className="page-title">Partner Profile</h1>
-            <p className="muted">Manage referrals and submissions for this partner.</p>
+            <p className="muted">View referral activity and manage this partner account.</p>
           </div>
-          <a href="/partners/dashboard" className="btn-secondary">← Back to dashboard</a>
+          <a href="/partners/dashboard" className="btn-secondary">Back to Dashboard</a>
         </motion.div>
 
         <div className="grid two-col">

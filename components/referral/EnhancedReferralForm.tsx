@@ -114,9 +114,9 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
   return (
     <div className="enhanced-referral-form-container">
       <div className="form-header">
-        <h2>Refer Someone Who Needs Our Help</h2>
+        <h2>Referral Submission</h2>
         <p className="form-description">
-          Simple form: tell us who you are, who you’re referring, and why they need help.
+          Provide your details, the person you are referring, and a brief description of their situation.
         </p>
       </div>
 
@@ -134,7 +134,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         {/* Section: Referred By */}
         <div className="form-section">
-          <h3 className="section-title">Referred By</h3>
+          <h3 className="section-title">Your Information</h3>
           
           <div className="form-row">
             <div className="form-group">
@@ -215,7 +215,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         {/* Section: Person Being Referred */}
         <div className="form-section">
-          <h3 className="section-title">Person You're Referring</h3>
+          <h3 className="section-title">Person Being Referred</h3>
           
           <div className="form-row">
             <div className="form-group">
@@ -271,7 +271,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         {/* Section: Reason */}
         <div className="form-section">
-          <h3 className="section-title">Reason for Referral</h3>
+          <h3 className="section-title">Referral Details</h3>
           <div className="form-group">
             <label htmlFor="lead_message" className="form-label">
               Describe the situation <span className="required">*</span>
@@ -284,7 +284,7 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
               rows={4}
               required
               className="form-input"
-              placeholder="Briefly describe the accident or reason for referral. Include any important details we should know."
+              placeholder="Describe the situation and any important details that would help us assist this person."
             />
           </div>
         </div>
@@ -305,12 +305,12 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         <p className="form-notice">
           <small>
-            By submitting this referral, you agree that we can contact the person you're referring about our services.
+            By submitting, you confirm the referred person has agreed to be contacted about our services.
           </small>
         </p>
         <p className="form-disclaimer">
           <small>
-            <strong>Disclaimer:</strong> The person you are submitting for referral has agreed to be contacted about our services.
+            <strong>Disclaimer:</strong> All referral information is kept confidential and handled in accordance with our privacy policy.
           </small>
         </p>
       </form>
@@ -328,29 +328,31 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
         }
 
         .form-header h2 {
-          font-size: 2rem;
-          color: #1a1a1a;
-          margin-bottom: 0.75rem;
+          font-size: 1.75rem;
+          color: #0f172a;
+          margin-bottom: 0.5rem;
           letter-spacing: -0.02em;
+          font-weight: 800;
         }
 
         .form-description {
-          font-size: 1.1rem;
-          color: #4a4a4a;
+          font-size: 1rem;
+          color: #64748b;
           line-height: 1.6;
         }
 
         .enhanced-referral-form {
           background: #fff;
           padding: 2.5rem;
-          border-radius: 12px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border-radius: 16px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+          border: 1px solid #e2e8f0;
         }
 
         .form-section {
-          margin-bottom: 2.5rem;
-          padding-bottom: 2rem;
-          border-bottom: 2px solid #f0f0f0;
+          margin-bottom: 2rem;
+          padding-bottom: 1.75rem;
+          border-bottom: 1px solid #f1f5f9;
         }
 
         .form-section:last-of-type {
@@ -358,11 +360,15 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
         }
 
         .section-title {
-          font-size: 1.25rem;
-          color: #1a1a1a;
+          font-size: 1.1rem;
+          color: #0f172a;
           margin-bottom: 1.25rem;
           font-weight: 700;
           letter-spacing: -0.01em;
+          text-transform: uppercase;
+          font-size: 0.82rem;
+          letter-spacing: 0.06em;
+          color: #6366f1;
         }
 
         .form-row {
@@ -424,10 +430,10 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         .form-label {
           display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 500;
-          color: #333;
-          font-size: 0.95rem;
+          margin-bottom: 0.45rem;
+          font-weight: 600;
+          color: #1e293b;
+          font-size: 0.9rem;
         }
 
         .required {
@@ -436,18 +442,20 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         .form-input {
           width: 100%;
-          padding: 0.875rem;
-          border: 2px solid #e0e0e0;
-          border-radius: 6px;
-          font-size: 1rem;
-          transition: all 0.2s;
+          padding: 0.8rem 0.95rem;
+          border: 1px solid #d1d5db;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          transition: border-color 0.2s, box-shadow 0.2s;
           font-family: inherit;
+          background: #fafbfc;
         }
 
         .form-input:focus {
           outline: none;
-          border-color: #667eea;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+          background: #fff;
         }
 
         textarea.form-input {
@@ -476,17 +484,16 @@ export default function EnhancedReferralForm({ referralCode, onSuccess }: Enhanc
 
         .btn-submit {
           width: 100%;
-          padding: 1.125rem;
+          padding: 1rem;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
           border: none;
-          border-radius: 8px;
-          font-size: 1.125rem;
+          border-radius: 12px;
+          font-size: 1rem;
           font-weight: 700;
           cursor: pointer;
-          transition: all 0.3s;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
+          transition: transform 0.2s, box-shadow 0.2s;
+          letter-spacing: 0.02em;
         }
 
         .btn-submit:hover:not(:disabled) {
